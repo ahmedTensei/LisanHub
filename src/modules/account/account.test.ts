@@ -156,7 +156,7 @@ describe("form helpers", () => {
     formData.set("email", "a@b.co");
     formData.set("password", "secret");
     expect(keepValues(formData, ["email", "username"])).toEqual({ email: "a@b.co" });
-    expect(maskEmail("ahmed.h@gmail.com")).toBe("a******@gmail.com");
+    expect(maskEmail("ahmed.h@example.com")).toBe("a******@example.com");
     expect(maskEmail("ab@x.dz")).toBe("a***@x.dz");
   });
 });

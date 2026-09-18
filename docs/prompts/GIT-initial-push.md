@@ -95,7 +95,7 @@ gh api -X PUT repos/ahmedTensei/LisanHub/branches/main/protection -H "Accept: ap
 
 1. احذف النسخة الاحتياطية المحلية بطلب أحمد:
    ```
-   Remove-Item -Recurse -Force "C:\Users\GEAR\Documents\LisanHub-backups"
+   Remove-Item -Recurse -Force "%USERPROFILE%\Documents\LisanHub-backups"
    ```
    ثم تأكّد أن المجلّد لم يعد موجودًا. **لا تحذفه قبل التحقّق من الرفع.**
 2. علّم بند Git في `docs/SETUP.md` كمنجز مع رابط المستودع، وحدّث «Current state» في `CLAUDE.md` بأن المستودع صار حيًّا.

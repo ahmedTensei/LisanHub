@@ -118,7 +118,7 @@
 - خطوات صغيرة، و`npm run check` بعد كل كتلة.
 - كل تغيير في المخطط = ترحيل جديد + اختبار في `tests/db`. لا تعدّل ترحيلًا مطبَّقًا.
 - أي نقطة غير محسومة: اسألني ولا تستنتج، وأضفها إلى `docs/decisions/open-decisions.md`.
-- عند الانتهاء: حدّث «Current state» و«Architecture map» في `CLAUDE.md`، وقسم S2 في `docs/mvp-roadmap.md`، و`resolved-decisions.md` إن ظهر قرار جديد، وADR جديد إن اخترت بديلًا تقنيًا مهمًا (مكتبة الـzip أو مدقّق JSON Schema مثلًا). ثم `npm run db:push` و`db:types` و`db:verify`، ونسخة احتياطية مضغوطة دون `node_modules` و`.next` في `C:\Users\GEAR\Documents\LisanHub-backups\` باسم يتضمّن التاريخ والمرحلة.
+- عند الانتهاء: حدّث «Current state» و«Architecture map» في `CLAUDE.md`، وقسم S2 في `docs/mvp-roadmap.md`، و`resolved-decisions.md` إن ظهر قرار جديد، وADR جديد إن اخترت بديلًا تقنيًا مهمًا (مكتبة الـzip أو مدقّق JSON Schema مثلًا). ثم `npm run db:push` و`db:types` و`db:verify`، ونسخة احتياطية مضغوطة دون `node_modules` و`.next` في `%USERPROFILE%\Documents\LisanHub-backups\` باسم يتضمّن التاريخ والمرحلة.
 - ثم لخّص لي بالعربية: ما أُنجز، وقائمة مرقّمة قصيرة أجرّبها بنفسي خطوة بخطوة.
 
 ## تحسين صغير (نفّذه في آخر S2 إن بقي وقت)

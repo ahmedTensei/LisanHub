@@ -44,4 +44,4 @@
 
 - خطوات صغيرة، و`npm run check` بعد كل خطوة مهمة.
 - أي نقطة غير محسومة: اسألني ولا تستنتج، وأضفها إلى `docs/decisions/open-decisions.md`.
-- عند الانتهاء: حدّث «Current state» في `CLAUDE.md` وقسم S1 في `docs/mvp-roadmap.md`، وأنشئ نسخة احتياطية مضغوطة للمشروع دون `node_modules` و`.next` في `C:\Users\GEAR\Documents\LisanHub-backups\` باسم يتضمّن التاريخ والمرحلة، ثم لخّص لي بالعربية ما أُنجز وما يلزمني فعله.
+- عند الانتهاء: حدّث «Current state» في `CLAUDE.md` وقسم S1 في `docs/mvp-roadmap.md`، وأنشئ نسخة احتياطية مضغوطة للمشروع دون `node_modules` و`.next` في `%USERPROFILE%\Documents\LisanHub-backups\` باسم يتضمّن التاريخ والمرحلة، ثم لخّص لي بالعربية ما أُنجز وما يلزمني فعله.

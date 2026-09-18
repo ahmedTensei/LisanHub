@@ -29,6 +29,7 @@ Run this once when `node_modules/` or `.claude/skills/` is missing, then report 
 4. `docs/decisions/open-decisions.md` — open questions. Never resolve an open decision by inference.
 5. `docs/mvp-roadmap.md` — the build plan (phases A, B, C). A plan, not a requirement.
 6. `docs/adr/` — architecture decisions.
+7. `docs/before-going-public.md` — everything personal or environment-specific that must be changed or confirmed before the repository goes public or the platform launches; keep it current whenever such an item is added.
 
 ## Current state
 
@@ -36,6 +37,7 @@ Run this once when `node_modules/` or `.claude/skills/` is missing, then report 
 - **No subscriptions, payments or entitlements exist, and none may be built before phase C** (decision R2).
 - Supabase: **hosted project connected and linked** (ref `poytjlejclxlobxhyroz`, Paris `eu-west-3`, free tier). Public values live in `.env.local` (never the `service_role` key). Interactive CLI steps (`supabase login`, `link`) are Ahmed's; `npm run db:push`, `db:config:push` and `db:types` run non-interactively once linked. Docker is not installed, so `db:start`/`db:reset` are unavailable on this machine. The free tier refuses custom email templates with the default mailer (open decision Q14): the default Supabase templates are in use and `src/app/[locale]/auth/confirm` accepts both `code` and `token_hash` links.
 - Going live on a real domain (or several): nothing in the code hardcodes localhost — public profile links use the browser origin, email links use the request origin (`SITE_URL` can pin it); only `supabase/config.toml` (`site_url`, `additional_redirect_urls`) must list each domain, then `npm run db:config:push`. See docs/SETUP.md.
+- The GitHub repository is live since 2026-09-18 (initial import commit `029e642`, `main` tracks `origin/main`). The remote was empty at import time, so no `archive/old-remote` branch was needed. The repository is currently **private**: GitHub refused secret-scanning push protection and branch protection on the free plan until it is public or upgraded.
 - Ahmed's account is `platform_owner`. Ranks, roles, support requests and settings are managed in `/admin`; `npx supabase db query --linked "<sql>"` remains available for one-off data fixes (never for schema).
 
 ## Skills index — read the matching skill before working in that area

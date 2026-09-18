@@ -7,7 +7,7 @@
 - [x] `npm run setup` (المهارات الـ17 في `.claude/skills`، وCI في `.github`، وإعدادات `.vscode`)
   - ملاحظة: لوحة `/skills` في تطبيق Claude لسطح المكتب تعرض مهارات حساب claude.ai فقط (docs, pdf, xlsx…). مهارات المشروع الـ17 لا تظهر فيها، لكنها محمَّلة: اكتب `/` ثم اسم المهارة (مثل `/mvp-scope` أو `/roles-permissions`) أو دع Claude يستدعيها تلقائيًا حسب المهمة.
 - [x] `npm run check` (الفحص الكامل والاختبارات)
-- [ ] (لاحقًا، بطلب من أحمد فقط) إنشاء مستودع Git بعد اكتمال نسخة أساسية تعمل
+- [x] مستودع Git: https://github.com/ahmedTensei/LisanHub — الاستيراد الأوّلي في 18 سبتمبر 2026 (201 ملفًا، ترخيص PolyForm Noncommercial 1.0.0). بعده: لا إيداع ولا رفع إلا بطلب صريح من أحمد.
 - [x] تشغيل `npm run dev` وفتح http://localhost:3000
 - [x] (S1) `npm run db:verify` — 42 فحصًا تثبت الربط الفعلي بالمشروع المستضاف (شغّله بعد كل `db:push`)
 - [x] (S1) مشروع Supabase مستضاف: `.env.local` مكتوب، `npx supabase login` و`link` نفّذهما أحمد، الترحيلات والإعدادات مدفوعة، الأنواع مولَّدة
