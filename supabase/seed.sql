@@ -1,0 +1,3 @@
+-- Local development seed (runs on `npx supabase db reset`).
+-- Reference data (languages, settings, feature flags) lives in migrations because
+-- production needs it too. Add local-only sample data here.

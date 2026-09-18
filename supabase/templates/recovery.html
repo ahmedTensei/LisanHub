@@ -1,0 +1,27 @@
+<!doctype html>
+<html>
+  <body style="font-family: 'Segoe UI', Tahoma, sans-serif; line-height: 1.8; color: #13201d; max-width: 560px; margin: 0 auto; padding: 24px">
+    {{ if eq .Data.ui_locale "fr" }}
+    <div dir="ltr">
+      <h2 style="color: #16695a">Réinitialiser votre mot de passe</h2>
+      <p>Vous avez demandé un nouveau mot de passe pour votre compte LisanHub&nbsp;:</p>
+      <p><a href="{{ .SiteURL }}/{{ if .Data.ui_locale }}{{ .Data.ui_locale }}{{ else }}ar{{ end }}/auth/confirm?token_hash={{ .TokenHash }}&type=recovery&next=/{{ if .Data.ui_locale }}{{ .Data.ui_locale }}{{ else }}ar{{ end }}/reset-password" style="display: inline-block; background: #16695a; color: #fff; padding: 10px 20px; border-radius: 8px; text-decoration: none">Choisir un nouveau mot de passe</a></p>
+      <p style="color: #5e6d68; font-size: 14px">Si vous n'êtes pas à l'origine de cette demande, ignorez ce message&nbsp;: votre mot de passe reste inchangé.</p>
+    </div>
+    {{ else if eq .Data.ui_locale "en" }}
+    <div dir="ltr">
+      <h2 style="color: #16695a">Reset your password</h2>
+      <p>You asked for a new password for your LisanHub account:</p>
+      <p><a href="{{ .SiteURL }}/{{ if .Data.ui_locale }}{{ .Data.ui_locale }}{{ else }}ar{{ end }}/auth/confirm?token_hash={{ .TokenHash }}&type=recovery&next=/{{ if .Data.ui_locale }}{{ .Data.ui_locale }}{{ else }}ar{{ end }}/reset-password" style="display: inline-block; background: #16695a; color: #fff; padding: 10px 20px; border-radius: 8px; text-decoration: none">Choose a new password</a></p>
+      <p style="color: #5e6d68; font-size: 14px">If you did not ask for this, ignore this message: your password stays unchanged.</p>
+    </div>
+    {{ else }}
+    <div dir="rtl" style="text-align: right">
+      <h2 style="color: #16695a">استعادة كلمة المرور</h2>
+      <p>طلبتَ كلمة مرور جديدة لحسابك في LisanHub:</p>
+      <p><a href="{{ .SiteURL }}/{{ if .Data.ui_locale }}{{ .Data.ui_locale }}{{ else }}ar{{ end }}/auth/confirm?token_hash={{ .TokenHash }}&type=recovery&next=/{{ if .Data.ui_locale }}{{ .Data.ui_locale }}{{ else }}ar{{ end }}/reset-password" style="display: inline-block; background: #16695a; color: #fff; padding: 10px 20px; border-radius: 8px; text-decoration: none">اختيار كلمة مرور جديدة</a></p>
+      <p style="color: #5e6d68; font-size: 14px">إن لم تطلب ذلك، تجاهل هذه الرسالة: كلمة مرورك لن تتغيّر.</p>
+    </div>
+    {{ end }}
+  </body>
+</html>

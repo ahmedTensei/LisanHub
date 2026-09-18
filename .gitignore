@@ -1,0 +1,57 @@
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# dependencies
+/node_modules
+/.pnp
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/versions
+
+# testing
+/coverage
+
+# next.js
+/.next/
+/out/
+
+# production
+/build
+
+# misc
+.DS_Store
+*.pem
+
+# debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# env files (can opt-in for committing if needed)
+.env*
+
+# vercel
+.vercel
+
+# typescript
+*.tsbuildinfo
+next-env.d.ts
+
+# supabase local state
+supabase/.temp
+supabase/.branches
+
+# local Claude Code settings (personal)
+.claude/settings.local.json
+
+# keep the template that documents the variables (no secrets in it)
+!.env.example
+
+# generated locally by `npm run setup` from claude-skills/ (do not commit the copy)
+/.claude/
+
+# not published: the full specification and the business model (owner decision, 2026-09-18)
+/docs/specification/

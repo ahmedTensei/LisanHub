@@ -1,0 +1,660 @@
+{
+  "meta": {
+    "title": "LisanHub — community language learning",
+    "description": "Learn any language from any language, with content the community creates, reviews and improves."
+  },
+  "nav": {
+    "brand": "LisanHub",
+    "home": "Home",
+    "signIn": "Sign in",
+    "signUp": "Create account",
+    "account": "My account",
+    "languages": "My languages",
+    "signOut": "Sign out",
+    "uiLanguage": "Interface language",
+    "menu": "Navigation",
+    "accountMenu": "Account menu",
+    "soon": "Soon",
+    "admin": "Administration",
+    "publicProfile": "My public page"
+  },
+  "home": {
+    "eyebrow": "Phase A — free platform",
+    "title": "Learn any language, starting from yours",
+    "lede": "A platform whose content is built together by learners, native speakers and content creators: lessons, exercises and review cards for every language pair.",
+    "ctaSignUp": "Create your free account",
+    "ctaSignIn": "Have an account? Sign in",
+    "pillarsTitle": "What the platform is built on",
+    "pillars": {
+      "freedom": {
+        "title": "Learn freely",
+        "body": "No single mandatory path. Move between lessons and resources according to your level and interests."
+      },
+      "community": {
+        "title": "Content from the community",
+        "body": "Content creators publish, translate and improve, with clear attribution and a record of every change."
+      },
+      "progress": {
+        "title": "Your progress is always kept",
+        "body": "Your progress and review dates are stored for free in your account and follow you to any device."
+      }
+    }
+  },
+  "footer": {
+    "stage": "Phase A — free platform · S1",
+    "database": "Database",
+    "connected": "connected",
+    "notConnected": "not connected yet"
+  },
+  "forms": {
+    "required": "required",
+    "optional": "optional",
+    "errors": {
+      "required": "This field is required.",
+      "email_invalid": "Enter a valid email address.",
+      "password_too_short": "The password needs at least 8 characters.",
+      "password_too_long": "The password is too long (72 characters maximum).",
+      "passwords_differ": "The two passwords do not match.",
+      "ui_locale_invalid": "Unsupported interface language.",
+      "visibility_invalid": "Invalid visibility value.",
+      "language_invalid": "Choose a language from the list.",
+      "same_language": "The starting language and the target language must differ.",
+      "dialect_invalid": "Dialect tag: Latin letters, digits and hyphens only (40 characters maximum).",
+      "goal_too_long": "The goal is too long (200 characters maximum).",
+      "username_too_short": "The username needs at least 4 characters.",
+      "username_too_long": "The username is too long (30 characters maximum).",
+      "username_invalid": "Username: Latin letters, digits, _ and . only, starting with a letter or digit.",
+      "username_taken": "That username is taken. Try another one.",
+      "email_exists": "This email is already registered. Sign in or recover your password.",
+      "display_name_too_long": "The display name is too long (60 characters maximum).",
+      "email_same": "That is already your current address.",
+      "current_password_wrong": "The current password is wrong.",
+      "bio_too_long": "The bio is too long (500 characters maximum).",
+      "location_too_long": "The location is too long (80 characters maximum).",
+      "avatar_type_invalid": "Choose a JPEG, PNG or WebP image.",
+      "avatar_too_large": "The image is larger than allowed."
+    },
+    "showPassword": "Show password",
+    "hidePassword": "Hide password",
+    "fixFields": "Fix the fields marked in red and try again.",
+    "confirm": {
+      "question": "Save these changes?",
+      "confirm": "Confirm",
+      "cancel": "Cancel",
+      "working": "Saving…"
+    }
+  },
+  "auth": {
+    "signUp": {
+      "title": "Create an account",
+      "lede": "One free account for all your languages and your progress.",
+      "username": "Username",
+      "usernameHint": "Yours alone, Latin letters, digits, _ and . only, at least 4 characters.",
+      "email": "Email address",
+      "password": "Password",
+      "passwordHint": "At least 8 characters.",
+      "submit": "Create account",
+      "haveAccount": "Already have an account?",
+      "signInLink": "Sign in",
+      "displayName": "Display name",
+      "displayNameHint": "The name the community sees, in any language. Leave it empty to use your username.",
+      "submitting": "Creating your account…"
+    },
+    "checkEmail": {
+      "title": "One last step: confirm your email",
+      "created": "Your account is created.",
+      "sentTo": "We sent the confirmation link to",
+      "step1": "Open your inbox (check the spam folder if needed).",
+      "step2": "Click the confirmation link in this same browser.",
+      "step3": "You will be signed in automatically.",
+      "resend": "Resend the confirmation link",
+      "resent": "Link sent again. It can take a minute to arrive.",
+      "alreadyConfirmed": "Already confirmed?",
+      "signInLink": "Sign in"
+    },
+    "signIn": {
+      "title": "Sign in",
+      "email": "Email address",
+      "password": "Password",
+      "submit": "Sign in",
+      "forgot": "Forgot your password?",
+      "noAccount": "No account yet?",
+      "signUpLink": "Create one",
+      "requiredNotice": "Sign in to continue."
+    },
+    "forgot": {
+      "title": "Recover your password",
+      "lede": "Enter your email and we will send you a link to choose a new password.",
+      "email": "Email address",
+      "submit": "Send the link",
+      "sentTitle": "Check your inbox",
+      "sentBody": "If that address is registered with us, you will receive a link to choose a new password. Open it in the browser you requested it from.",
+      "backToSignIn": "Back to sign in"
+    },
+    "reset": {
+      "title": "New password",
+      "password": "New password",
+      "confirm": "Confirm password",
+      "submit": "Save password",
+      "needSession": "The recovery link has expired or was opened in another browser. Request a new link."
+    },
+    "notices": {
+      "confirmed": "Your email is confirmed. Sign in to continue."
+    },
+    "errors": {
+      "invalid_credentials": "Wrong email or password.",
+      "email_not_confirmed": "Your email is not confirmed yet. Open the confirmation link we sent you.",
+      "weak_password": "Password too weak: at least 8 characters.",
+      "same_password": "Choose a password different from the current one.",
+      "email_exists": "This email is already registered.",
+      "rate_limited": "Too many attempts. Wait a moment and try again.",
+      "signup_disabled": "Sign-ups are paused for now.",
+      "sign_in_required": "Sign in first.",
+      "link_expired": "The link has expired or was already used. Request a new one.",
+      "link_invalid": "The link is not valid.",
+      "other_browser": "The recovery link was opened in a different browser. Request a new link from this browser and open it here.",
+      "unexpected": "Something unexpected happened. Please try again."
+    }
+  },
+  "account": {
+    "title": "My account",
+    "email": "Email address",
+    "foundingBadge": "Founding member",
+    "profile": {
+      "title": "Profile",
+      "username": "Username",
+      "usernameHint": "Latin letters, digits, _ and . only, 4–30 characters. Shown as @user_name61.",
+      "uiLocale": "Interface language",
+      "uiLocaleHint": "Only the language of menus and pages; it never affects the languages you learn.",
+      "visibility": "Profile visibility",
+      "visibilityPublic": "Public",
+      "visibilityPublicHint": "Anyone can see your profile.",
+      "visibilityRestricted": "Restricted",
+      "visibilityRestrictedHint": "Only you and the moderation team can see your profile. Your name stays on what you publish, for attribution.",
+      "save": "Save",
+      "displayName": "Display name",
+      "displayNameHint": "In any language. Shown to the community together with your username.",
+      "bio": "About you",
+      "bioHint": "In any language. Shown on your public page.",
+      "location": "Location",
+      "locationHint": "City or country, the way you want it shown.",
+      "viewPublic": "View my public page",
+      "publicLink": "Your public page link",
+      "publicLinkHint": "A unique link others can see; it changes if you change your username."
+    },
+    "role": {
+      "title": "Your role in the community",
+      "current": "Current role",
+      "student": "Student",
+      "content_creator": "Content creator",
+      "contributor": "Contributor",
+      "studentExplanation": "A student learns, tracks progress and keeps personal copies of lessons on their own device; they never publish content to the community.",
+      "creatorExplanation": "As a content creator you can create lessons and cards, publish them to the community, and make your own version of other people's lessons or translate them. The creation tools arrive in the next stage.",
+      "ownerNote": "As the platform owner no rank or role limits you: every permission is open to you, and you can try the platform with narrower permissions from the “View the platform as” bar at the top of the page."
+    },
+    "notices": {
+      "confirmed": "Your email is confirmed. Welcome to LisanHub.",
+      "welcome": "Welcome to LisanHub.",
+      "password_updated": "Your new password is saved.",
+      "saved": "Changes saved.",
+      "content_creator": "Done: your account is now a content creator account."
+    },
+    "errors": {
+      "sign_in_required": "Sign in first.",
+      "not_allowed": "This action is not available for your account.",
+      "already_content_creator": "You are already a content creator.",
+      "role_change_not_allowed": "This role change is not available at this stage.",
+      "pair_exists": "This language pair is already added.",
+      "unexpected": "Something unexpected happened. Please try again.",
+      "acknowledge_required": "Confirm that you have read the commitments first.",
+      "request_pending": "You already have a request of this kind under review.",
+      "upload_failed": "The picture could not be uploaded. Try again."
+    },
+    "advanced": {
+      "title": "Advanced settings",
+      "accountType": "Account type",
+      "studentBody": "Yours is a student account. Publishing to the community requires a content creator account, a change that is only undone through support.",
+      "becomeLink": "Switch to a content creator account…",
+      "creatorBody": "Yours is a content creator account. To return to a student account, contact support; the team reviews your case and decides.",
+      "soonTitle": "Coming here",
+      "soon": {
+        "export": "Export your personal data (always free)",
+        "delete": "Delete the account permanently"
+      }
+    },
+    "creator": {
+      "title": "Become a content creator",
+      "lede": "One step changes the nature of your account. Read the commitments, then confirm.",
+      "commitments": {
+        "publish": "What you publish becomes available to the whole community; others can make their own version of it or translate it, with attribution to you.",
+        "attribution": "Your name stays attached to everything you publish and to every derived version.",
+        "rules": "You follow the community rules: original or reusable educational content, without abuse or rights violations.",
+        "review": "New content carries the “new community content” label until the founding team reviews it, and the community can report it.",
+        "noReturn": "You cannot return to a student account by yourself; that goes through support after a review of your case."
+      },
+      "acknowledge": "I have read the commitments and understand this change is only undone through support.",
+      "confirm": "Confirm switching to content creator",
+      "confirming": "Switching…",
+      "alreadyCreator": "Yours is already a content creator account.",
+      "returnViaSupport": "To return to a student account, send a request to support from the “Account type and support” page.",
+      "backToAdvanced": "Back to Account type and support"
+    },
+    "nav": {
+      "profile": "Profile",
+      "languages": "My languages",
+      "preferences": "Preferences",
+      "security": "Security",
+      "advanced": "Account type and support",
+      "notifications": "Notifications",
+      "data": "My data"
+    },
+    "preferences": {
+      "title": "Preferences",
+      "soonTitle": "Coming to preferences",
+      "soon": {
+        "notifications": "Notification settings and quiet hours",
+        "theme": "Theme (light/dark) instead of following the device"
+      }
+    },
+    "security": {
+      "passwordTitle": "Change password",
+      "currentPassword": "Current password",
+      "newPassword": "New password",
+      "confirmPassword": "Change the password now?",
+      "savePassword": "Save password",
+      "emailTitle": "Change email address",
+      "currentEmail": "Current address",
+      "newEmail": "New address",
+      "newEmailHint": "A confirmation link goes to both the old and the new address; the change applies after both confirm.",
+      "changeEmail": "Send confirmation link",
+      "emailChangeSent": "Link sent. Open both messages to complete the change.",
+      "sessionsTitle": "Sessions",
+      "sessionsBody": "Sign out of this device from the account menu at the top of the page. Managing other devices comes later.",
+      "confirmEmail": "Confirmation links will go to both addresses. Continue?"
+    },
+    "support": {
+      "title": "Contact support",
+      "body": "Write to us here; your request reaches the moderation team directly and you can follow its status below.",
+      "message": "Your message",
+      "hints": {
+        "revert_to_student": "Briefly explain why you want to return to a student account. Support reviews your case and decides.",
+        "other": "Any question or problem with your account. Suggestions about the platform will get their own form later."
+      },
+      "submit": {
+        "revert_to_student": "Request a return to a student account",
+        "other": "Send to support"
+      },
+      "sent": "Request sent. The reply will appear here and in your notifications.",
+      "pendingRevert": "Your request to return to a student account is under review.",
+      "kinds": {
+        "revert_to_student": "Return to a student account",
+        "other": "Support request"
+      },
+      "statuses": {
+        "open": "New",
+        "in_review": "Under review",
+        "resolved": "Done",
+        "rejected": "Declined"
+      },
+      "reply": "Team reply"
+    },
+    "avatar": {
+      "title": "Profile picture",
+      "choose": "Choose an image",
+      "hint": "JPEG, PNG or WebP, up to {mb} MB. Shown as a circle.",
+      "upload": "Save picture",
+      "confirmUpload": "Replace your picture with this one?",
+      "remove": "Remove picture",
+      "confirmRemove": "Remove your picture?",
+      "saved": "Picture saved.",
+      "removed": "Picture removed."
+    }
+  },
+  "languages": {
+    "title": "My language pairs",
+    "lede": "Each pair joins a language you start from and a language you are learning. Nothing here is mandatory: you can browse and learn at any time.",
+    "empty": "You have not added a pair yet.",
+    "list": {
+      "title": "Added pairs",
+      "dialect": "Preferred dialect",
+      "goal": "Goal",
+      "remove": "Remove",
+      "removeAria": "Remove the pair {native} → {target}"
+    },
+    "add": {
+      "title": "Add a language pair",
+      "native": "Language you start from",
+      "nativeHint": "Your native language or one you know well.",
+      "target": "Language you are learning",
+      "dialect": "Preferred dialect",
+      "dialectHint": "For example: algerian or egyptian. Results in this dialect come first, without hiding the others.",
+      "goal": "Your goal",
+      "goalHint": "A short sentence, such as \"Study in France\".",
+      "submit": "Add the pair",
+      "added": "Pair added."
+    },
+    "picker": {
+      "placeholder": "Search by English name or code (kab, French…)",
+      "searching": "Searching…",
+      "noResults": "No results. Try the English name or the ISO 639-3 code.",
+      "selected": "Selected",
+      "clear": "Change",
+      "results": "Search results"
+    }
+  },
+  "dashboard": {
+    "greeting": "Welcome,",
+    "ledeStudent": "This is your space. Add your languages and set up your account; lessons and the community will appear here as they are ready.",
+    "ledeCreator": "This is your space as a content creator. The editor and publishing tools arrive in the next stage, right here.",
+    "readyTitle": "Ready now",
+    "languages": {
+      "title": "My languages",
+      "body": "{count, plural, =0 {No pair added yet} one {# language pair} other {# language pairs}}"
+    },
+    "account": {
+      "title": "My account",
+      "body": "Profile, preferences, security and account type."
+    },
+    "admin": {
+      "title": "Administration",
+      "body": "Requests, reports, feedback, members and settings."
+    },
+    "soonTitle": "What will appear here",
+    "soonBody": "Sections follow the build roadmap; each one switches on at its stage.",
+    "sections": {
+      "learning": {
+        "title": "Learning",
+        "body": "Browse lessons, the lesson player and spaced review."
+      },
+      "myContent": {
+        "title": "My content",
+        "body": "Your published lessons, courses and cards, plus drafts."
+      },
+      "editor": {
+        "title": "Editor",
+        "body": "Write lessons in blocks, exercises, preview and versions."
+      },
+      "community": {
+        "title": "Community",
+        "body": "Creators, ratings and discovery."
+      },
+      "chats": {
+        "title": "Chats",
+        "body": "The founders chat, then rooms per language pair."
+      },
+      "notifications": {
+        "title": "Notifications",
+        "body": "Everything about your content, requests and reports."
+      }
+    }
+  },
+  "admin": {
+    "title": "Administration",
+    "lede": "Moderators and administrators only. Every action here is written to the audit log.",
+    "nav": {
+      "overview": "Overview",
+      "requests": "Requests",
+      "reports": "Reports",
+      "feedback": "Feedback",
+      "users": "Members",
+      "settings": "Settings"
+    },
+    "overview": {
+      "work": {
+        "title": "Work queues",
+        "openRequests": "New support requests",
+        "inReviewRequests": "Requests under review",
+        "newFeedback": "New feedback",
+        "contentReports": "Open content reports",
+        "conductReports": "Open conduct reports"
+      },
+      "members": {
+        "title": "Members",
+        "total": "Members in total",
+        "students": "Students",
+        "creators": "Content creators",
+        "founding": "Founding members",
+        "newLast7Days": "Joined in the last 7 days",
+        "byRank": "By administrative rank"
+      },
+      "content": {
+        "title": "Content",
+        "published": "Published",
+        "drafts": "Drafts",
+        "hidden": "Hidden or removed",
+        "hint": "Fills up with the editor in S2."
+      },
+      "system": {
+        "title": "System",
+        "settingsLink": "Settings ({count}) and feature switches"
+      }
+    },
+    "requests": {
+      "title": "Support requests",
+      "lede": "Grouped by kind, oldest first. Only an administrator executes a return to a student account.",
+      "emptyPending": "No pending requests.",
+      "kinds": {
+        "revert_to_student": "Return to a student account",
+        "other": "Other requests"
+      },
+      "statuses": {
+        "open": "New",
+        "in_review": "Under review",
+        "resolved": "Done",
+        "rejected": "Declined"
+      },
+      "decisions": {
+        "in_review": "Mark as under review",
+        "resolved": "Execute the request",
+        "rejected": "Decline"
+      },
+      "administratorOnly": "administrators",
+      "apply": "Apply",
+      "notePlaceholder": "Note sent to the member (optional)",
+      "closedTitle": "Closed requests",
+      "emptyClosed": "No closed requests yet."
+    },
+    "reports": {
+      "title": "Reports",
+      "lede": "Content and conduct reports, newest first.",
+      "contentTitle": "Open content reports",
+      "conductTitle": "Open conduct reports",
+      "emptyContent": "No content reports (they arrive with S2).",
+      "emptyConduct": "No conduct reports (they arrive with chats, S5).",
+      "types": {
+        "error": "Error",
+        "violation": "Violation",
+        "outdated_expression": "Outdated expression",
+        "copyright": "Copyright"
+      },
+      "statuses": {
+        "open": "Open",
+        "acknowledged": "Acknowledged",
+        "resolved": "Resolved",
+        "dismissed": "Dismissed",
+        "escalated": "Escalated"
+      },
+      "contexts": {
+        "chat": "Chat",
+        "profile": "Profile",
+        "other": "Other"
+      },
+      "apply": "Apply",
+      "notePlaceholder": "Resolution note (optional)"
+    },
+    "feedback": {
+      "title": "Platform feedback",
+      "lede": "“Your opinion on the platform”, grouped by category. Change the status to track what was acted on.",
+      "empty": "No feedback yet (the form arrives with S6).",
+      "categories": {
+        "bug": "Bugs",
+        "idea": "Ideas",
+        "learning": "Learning",
+        "content": "Content",
+        "community": "Community",
+        "general": "General"
+      },
+      "statuses": {
+        "new": "New",
+        "reviewed": "Reviewed",
+        "planned": "Planned",
+        "done": "Done",
+        "dismissed": "Dismissed"
+      },
+      "apply": "Update"
+    },
+    "users": {
+      "title": "Members",
+      "lede": "Find a member and change their role or rank according to your permissions.",
+      "searchPlaceholder": "Username or display name",
+      "search": "Search",
+      "empty": "No results.",
+      "ranks": {
+        "none": "No rank",
+        "moderator": "Moderator",
+        "administrator": "Administrator",
+        "super_administrator": "Super administrator",
+        "platform_owner": "Platform owner"
+      },
+      "founding": "Founding",
+      "visibility": {
+        "public": "Public profile",
+        "restricted": "Restricted profile"
+      },
+      "makeCreator": "Make content creator",
+      "makeStudent": "Return to student",
+      "applyRank": "Apply rank"
+    },
+    "settings": {
+      "title": "Settings",
+      "lede": "Changed here without a new release. Pick from the options; nothing to type.",
+      "readOnly": "Read only; editing is reserved for administrators.",
+      "settingsTitle": "Platform settings",
+      "flagsTitle": "Feature switches",
+      "save": "Save",
+      "emailPlaceholder": "support@example.com",
+      "fields": {
+        "moderation_escalation_open_reports": {
+          "label": "Open reports before escalation",
+          "description": "Open reports (error/violation/outdated) on one item before it moves to the moderation queue."
+        },
+        "lineage_derivation_notify_threshold": {
+          "label": "Derived versions before notifying the author",
+          "description": "Published versions derived from one lesson before its author is notified."
+        },
+        "quality_community_trusted_min_ratings": {
+          "label": "Minimum ratings for “Community trusted”",
+          "description": "Content does not carry the label before this number."
+        },
+        "quality_community_trusted_min_average": {
+          "label": "Minimum average for “Community trusted”",
+          "description": "Out of 5."
+        },
+        "founding_window_open": {
+          "label": "Founding members window",
+          "description": "Do new sign-ups receive the permanent “founding member” badge?",
+          "on": "Open",
+          "off": "Closed"
+        },
+        "support_email": {
+          "label": "Support address (optional)",
+          "description": "Requests arrive inside the platform; leave empty if you do not want an extra address."
+        }
+      },
+      "flags": {
+        "registration": {
+          "label": "Sign-ups",
+          "description": "Open or close account creation.",
+          "modes": {
+            "enabled": "Open",
+            "disabled": "Closed"
+          }
+        },
+        "publishing": {
+          "label": "Publishing",
+          "description": "Publishing new content to the community.",
+          "modes": {
+            "enabled": "Enabled",
+            "create_disabled": "Paused (published content stays)"
+          }
+        },
+        "community_chat": {
+          "label": "Community chat",
+          "description": "The chat rooms.",
+          "modes": {
+            "enabled": "Enabled",
+            "read_only": "Read only",
+            "disabled": "Disabled"
+          }
+        },
+        "product_feedback": {
+          "label": "“Your opinion” form",
+          "description": "Receiving platform feedback from members.",
+          "modes": {
+            "enabled": "Enabled",
+            "disabled": "Disabled"
+          }
+        },
+        "maintenance_mode": {
+          "label": "Maintenance mode",
+          "description": "When on, the platform is read-only for everyone with a maintenance notice.",
+          "modes": {
+            "disabled": "Off (normal operation)",
+            "enabled": "Maintenance on"
+          }
+        }
+      }
+    },
+    "errors": {
+      "staff_only": "Staff only.",
+      "administrator_required": "Administrator rank required.",
+      "super_administrator_required": "Super administrator rank required.",
+      "owner_only": "Platform owner only.",
+      "own_rank": "You cannot change your own rank.",
+      "invalid_input": "Invalid input.",
+      "already_closed": "Request already closed.",
+      "unexpected": "Something unexpected happened.",
+      "sign_in_required": "Sign in first."
+    },
+    "outcomes": {
+      "in_review": "Marked as under review.",
+      "resolved": "Request executed.",
+      "rejected": "Request declined.",
+      "role_set": "Role changed.",
+      "rank_set": "Rank changed.",
+      "setting_saved": "Setting saved.",
+      "flag_saved": "Switch saved.",
+      "feedback_triaged": "Status updated.",
+      "report_updated": "Report updated."
+    },
+    "ranks": {
+      "none": "No rank",
+      "moderator": "Moderator",
+      "administrator": "Administrator",
+      "super_administrator": "Super administrator",
+      "platform_owner": "Platform owner"
+    }
+  },
+  "profile": {
+    "founding": "Founding member",
+    "memberSince": "Member since {date}",
+    "moreSoon": "Lessons, contributions and ratings will appear on this page in the coming stages.",
+    "copyLink": "Copy link",
+    "copied": "Copied"
+  },
+  "viewAs": {
+    "label": "View the platform as",
+    "active": "You are viewing the platform with the permissions of: {rank}",
+    "options": {
+      "owner": "Platform owner (all permissions)",
+      "student": "Student",
+      "content_creator": "Content creator",
+      "moderator": "Moderator",
+      "administrator": "Administrator",
+      "super_administrator": "Super administrator"
+    },
+    "apply": "Apply",
+    "exit": "Back to my permissions",
+    "note": "Limits the interface and actions only; the database still knows you as the owner."
+  }
+}

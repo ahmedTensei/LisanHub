@@ -1,0 +1,27 @@
+<!doctype html>
+<html>
+  <body style="font-family: 'Segoe UI', Tahoma, sans-serif; line-height: 1.8; color: #13201d; max-width: 560px; margin: 0 auto; padding: 24px">
+    {{ if eq .Data.ui_locale "fr" }}
+    <div dir="ltr">
+      <h2 style="color: #16695a">Bienvenue sur LisanHub</h2>
+      <p>Confirmez votre adresse e-mail pour activer votre compte&nbsp;:</p>
+      <p><a href="{{ .SiteURL }}/{{ if .Data.ui_locale }}{{ .Data.ui_locale }}{{ else }}ar{{ end }}/auth/confirm?token_hash={{ .TokenHash }}&type=email" style="display: inline-block; background: #16695a; color: #fff; padding: 10px 20px; border-radius: 8px; text-decoration: none">Confirmer mon adresse</a></p>
+      <p style="color: #5e6d68; font-size: 14px">Si vous n'avez pas créé de compte, ignorez ce message.</p>
+    </div>
+    {{ else if eq .Data.ui_locale "en" }}
+    <div dir="ltr">
+      <h2 style="color: #16695a">Welcome to LisanHub</h2>
+      <p>Confirm your email address to activate your account:</p>
+      <p><a href="{{ .SiteURL }}/{{ if .Data.ui_locale }}{{ .Data.ui_locale }}{{ else }}ar{{ end }}/auth/confirm?token_hash={{ .TokenHash }}&type=email" style="display: inline-block; background: #16695a; color: #fff; padding: 10px 20px; border-radius: 8px; text-decoration: none">Confirm my email</a></p>
+      <p style="color: #5e6d68; font-size: 14px">If you did not create an account, ignore this message.</p>
+    </div>
+    {{ else }}
+    <div dir="rtl" style="text-align: right">
+      <h2 style="color: #16695a">مرحبًا بك في LisanHub</h2>
+      <p>أكّد بريدك الإلكتروني لتفعيل حسابك:</p>
+      <p><a href="{{ .SiteURL }}/{{ if .Data.ui_locale }}{{ .Data.ui_locale }}{{ else }}ar{{ end }}/auth/confirm?token_hash={{ .TokenHash }}&type=email" style="display: inline-block; background: #16695a; color: #fff; padding: 10px 20px; border-radius: 8px; text-decoration: none">تأكيد بريدي</a></p>
+      <p style="color: #5e6d68; font-size: 14px">إن لم تُنشئ حسابًا، تجاهل هذه الرسالة.</p>
+    </div>
+    {{ end }}
+  </body>
+</html>

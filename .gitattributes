@@ -1,0 +1,6 @@
+# Normalise line endings so Windows and CI agree.
+* text=auto eol=lf
+*.docx binary
+*.png binary
+*.ico binary
+*.cmd text eol=crlf

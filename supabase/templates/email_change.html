@@ -1,0 +1,24 @@
+<!doctype html>
+<html>
+  <body style="font-family: 'Segoe UI', Tahoma, sans-serif; line-height: 1.8; color: #13201d; max-width: 560px; margin: 0 auto; padding: 24px">
+    {{ if eq .Data.ui_locale "fr" }}
+    <div dir="ltr">
+      <h2 style="color: #16695a">Confirmer votre nouvelle adresse</h2>
+      <p>Confirmez le changement d'adresse e-mail de votre compte LisanHub vers {{ .NewEmail }}&nbsp;:</p>
+      <p><a href="{{ .SiteURL }}/{{ if .Data.ui_locale }}{{ .Data.ui_locale }}{{ else }}ar{{ end }}/auth/confirm?token_hash={{ .TokenHash }}&type=email_change" style="display: inline-block; background: #16695a; color: #fff; padding: 10px 20px; border-radius: 8px; text-decoration: none">Confirmer le changement</a></p>
+    </div>
+    {{ else if eq .Data.ui_locale "en" }}
+    <div dir="ltr">
+      <h2 style="color: #16695a">Confirm your new email address</h2>
+      <p>Confirm changing the email address of your LisanHub account to {{ .NewEmail }}:</p>
+      <p><a href="{{ .SiteURL }}/{{ if .Data.ui_locale }}{{ .Data.ui_locale }}{{ else }}ar{{ end }}/auth/confirm?token_hash={{ .TokenHash }}&type=email_change" style="display: inline-block; background: #16695a; color: #fff; padding: 10px 20px; border-radius: 8px; text-decoration: none">Confirm the change</a></p>
+    </div>
+    {{ else }}
+    <div dir="rtl" style="text-align: right">
+      <h2 style="color: #16695a">تأكيد بريدك الجديد</h2>
+      <p>أكّد تغيير بريد حسابك في LisanHub إلى {{ .NewEmail }}:</p>
+      <p><a href="{{ .SiteURL }}/{{ if .Data.ui_locale }}{{ .Data.ui_locale }}{{ else }}ar{{ end }}/auth/confirm?token_hash={{ .TokenHash }}&type=email_change" style="display: inline-block; background: #16695a; color: #fff; padding: 10px 20px; border-radius: 8px; text-decoration: none">تأكيد التغيير</a></p>
+    </div>
+    {{ end }}
+  </body>
+</html>
