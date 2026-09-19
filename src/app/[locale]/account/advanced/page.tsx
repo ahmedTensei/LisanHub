@@ -39,10 +39,16 @@ export default async function AdvancedPage({ params }: PageProps<"/[locale]/acco
             <Link href="/account/creator" className={`text-sm ${linkClass}`}>
               {t("advanced.becomeLink")}
             </Link>
+            <p className="text-sm text-ink-muted">{t("advanced.contributorIntro")}</p>
+            <Link href="/account/contributor" className={`text-sm ${linkClass}`}>
+              {t("advanced.becomeContributorLink")}
+            </Link>
           </>
         ) : (
           <>
-            <p className="text-sm text-ink-muted">{t("advanced.creatorBody")}</p>
+            <p className="text-sm text-ink-muted">
+              {profile.primaryRole === "contributor" ? t("advanced.contributorBody") : t("advanced.creatorBody")}
+            </p>
             {pendingRevert ? (
               <p className="text-sm font-semibold text-saffron">{t("support.pendingRevert")}</p>
             ) : (

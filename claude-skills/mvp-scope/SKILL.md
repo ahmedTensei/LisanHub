@@ -7,12 +7,14 @@ description: Guards the first-release scope and prevents deferred roadmap featur
 
 The specification defines a deliberately small first release whose purpose is to test the core idea with real users — not to build the full platform at once. Before implementing anything, check which side of this line the request falls on.
 
+The long-term direction is a creator building a Duolingo-class course from plugins and packages (decision R12); the first release only lays the ground for it (plugins, packages, courses, then the learner experience in S3). The professional administration Ahmed described on 2026-09-18 (decision R17) is split: oversight pages and content moderation with a reason are in place now; the case system (assignment, handover, help, replacement, warnings) is **S4** and must not be started earlier.
+
 ## Included in the first release
 
-**Roles** — Guest, Student, Content Creator only. Verified Member is not activated yet.
+**Roles** — Guest, Student, Content Creator and **Contributor** (decision R10: Contributors build plugins and templates in the standalone `/studio`, from S2). Verified Member is not activated yet, so a Contributor's plugin needs moderation review before it reaches the public catalogue.
 
 **Content**
-- **Every kind of learning is a plugin, from the first release (decision R7).** The plugin is built first, then the content and the curriculum for it. Content is a portable package file, rendered in the sandboxed player, never platform-specific rows. In phase A plugins are declarative and only the platform owner publishes them; the community builds packages on top. See `plugin-architecture`.
+- **Every kind of learning is a plugin, from the first release (decision R7).** The plugin is built first, then the content and the curriculum for it. Content is a portable package file, rendered in the sandboxed player, never platform-specific rows. In phase A plugins are declarative (no code); Contributors author them in `/studio` and publish after review (R10), and Content Creators build packages on top. See `plugin-architecture`.
 - Entirely free content: lessons, simple text exercises, vocabulary cards — all delivered as packages of the core plugins.
 - No cap on language pairs from day one. A user may pick any pair even when no content exists for it yet, becoming the first to build that community. Keep the structure fully flexible for this.
 - Copy-and-derive for free content active from the start — it is the primary mechanism for growing content without a large central team.
@@ -44,7 +46,7 @@ The specification defines a deliberately small first release whose purpose is to
 - The creator marketplace, course sales, and commissions.
 - Verified Member status and KYC requirements.
 - The Teacher rank with its formal requirements, and verified educational institutions.
-- **Community-authored plugins and any executable code inside a plugin** — kept **completely disabled** until verification and the strict security review policies are mature. The plugin *architecture* itself is in the MVP (R7); what is deferred is third-party authorship and code.
+- **Any executable code inside a plugin** — kept **completely disabled** until verification and the strict security review policies are mature. The plugin *architecture* is in the MVP (R7), and **declarative plugins authored by Contributors are in the MVP too** (R10, with review); what stays deferred is code inside plugins and unreviewed third-party publishing.
 - Multiple group chats per language pair, and advanced study groups.
 - Multiple storage plans and advanced creator analytics.
 - Advanced platform administration (custom communication messages, scheduling, precise targeting, full emergency mode).

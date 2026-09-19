@@ -32,11 +32,14 @@ Create provider interfaces when an external dependency is intended to be replace
 
 Do not create abstractions for every trivial library; abstraction should correspond to a meaningful replacement boundary.
 
-## File storage (ADR 0005)
+## File storage (ADR 0005, ADR 0008 — decision R13)
 
-- Feature code talks to `StorageProvider` (`src/modules/storage`) only; the provider is chosen by `STORAGE_PROVIDER`. Never import a vendor storage SDK from a feature.
-- The database and content bodies store a relative object key (`area/<owner_id>/<uuid>.<ext>`, column `*_key` or a `{ store, key }` ref), never a URL. URLs are derived at read time. A database test rejects any `url`/`*_url` column.
-- Two logical stores: `public` (stable URLs) and `private` (signed URLs only).
+- **Supabase holds accounts and metadata; Cloudflare R2 holds every file** (packages, package assets, profile pictures, plugin definitions — drafts, versions and the core plugins — and future plugin bundles). No table holds a plugin document or learning content: rows name files by key and pin them by sha256. Supabase Storage is retired: no bucket, no storage policy, and `npm run db:verify` checks the old buckets are gone or inert. Never write a file to Supabase again.
+- Feature code talks to `StorageProvider` (`src/modules/storage`) only; the provider is chosen by `STORAGE_PROVIDER` (`r2` in every real environment, `memory` for tests and sessions without an account). The R2 provider (`src/server/storage/r2-provider.ts`, aws4fetch SigV4, signed payload hash, conditional writes) is the only place that knows the vendor. Never import a vendor storage SDK from a feature.
+- The database stores a relative object key (`area/<owner_id>/<uuid>.<ext>`, column `*_key`), never a URL or a bucket name. URLs are derived at read time. A database test rejects any `url`/`bucket` column.
+- Two logical stores: `public` (served at `/api/media/<key>` or from the bucket's own domain when `R2_PUBLIC_BASE_URL` is set) and `private` (bytes handed out by a route that checked the actor; never a public URL).
+- **The server is the gatekeeper.** R2 knows nothing about members, so ownership is decided before every read and write in the application layer (`src/server/packages/access.ts`, the account actions), on top of row level security on the metadata rows. Any new file feature adds its access check there and a test for it.
+- `npm run storage:verify` creates the buckets when missing and round-trips a probe object; `.env.example` documents the variables. Never print or commit a key.
 
 ## API design
 

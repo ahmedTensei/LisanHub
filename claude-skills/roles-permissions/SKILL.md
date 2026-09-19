@@ -5,6 +5,8 @@ description: Authoritative reference for the platform role model - Guest, Studen
 
 # Roles and Permissions
 
+**Decision R10 — the Contributor role is active from phase A (S2).** A Contributor builds **plugins and templates** in the Plugin Studio, a standalone page at `/studio` — not part of `/admin`. Every Contributor authors and previews their own plugins; publishing to the public catalogue needs moderation review in phase A and becomes direct for a verified contributor later; disabling or hiding a plugin stays with moderation and the platform owner. A member is either a Content Creator or a Contributor, never both, and the switch is an explicit, server-verified step with a support-only way back. Capabilities: `plugins.author`, `plugins.publish`, `plugins.review`, `plugins.disable` — never role-name checks in components.
+
 The system keeps six concepts permanently independent. Never collapse them into one another:
 
 | Concept | Meaning |
@@ -71,6 +73,13 @@ Exactly four ranks may edit content they do not own:
 4. **Platform Owner** — granted to no one else. Platform ownership transfer, licensing, core settings, platform-wide feature toggles.
 
 Every other role — Student, Content Creator, Contributor, Teacher, even Verified Member — is limited to its own content.
+
+### What each rank sees in `/admin` (decision R17, Ahmed 2026-09-18)
+
+- **Platform Owner and Super Administrator act as principal and deputy**: they hold `admin.oversee_all` and can search and open **any** member, content item or plugin, with its preview, from the administration area (`/admin/content`, `/admin/users/<username>`, `/admin/plugins/<id>`).
+- **Administrators and Moderators never browse everything.** They see the queues (support requests, reports, feedback, publish requests) and, from S4 on, the **cases assigned to them by the two top ranks or accepted by them**; opening a member or an item is done from such a case, not from a global list.
+- Ranks below the top two **do not interfere in each other's cases** unless a case is transferred to them, a colleague asks for help on it, the assignee did not respond and the case was reassigned, or the member asked for another moderator. All of these are explicit, audited transitions of the S4 case system (see `trust-moderation`).
+- Content actions available to a rank are logical and complete for its job: hide with a written reason / restore (moderator and above, `moderate_content_item()`), warning to the owner (S4), derivation chain and versions visible on the item page.
 
 ## Role progression
 

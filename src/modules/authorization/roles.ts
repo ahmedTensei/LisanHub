@@ -32,6 +32,7 @@ export function adminLevel(rank: AdminRank | null): number {
 export const VIEW_AS_OPTIONS = [
   "student",
   "content_creator",
+  "contributor",
   "moderator",
   "administrator",
   "super_administrator",
@@ -48,13 +49,18 @@ export function isViewAs(value: unknown): value is ViewAs {
  */
 export function emulate(actor: Actor, viewAs: ViewAs | null): Actor {
   if (!viewAs || actor.kind !== "user" || actor.adminRank !== "platform_owner") return actor;
-  if (viewAs === "student" || viewAs === "content_creator") return { ...actor, primaryRole: viewAs, adminRank: null };
+  if (viewAs === "student" || viewAs === "content_creator" || viewAs === "contributor") {
+    return { ...actor, primaryRole: viewAs, adminRank: null };
+  }
   return { ...actor, adminRank: viewAs };
 }
 
-/** Roles a user may switch to in the current stage. Contributor is deferred with executable content. */
+/**
+ * Roles a member may choose for themselves: a Student becomes a Content Creator
+ * or a Contributor (decision R10), never both, and never back without support.
+ */
 export function allowedRoleTransitions(from: PrimaryRole): PrimaryRole[] {
-  return from === "student" ? ["content_creator"] : [];
+  return from === "student" ? ["content_creator", "contributor"] : [];
 }
 
 /** What the persistence layer knows about a signed-in user (profiles + admin_ranks). */

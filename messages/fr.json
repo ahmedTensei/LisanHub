@@ -16,7 +16,9 @@
     "accountMenu": "Menu du compte",
     "soon": "Bientôt",
     "admin": "Administration",
-    "publicProfile": "Ma page publique"
+    "publicProfile": "Ma page publique",
+    "myContent": "Mon contenu",
+    "studio": "Studio"
   },
   "home": {
     "eyebrow": "Phase A — plateforme gratuite",
@@ -72,7 +74,27 @@
       "bio_too_long": "La présentation est trop longue (500 caractères maximum).",
       "location_too_long": "Le lieu est trop long (80 caractères maximum).",
       "avatar_type_invalid": "Choisissez une image JPEG, PNG ou WebP.",
-      "avatar_too_large": "L'image dépasse la taille autorisée."
+      "avatar_too_large": "L'image dépasse la taille autorisée.",
+      "invalid": "Valeur non valide.",
+      "too_short": "Trop court.",
+      "too_long": "Trop long.",
+      "too_few": "Moins d’entrées que le minimum.",
+      "too_many": "Plus d’entrées que le maximum.",
+      "slug_invalid": "Identifiant : lettres latines minuscules, chiffres et tirets seulement, commençant par une lettre (3 caractères au moins).",
+      "slug_taken": "Cet identifiant est déjà utilisé. Choisissez-en un autre.",
+      "version_invalid": "Version de la forme x.y.z, par exemple 1.0.0.",
+      "json_invalid": "Ce n’est pas du JSON valide.",
+      "schema_invalid": "Ce n’est pas un JSON Schema valide (version 2020-12).",
+      "correct_missing": "Marquez la bonne réponse parmi les options.",
+      "duplicate_option": "Deux options portent le même identifiant.",
+      "blank_count": "Le nombre de trous '{{n}}' dans le texte ne correspond pas au nombre de réponses.",
+      "asset_required": "Choisissez une image.",
+      "title_too_long": "Le titre est trop long (200 caractères au plus).",
+      "summary_too_long": "Le résumé est trop long (2000 caractères au plus).",
+      "tag_invalid": "Étiquettes : lettres, chiffres et tirets, 40 caractères au plus par étiquette.",
+      "cefr_invalid": "Choisissez un niveau dans la liste.",
+      "skill_invalid": "Choisissez une compétence dans la liste.",
+      "title_latin_required": "Écrivez le titre en anglais (lettres latines, chiffres et ponctuation courante). La traduction vers d’autres langues est facultative, dans les métadonnées."
     },
     "showPassword": "Afficher le mot de passe",
     "hidePassword": "Masquer le mot de passe",
@@ -208,7 +230,9 @@
       "unexpected": "Une erreur inattendue s'est produite. Réessayez.",
       "acknowledge_required": "Confirmez d'abord avoir lu les engagements.",
       "request_pending": "Vous avez déjà une demande de ce type en cours d'examen.",
-      "upload_failed": "L'envoi de l'image a échoué. Réessayez."
+      "upload_failed": "L'envoi de l'image a échoué. Réessayez.",
+      "already_contributor": "Votre compte est déjà un compte de contributeur.",
+      "contributor_role_required": "Cette page est réservée aux contributeurs."
     },
     "advanced": {
       "title": "Paramètres avancés",
@@ -220,7 +244,10 @@
       "soon": {
         "export": "Exporter vos données personnelles (toujours gratuit)",
         "delete": "Supprimer définitivement le compte"
-      }
+      },
+      "contributorIntro": "Ou, si vous préférez construire de nouveaux types d’activités (extensions) plutôt que rédiger du contenu :",
+      "becomeContributorLink": "Je veux devenir contributeur (construire des extensions dans le studio)",
+      "contributorBody": "Votre compte est un compte de contributeur : vous construisez des extensions et leurs modèles dans le studio. Pour revenir à un compte Élève, envoyez une demande au support."
     },
     "creator": {
       "title": "Devenir créateur de contenu",
@@ -308,6 +335,25 @@
       "confirmRemove": "Retirer votre photo ?",
       "saved": "Photo enregistrée.",
       "removed": "Photo retirée."
+    },
+    "contributor": {
+      "title": "Devenir contributeur",
+      "lede": "Un contributeur construit des types d’activités (extensions) et leurs modèles dans le studio ; il ne rédige pas de contenu. Une seule étape change la nature de votre compte ; lisez les engagements, puis confirmez.",
+      "commitments": {
+        "build": "Vous construisez les extensions depuis la plateforme, dans le studio, sans code : structure de l’élément, champs, modèles et traductions en arabe, français et anglais.",
+        "review": "La publication de votre extension au catalogue public passe par une revue de la modération à ce stade ; elle peut être refusée pour un motif indiqué, et vous pouvez la corriger et redemander.",
+        "sandbox": "Chaque extension s’exécute dans un bac à sable qui n’atteint aucune donnée d’utilisateur et ne porte aucun code exécutable à ce stade.",
+        "attribution": "Votre nom reste attaché à chaque extension que vous publiez et s’affiche pour les créateurs qui s’en servent.",
+        "onePath": "Un compte n’est jamais à la fois créateur de contenu et contributeur. Pour rédiger du contenu plus tard, le changement passe par le support.",
+        "noReturn": "Vous ne pouvez pas revenir à un compte Élève par vous-même ; le support le fait après examen de votre cas."
+      },
+      "acknowledge": "J’ai lu les engagements et je comprends que ce changement ne s’annule que via le support.",
+      "confirm": "Confirmer le passage à contributeur",
+      "confirming": "Changement en cours…",
+      "alreadyContributor": "Votre compte est déjà un compte de contributeur.",
+      "onePathOnly": "Votre compte est un compte de créateur de contenu, et un compte ne cumule jamais les deux parcours. Pour devenir contributeur, envoyez une demande au support.",
+      "openStudio": "Ouvrir le studio",
+      "backToAdvanced": "Retour au type de compte et support"
     }
   },
   "languages": {
@@ -345,7 +391,7 @@
   "dashboard": {
     "greeting": "Bonjour,",
     "ledeStudent": "Voici votre espace. Ajoutez vos langues, réglez votre compte ; les leçons et la communauté apparaîtront ici dès qu'elles seront prêtes.",
-    "ledeCreator": "Voici votre espace de créateur de contenu. L'éditeur et les outils de publication arrivent à l'étape suivante, ici même.",
+    "ledeCreator": "Votre espace de créateur de contenu : construisez et publiez vos paquets depuis « Mon contenu ».",
     "readyTitle": "Disponible maintenant",
     "languages": {
       "title": "Mes langues",
@@ -386,6 +432,15 @@
         "title": "Notifications",
         "body": "Tout ce qui concerne votre contenu, vos demandes et vos signalements."
       }
+    },
+    "ledeContributor": "Votre espace de contributeur : construisez des types d’activités et leurs modèles dans le studio.",
+    "myContent": {
+      "title": "Mon contenu",
+      "body": "Vos paquets et vos cours : créer, prévisualiser, publier, revenir en arrière au besoin."
+    },
+    "studio": {
+      "title": "Studio",
+      "body": "Construisez une nouvelle extension (un type d’activité) et ses modèles, sans écrire de code."
     }
   },
   "admin": {
@@ -397,7 +452,9 @@
       "reports": "Signalements",
       "feedback": "Retours",
       "users": "Membres",
-      "settings": "Réglages"
+      "settings": "Réglages",
+      "plugins": "Extensions",
+      "content": "Contenu"
     },
     "overview": {
       "work": {
@@ -406,7 +463,8 @@
         "inReviewRequests": "Demandes en examen",
         "newFeedback": "Nouveaux retours",
         "contentReports": "Signalements de contenu ouverts",
-        "conductReports": "Signalements de comportement ouverts"
+        "conductReports": "Signalements de comportement ouverts",
+        "pluginRequests": "Demandes de publication d’extensions"
       },
       "members": {
         "title": "Membres",
@@ -415,7 +473,8 @@
         "creators": "Créateurs de contenu",
         "founding": "Membres fondateurs",
         "newLast7Days": "Inscrits depuis 7 jours",
-        "byRank": "Par rang administratif"
+        "byRank": "Par rang administratif",
+        "contributors": "Contributeurs"
       },
       "content": {
         "title": "Contenu",
@@ -427,6 +486,12 @@
       "system": {
         "title": "Système",
         "settingsLink": "Réglages ({count}) et interrupteurs de fonctionnalités"
+      },
+      "plugins": {
+        "title": "Extensions",
+        "published": "Publiées",
+        "pending": "En attente de revue",
+        "disabled": "Arrêtées"
       }
     },
     "requests": {
@@ -559,6 +624,30 @@
         "support_email": {
           "label": "Adresse du support (facultatif)",
           "description": "Les demandes arrivent dans la plateforme ; laissez vide si vous ne voulez pas d'adresse supplémentaire."
+        },
+        "packages_max_bytes": {
+          "label": "Taille maximale d’un paquet de contenu",
+          "description": "Le fichier .lisanpkg complet avec ses images. Un paquet plus lourd est refusé à la publication."
+        },
+        "packages_max_items": {
+          "label": "Nombre maximal d’éléments par paquet",
+          "description": "Éléments (exercices, cartes…) dans un même paquet."
+        },
+        "packages_max_assets": {
+          "label": "Nombre maximal d’images par paquet",
+          "description": "Ressources contenues dans un même paquet."
+        },
+        "packages_max_asset_bytes": {
+          "label": "Taille maximale d’une image",
+          "description": "Taille de chaque ressource du paquet."
+        },
+        "plugins_max_templates": {
+          "label": "Nombre maximal de modèles par extension",
+          "description": "Modèles portés par la définition d’une extension dans le studio."
+        },
+        "plugins_max_definition_bytes": {
+          "label": "Taille maximale d’une définition d’extension",
+          "description": "Taille du fichier de définition du plugin (JSON) à la publication."
         }
       },
       "flags": {
@@ -614,7 +703,10 @@
       "invalid_input": "Entrée invalide.",
       "already_closed": "Demande déjà fermée.",
       "unexpected": "Une erreur inattendue s'est produite.",
-      "sign_in_required": "Connectez-vous d'abord."
+      "sign_in_required": "Connectez-vous d'abord.",
+      "reason_required": "Indiquez la raison du masquage ; l’auteur la lira.",
+      "moderation_only": "Cette action est réservée à la modération.",
+      "contributor_role_required": "Cette page est réservée aux contributeurs."
     },
     "outcomes": {
       "in_review": "Mise en examen.",
@@ -625,7 +717,15 @@
       "setting_saved": "Réglage enregistré.",
       "flag_saved": "Interrupteur enregistré.",
       "feedback_triaged": "État mis à jour.",
-      "report_updated": "Signalement mis à jour."
+      "report_updated": "Signalement mis à jour.",
+      "plugin_approved": "Demande acceptée et version publiée.",
+      "plugin_rejected": "Demande refusée ; l’auteur voit le motif.",
+      "plugin_disabled": "Extension arrêtée immédiatement ; les paquets existants sont intacts.",
+      "plugin_enabled": "Extension réactivée.",
+      "plugin_hidden": "Extension masquée du catalogue.",
+      "plugin_shown": "Extension de retour au catalogue.",
+      "content_hidden": "Contenu masqué à la communauté ; le fichier est intact.",
+      "content_restored": "Contenu remis à la communauté."
     },
     "ranks": {
       "none": "Sans rang",
@@ -633,6 +733,130 @@
       "administrator": "Administrateur",
       "super_administrator": "Administrateur général",
       "platform_owner": "Propriétaire de la plateforme"
+    },
+    "plugins": {
+      "queueTitle": "Demandes de publication",
+      "queueLede": "Extensions construites par des contributeurs qui demandent leur publication au catalogue public. Accepter publie la version aussitôt ; refuser exige un motif, traduit pour l’auteur.",
+      "queueEmpty": "Aucune demande de publication en attente.",
+      "by": "par",
+      "summary": "{activities, plural, one {# activité} other {# activités}} · {templates, plural, =0 {aucun modèle} one {# modèle} other {# modèles}}",
+      "approve": "Accepter et publier",
+      "reject": "Refuser",
+      "reason": "Motif du refus",
+      "note": "Note",
+      "notePlaceholder": "Note pour l’auteur (facultatif)",
+      "reasons": {
+        "contract": "Ne respecte pas le contrat d’extension",
+        "quality": "Qualité insuffisante (libellés, traductions, structure)",
+        "duplicate": "Doublon d’une extension existante",
+        "policy": "Contraire aux règles de la communauté",
+        "other": "Autre motif (voir la note)"
+      },
+      "catalogueTitle": "Catalogue et interrupteurs d’arrêt",
+      "catalogueLede": "L’arrêt bloque aussitôt la création et la lecture avec un message traduit, sans toucher aux paquets. Le masquage retire l’extension du catalogue tandis que ses paquets continuent de fonctionner.",
+      "catalogueEmpty": "Aucune extension publiée pour l’instant.",
+      "platformOwned": "extension de la plateforme",
+      "enable": "Réactiver",
+      "disable": "Arrêter l’extension",
+      "disableNote": "Motif affiché aux apprenants (facultatif)",
+      "hide": "Masquer du catalogue",
+      "show": "Remettre au catalogue",
+      "current": "actuelle",
+      "enableVersion": "Réactiver la version",
+      "disableVersion": "Arrêter la version",
+      "decidedTitle": "Décisions passées",
+      "decisions": {
+        "approved": "acceptée",
+        "rejected": "refusée"
+      },
+      "openDetail": "Détails et aperçu"
+    },
+    "content": {
+      "title": "Contenu",
+      "lede": "Cherchez un paquet ou un cours précis ; la liste complète n’est jamais affichée. Ouvrez un élément pour voir ses données, sa chaîne de dérivation, ses versions et son aperçu dans le lecteur isolé.",
+      "searchPlaceholder": "Rechercher par titre ou résumé",
+      "status": "Statut",
+      "anyStatus": "Tous les statuts",
+      "kind": "Type",
+      "anyKind": "Paquets et cours",
+      "kinds": {
+        "package": "Paquet",
+        "course": "Cours"
+      },
+      "search": "Rechercher",
+      "results": "{count, plural, =0 {Aucun résultat} one {# résultat} other {# résultats}}",
+      "recent": "Derniers changements",
+      "noResults": "Rien ne correspond à votre recherche.",
+      "empty": "Aucun contenu sur la plateforme pour l’instant.",
+      "items": "{count, plural, =0 {aucun élément} one {# élément} other {# éléments}}",
+      "hiddenBecause": "Masqué : {reason}",
+      "owner": "Auteur",
+      "pair": "Paire de langues",
+      "level": "Niveau",
+      "skills": "Compétences",
+      "tags": "Étiquettes",
+      "dates": "Dates",
+      "createdOn": "créé le {date}",
+      "publishedOn": "publié le {date}",
+      "moderationTitle": "Modération",
+      "moderationLede": "Masquer un contenu publié le retire immédiatement de la communauté avec une raison écrite que l’auteur lit ; le fichier et ses versions restent intacts et il peut être remis à tout moment. Chaque étape est journalisée.",
+      "moderatedBy": "par @{username} le {date}",
+      "warningLater": "L’envoi d’un avertissement à l’auteur et l’attribution des cas à un modérateur arrivent avec le système de cas en S4.",
+      "moderate": {
+        "reason": "Raison du masquage",
+        "reasonHint": "L’auteur la lit dans son éditeur. Soyez précis : quelle règle, et que faire pour la remise en ligne.",
+        "hide": "Masquer à la communauté",
+        "hideQuestion": "Confirmer le masquage ? Les membres ne verront plus ce contenu immédiatement.",
+        "restore": "Remettre à la communauté",
+        "restoreQuestion": "Confirmer la remise en ligne ? Le contenu redeviendra visible.",
+        "notApplicable": "Le masquage ne concerne que le contenu publié ; brouillons et archives ne sont déjà pas visibles."
+      },
+      "lineageTitle": "Chaîne de dérivation",
+      "lessonsTitle": "{count, plural, =0 {Paquets du cours} one {# paquet dans le cours} other {# paquets dans le cours}}",
+      "noLessons": "Aucun paquet dans ce cours pour l’instant.",
+      "inCoursesTitle": "Dans les cours",
+      "versionsTitle": "{count, plural, =0 {Versions} one {# version} other {# versions}}",
+      "noVersions": "Aucune version publiée pour l’instant.",
+      "versionN": "Version {n}",
+      "current": "actuelle",
+      "previewTitle": "Aperçu de la version publiée",
+      "previewDraftTitle": "Aperçu du brouillon",
+      "previewLede": "Ce que voit l’apprenant, dans le même lecteur isolé ; rien n’est enregistré d’ici.",
+      "pluginMissing": "Le plugin sur lequel ce paquet est construit n’est pas disponible.",
+      "pluginPaused": "Le plugin est suspendu par la modération ; le paquet ne peut pas s’exécuter tant que la suspension dure.",
+      "unreadable": "Le fichier du paquet n’a pas pu être lu."
+    },
+    "pluginDetail": {
+      "communityPlugin": "Plugin de la communauté",
+      "platformPlugin": "Plugin de base de la plateforme",
+      "backToModeration": "Retour à la modération des plugins",
+      "activitiesTitle": "{count, plural, =0 {Activités} one {# activité} other {# activités}}",
+      "showingDraft": "Affiché : le brouillon dont la publication est demandée.",
+      "showingPublished": "Affiché : la version publiée actuelle.",
+      "scoring": "Évaluation",
+      "graded": "champ noté",
+      "templatesCount": "{count, plural, =0 {aucun modèle} one {# modèle} other {# modèles}}",
+      "assetsAllowed": "Ressources autorisées : {kinds}",
+      "draftInvalid": "Le brouillon de ce plugin ne passe pas encore le contrat ; pas d’aperçu.",
+      "versionsTitle": "{count, plural, =0 {Versions} one {# version} other {# versions}}",
+      "noVersions": "Aucune version publiée pour l’instant.",
+      "current": "actuelle",
+      "requestLine": "Demande de publication {version} — {status} — {date}",
+      "previewTitle": "Essayer le plugin",
+      "previewLede": "Remplissez un élément temporaire et exécutez-le dans le lecteur isolé comme l’apprenant le verra ; rien n’est écrit dans aucune table."
+    },
+    "member": {
+      "visibility": "Visibilité",
+      "memberSince": "Membre depuis",
+      "uiLocale": "Langue de l’interface",
+      "location": "Lieu",
+      "publicPage": "Page publique",
+      "contentTitle": "{count, plural, =0 {Contenu} one {# élément de contenu} other {# éléments de contenu}}",
+      "noContent": "Ce membre n’a créé aucun contenu.",
+      "pluginsTitle": "{count, plural, =0 {Plugins} one {# plugin} other {# plugins}}",
+      "noPlugins": "Aucun plugin pour ce membre.",
+      "supportTitle": "{count, plural, =0 {Demandes d’assistance} one {# demande d’assistance} other {# demandes d’assistance}}",
+      "noSupport": "Aucune demande d’assistance."
     }
   },
   "profile": {
@@ -651,10 +875,602 @@
       "content_creator": "Créateur de contenu",
       "moderator": "Modérateur",
       "administrator": "Administrateur",
-      "super_administrator": "Administrateur général"
+      "super_administrator": "Administrateur général",
+      "contributor": "Contributeur"
     },
     "apply": "Appliquer",
     "exit": "Revenir à mes permissions",
     "note": "Limite l'interface et les actions seulement ; la base de données vous reconnaît toujours comme propriétaire."
+  },
+  "player": {
+    "frameTitle": "Lecteur d’activité",
+    "frameError": "Impossible d’afficher cette activité. Rechargez la page ou signalez le problème.",
+    "disabledTitle": "Cette activité est suspendue",
+    "disabledBody": "La modération a suspendu cette extension ou cette version. Le contenu est intact et reviendra dès la levée de la suspension.",
+    "check": "Vérifier",
+    "reset": "Recommencer",
+    "reveal": "Voir la réponse",
+    "correct": "Correct",
+    "incorrect": "Incorrect",
+    "expected": "Réponse attendue :",
+    "again": "À revoir",
+    "hard": "Difficile",
+    "good": "Su",
+    "easy": "Facile",
+    "chooseOne": "Choisissez la réponse",
+    "orderHint": "Touchez les mots dans le bon ordre ; touchez un mot de la réponse pour le retirer.",
+    "matchHint": "Associez chaque élément à ce qui lui correspond.",
+    "blankHint": "Complétez les blancs.",
+    "empty": "Rien à afficher."
+  },
+  "editor": {
+    "item": {
+      "optional": "facultatif",
+      "add": "Ajouter",
+      "remove": "Supprimer",
+      "moveUp": "Monter",
+      "moveDown": "Descendre",
+      "entry": "Entrée {n}",
+      "option": "Option {n}",
+      "correct": "Bonne réponse",
+      "markCorrectOne": "Marquez la bonne option.",
+      "markCorrectMany": "Marquez toutes les bonnes options.",
+      "left": "Premier côté {n}",
+      "right": "Côté correspondant {n}",
+      "token": "Mot {n}",
+      "orderingHint": "Écrivez les mots dans le bon ordre ; le lecteur les mélange pour l’apprenant.",
+      "blankHint": "Écrivez le texte avec '{{0}}', '{{1}}'… à la place des trous, puis les réponses acceptées pour chaque trou, séparées par |.",
+      "blank": "Trou '{{'{n}'}}'",
+      "blankAccepted": "Réponses acceptées, séparées par |",
+      "noImage": "— sans image —",
+      "altText": "Texte alternatif décrivant l’image (obligatoire)",
+      "edit": "Modifier",
+      "preview": "Aperçu apprenant",
+      "history": "Historique",
+      "underModeration": "Cet élément est sous modération et ne peut pas être modifié pour l’instant.",
+      "pluginPaused": "L’extension sur laquelle ce paquet est bâti a été suspendue par la modération ; il ne peut pas être lu tant que la suspension dure, et le fichier lui-même est intact.",
+      "created": "Brouillon créé. Remplissez les éléments, puis publiez.",
+      "metadataTitle": "Métadonnées",
+      "itemsTitle": "Éléments",
+      "itemsLede": "Chaque élément est une activité de l’extension. L’ordre est celui de l’apprenant ; les identifiants ne changent jamais, quoi que vous modifiiez.",
+      "itemsEmpty": "Aucun élément pour l’instant. Ajoutez le premier.",
+      "untitledItem": "(élément encore sans texte)",
+      "draftUnreadable": "Le brouillon du paquet n’a pas pu être lu.",
+      "addItem": "Ajouter un élément",
+      "chooseActivity": "Type d’activité",
+      "removeItem": "Supprimer",
+      "publishTitle": "Publication",
+      "publishLedeFirst": "Le paquet est vérifié en entier (limites, ressources, schéma), puis publié comme première version immuable.",
+      "publishLedeAgain": "Publier à nouveau crée une nouvelle version à partir du brouillon actuel ; les versions précédentes restent dans l’historique.",
+      "unpublishedChanges": "Le brouillon contient des modifications non publiées.",
+      "openHistory": "Historique",
+      "lessonsTitle": "Paquets du cours",
+      "lessonsLede": "Dans l’ordre de l’apprenant. Retirer un paquet du cours ne supprime pas le paquet.",
+      "lessonsEmpty": "Aucun paquet dans le cours pour l’instant.",
+      "addToCourse": "Ajouter au cours",
+      "choosePackage": "Paquet",
+      "noCandidates": "Aucun autre paquet à vous sur cette paire de langues.",
+      "removeFromCourse": "Retirer du cours",
+      "statusTitle": "Statut",
+      "courseStatusLede": "Publiez le cours pour le montrer à la communauté ; archivez-le quand vous ne l’offrez plus.",
+      "hiddenByModeration": "La modération a masqué ce contenu à la communauté. Raison : {reason}",
+      "createdCourse": "Cours créé. Ajoutez vos paquets, ordonnez-les, puis publiez."
+    },
+    "title": "Mon contenu",
+    "lede": "Vos paquets et vos cours. Un paquet est un fichier autonome bâti sur une extension du catalogue ; un cours ordonne vos paquets.",
+    "nav": {
+      "mine": "Tout mon contenu",
+      "newPackage": "Nouveau paquet",
+      "newCourse": "Nouveau cours"
+    },
+    "statuses": {
+      "draft": "Brouillon",
+      "published": "Publié",
+      "archived": "Archivé",
+      "hidden": "Masqué",
+      "removed": "Supprimé"
+    },
+    "list": {
+      "title": "Tout mon contenu",
+      "filterStatus": "Statut",
+      "filterKind": "Type",
+      "filterPlugin": "Extension",
+      "filterPair": "Paire de langues",
+      "all": "Tout",
+      "apply": "Filtrer",
+      "kinds": {
+        "package": "Paquet",
+        "course": "Cours"
+      },
+      "items": "{count, plural, =0 {aucun élément} one {# élément} other {# éléments}}",
+      "empty": "Aucun contenu pour l’instant. Créez votre premier paquet sur l’une des extensions disponibles, puis publiez-le à la communauté.",
+      "emptyFiltered": "Rien ne correspond à ce filtre.",
+      "createFirst": "Créer votre premier paquet",
+      "notices": {
+        "created": "Créé. Ajoutez son contenu, puis publiez quand il est complet."
+      }
+    },
+    "create": {
+      "title": "Titre",
+      "lede": "Choisissez l’extension (type d’activité), la paire de langues pour laquelle vous rédigez, un modèle de départ et un titre. Le paquet commence comme brouillon aux champs vides.",
+      "plugin": "Extension",
+      "pair": "Paire de langues",
+      "pairHint": "Parmi vos paires de langues dans « Mes langues ».",
+      "template": "Modèle de départ",
+      "templateHint": "Un squelette d’éléments vides avec indications ; il ne contient aucune phrase toute faite.",
+      "noTemplate": "— sans modèle : un élément vide —",
+      "create": "Créer le brouillon",
+      "creating": "Création…",
+      "noPlugins": "Aucune extension n’est disponible dans le catalogue pour l’instant.",
+      "noPairs": "Ajoutez d’abord une paire de langues dans « Mes langues ».",
+      "addPair": "Ajouter une paire de langues",
+      "titleHint": "En anglais. Une traduction facultative du titre s’ajoute ensuite dans les métadonnées."
+    },
+    "course": {
+      "newTitle": "Nouveau cours",
+      "lede": "Un cours ordonne vos paquets en un parcours pour une paire de langues. Il peut mêler des paquets d’extensions différentes et ne contient que vos propres paquets.",
+      "pair": "Paire de langues",
+      "title": "Titre",
+      "summary": "Résumé",
+      "optional": "facultatif",
+      "create": "Créer le cours",
+      "creating": "Création…",
+      "noPairs": "Ajoutez d’abord une paire de langues dans « Mes langues ».",
+      "addPair": "Ajouter une paire de langues",
+      "titleHint": "En anglais. Une traduction facultative du titre s’ajoute ensuite dans les métadonnées."
+    },
+    "metadata": {
+      "title": "Titre",
+      "summary": "Résumé",
+      "summaryHint": "Affiché dans la recherche et la navigation.",
+      "optional": "facultatif",
+      "dialect": "Étiquette de dialecte",
+      "dialectHint": "Par exemple algerian-arabic ; lettres latines, chiffres et tirets.",
+      "cefr": "Niveau (CECR)",
+      "noLevel": "— sans niveau —",
+      "cefrSublevel": "Sous-niveau",
+      "cefrSublevelHint": "A1.1, A1.2… nécessite un niveau.",
+      "skills": "Compétences",
+      "tags": "Étiquettes libres",
+      "tagsHint": "Séparées par des virgules ; normalisées automatiquement (minuscules, tirets).",
+      "save": "Enregistrer les métadonnées",
+      "saving": "Enregistrement…",
+      "saved": "Métadonnées enregistrées.",
+      "titleHint": "En anglais ; c’est le nom de référence du paquet partout.",
+      "translationsTitle": "Traductions facultatives du titre et du résumé",
+      "translationsLede": "Affichées aux membres qui utilisent cette langue d’interface ; un champ vide retombe sur le texte anglais.",
+      "translatedTitle": "Titre",
+      "translatedSummary": "Résumé"
+    },
+    "itemEditor": {
+      "title": "Élément {n} — {activity}",
+      "lede": "Les champs sont générés à partir de la définition de l’extension. Enregistrez explicitement après modification.",
+      "readOnly": "Lecture seule.",
+      "skill": "Compétence",
+      "skillHint": "La compétence que cet élément entraîne (par défaut celle de l’extension).",
+      "save": "Enregistrer l’élément",
+      "saving": "Enregistrement…",
+      "saved": "Élément enregistré.",
+      "uploadTitle": "Image du champ « {field} »",
+      "uploadLede": "L’image est conservée dans le paquet lui-même, jamais comme lien. Le texte alternatif est obligatoire.",
+      "file": "Fichier image",
+      "alt": "Texte alternatif",
+      "altHint": "Une courte description pour qui ne voit pas l’image.",
+      "upload": "Envoyer dans le paquet",
+      "uploading": "Envoi…",
+      "imageAdded": "Image ajoutée et liée au champ.",
+      "backToPackage": "Retour au paquet"
+    },
+    "publish": {
+      "note": "Note de version",
+      "optional": "facultatif",
+      "publish": "Publier la première version",
+      "publishAgain": "Publier une nouvelle version",
+      "question": "Le contenu actuel du brouillon sera publié comme nouvelle version. Confirmer ?",
+      "published": "Version publiée."
+    },
+    "packageIssues": {
+      "not_a_package": "le fichier n’est pas un paquet valide",
+      "too_large": "le paquet dépasse la taille limite",
+      "too_many_entries": "plus d’entrées que permis",
+      "bad_entry_path": "un chemin non autorisé dans le paquet",
+      "symlink_entry": "un lien symbolique dans le paquet",
+      "entry_too_large": "une entrée dépasse sa taille limite",
+      "missing_manifest": "manifeste manquant",
+      "missing_content": "contenu manquant",
+      "manifest_invalid": "manifeste non valide",
+      "content_invalid": "contenu non valide",
+      "too_many_items": "trop d’éléments",
+      "too_many_assets": "trop d’images",
+      "asset_too_large": "une image dépasse sa taille limite",
+      "asset_missing": "une image déclarée est absente",
+      "asset_undeclared": "une image n’est pas déclarée dans le manifeste",
+      "asset_type_mismatch": "le type réel d’une image diffère du type déclaré",
+      "asset_sha256_mismatch": "l’empreinte d’une image ne correspond pas",
+      "asset_reference_missing": "un champ image pointe vers une image absente",
+      "items_count_mismatch": "le nombre d’éléments ne correspond pas au manifeste",
+      "duplicate_item_id": "identifiant d’élément en double",
+      "unknown_plugin": "extension introuvable",
+      "unknown_schema_version": "version de schéma de l’extension non prise en charge",
+      "schema_mismatch": "un élément ne respecte pas le schéma de l’extension (champ manquant ou non valide)",
+      "sha256_mismatch": "l’empreinte du contenu ne correspond pas"
+    },
+    "history": {
+      "title": "Historique",
+      "lede": "Chaque publication ajoute une version immuable. Revenir en arrière republie une version antérieure comme version plus récente et y ramène le brouillon.",
+      "empty": "Aucune version publiée pour l’instant.",
+      "version": "Version {n}",
+      "current": "actuelle",
+      "items": "{count, plural, one {# élément} other {# éléments}}",
+      "rollbackNote": "Retour à la version {n}",
+      "preview": "Aperçu",
+      "rollbackTo": "Revenir à la version {n}",
+      "rollbackQuestion": "La version {n} sera republiée comme version plus récente et le brouillon y reviendra. Confirmer ?",
+      "rolledBack": "Retour effectué."
+    },
+    "status": {
+      "archive": "Archiver",
+      "archiveQuestion": "Il disparaîtra de la navigation tandis que ses versions restent. Confirmer ?",
+      "republish": "Republier",
+      "republishQuestion": "Il reviendra dans la navigation avec sa version actuelle. Confirmer ?",
+      "changed": "Statut modifié.",
+      "publish": "Publier le cours",
+      "publishQuestion": "Le cours apparaîtra à la communauté avec ses paquets publiés. Confirmer ?"
+    },
+    "preview": {
+      "title": "Aperçu apprenant",
+      "titleVersion": "Aperçu de la version {n}",
+      "lede": "Le lecteur même que verront les apprenants, entièrement isolé. Le résultat immédiat est affiché seulement ; le bouton ci-dessous demande au serveur le résultat officiel.",
+      "unreadable": "Le paquet n’a pas pu être lu.",
+      "noItems": "Aucun élément à afficher.",
+      "previous": "Précédent",
+      "next": "Suivant",
+      "position": "{n} sur {total}",
+      "instant": "Résultat immédiat du cadre",
+      "none": "pas encore de réponse",
+      "correct": "correct",
+      "incorrect": "incorrect",
+      "instantNote": "Affichage seul ; jamais enregistré.",
+      "serverCheck": "Vérifier sur le serveur",
+      "checking": "Vérification…",
+      "server": "Résultat du serveur",
+      "displayOnly": "Cet élément est en affichage seul et n’est pas noté.",
+      "serverNote": "La note officielle est calculée sur le serveur à partir du paquet enregistré et de votre réponse, avec les évaluateurs de la plateforme.",
+      "paused": {
+        "plugin_disabled": "La modération a suspendu cette extension. Le paquet est intact et fonctionnera dès la levée de la suspension.",
+        "version_disabled": "La modération a suspendu cette version de l’extension.",
+        "plugin_not_published": "L’extension n’est pas publiée."
+      },
+      "errors": {
+        "invalid": "Réponse non valide.",
+        "result_field_forbidden": "Refusé : aucun résultat n’est accepté depuis le navigateur.",
+        "sign_in_required": "Connectez-vous d’abord.",
+        "not_found": "Élément introuvable.",
+        "plugin_paused": "L’extension est suspendue.",
+        "package_invalid": "Le paquet ne respecte pas le schéma de l’extension."
+      }
+    },
+    "errors": {
+      "sign_in_required": "Connectez-vous d’abord.",
+      "invalid_input": "Entrée non valide.",
+      "not_found": "Élément introuvable.",
+      "not_owner": "Ce n’est pas votre contenu.",
+      "under_moderation": "L’élément est sous modération.",
+      "content_creator_role_required": "Cette page est réservée aux créateurs de contenu.",
+      "package_missing": "Le fichier du paquet est absent.",
+      "package_invalid": "Le paquet ne passe pas encore la vérification ; voir les détails.",
+      "plugin_unavailable": "L’extension n’est pas disponible pour l’instant.",
+      "pair_invalid": "Choisissez l’une de vos paires de langues.",
+      "fix_fields": "Vérifiez les champs marqués, puis enregistrez à nouveau.",
+      "too_many_assets": "Le paquet a atteint sa limite d’images.",
+      "publish_first": "Publiez d’abord une version.",
+      "already_current": "C’est déjà la version actuelle.",
+      "already_in_course": "Le paquet est déjà dans le cours.",
+      "own_packages_only": "Seuls vos propres paquets sur la même paire de langues peuvent être ajoutés au cours.",
+      "unexpected": "Une erreur inattendue s’est produite. Réessayez.",
+      "pair_mismatch": "Ce paquet appartient à une autre paire de langues ; un cours ne contient que des paquets de sa propre paire."
+    },
+    "outcomes": {
+      "saved": "Enregistré.",
+      "lesson_added": "Paquet ajouté au cours.",
+      "lesson_removed": "Retiré du cours.",
+      "image_added": "Image ajoutée.",
+      "published": "Publié.",
+      "rolled_back": "Retour effectué.",
+      "status_archived": "Archivé.",
+      "status_published": "Publié.",
+      "status_draft": "De retour en brouillon."
+    }
+  },
+  "studio": {
+    "title": "Studio d’extensions",
+    "lede": "Ici se construit un type d’activité : la structure de son élément, ses champs, sa notation et ses modèles, sans code. Le contenu lui-même est rédigé par les créateurs dans leur éditeur.",
+    "nav": {
+      "mine": "Mes extensions",
+      "new": "Nouvelle extension"
+    },
+    "plugin": {
+      "overview": "Vue d’ensemble",
+      "info": "Définition",
+      "activities": "Activités",
+      "templates": "Modèles",
+      "preview": "Aperçu",
+      "advanced": "Avancé",
+      "disabledNotice": "La modération a arrêté cette extension. Elle ne peut être ni modifiée ni publiée tant que l’arrêt n’est pas levé ; les paquets existants sont intacts."
+    },
+    "status": {
+      "draft": "Brouillon",
+      "pending_review": "En attente de revue",
+      "published": "Publiée",
+      "hidden": "Masquée",
+      "disabled": "Arrêtée"
+    },
+    "notices": {
+      "contributor": "Votre compte est désormais un compte de contributeur. Commencez une extension ou importez une définition.",
+      "deleted": "Brouillon supprimé."
+    },
+    "mine": {
+      "title": "Mes extensions",
+      "empty": "Vous n’avez encore construit aucune extension. Une extension définit un type d’activité (par exemple « compléter le dialogue ») sur lequel les créateurs bâtissent leurs paquets.",
+      "createFirst": "Construire votre première extension",
+      "platformPlugin": "extension de la plateforme",
+      "activities": "{count, plural, =0 {aucune activité} one {# activité} other {# activités}}",
+      "templates": "{count, plural, =0 {aucun modèle} one {# modèle} other {# modèles}}"
+    },
+    "create": {
+      "title": "Nouvelle extension",
+      "lede": "Choisissez un identifiant permanent et un nom dans chaque langue. Tout le reste se construit dans les sections suivantes.",
+      "pluginId": "Identifiant",
+      "pluginIdHint": "Lettres latines minuscules, chiffres et tirets, par exemple complete-the-dialogue. Il ne change plus après publication.",
+      "name": "Nom",
+      "create": "Créer le brouillon",
+      "creating": "Création…",
+      "nameHint": "En anglais ; c’est le nom de référence du plugin. Les traductions en arabe et en français sont facultatives.",
+      "optional": "facultatif"
+    },
+    "info": {
+      "title": "Définition",
+      "lede": "Le nom et la description (en anglais, avec deux traductions facultatives), le numéro de version à publier et la version du schéma.",
+      "name": "Nom",
+      "description": "Description",
+      "version": "Version",
+      "versionHint": "De la forme x.y.z. Doit être nouveau à chaque publication.",
+      "schemaVersion": "Version du schéma",
+      "schemaVersionHint": "N’augmente qu’en cas de changement incompatible de la structure de l’élément (reste 1 en général).",
+      "allowImages": "L’extension autorise des images dans les paquets (obligatoire si elle a un champ image)",
+      "save": "Enregistrer",
+      "saving": "Enregistrement…",
+      "saved": "Définition enregistrée.",
+      "optional": "facultatif",
+      "englishFirst": "Le nom et la description en anglais sont requis ; l’arabe et le français sont des traductions facultatives affichées à leur place pour qui utilise cette langue."
+    },
+    "activities": {
+      "title": "Activités",
+      "lede": "Chaque activité est un type d’élément qu’un paquet peut contenir : ses champs du catalogue, le champ noté et son évaluateur.",
+      "empty": "Aucune activité pour l’instant. Ajoutez la première pour définir la structure de l’élément.",
+      "add": "Ajouter une activité",
+      "moveUp": "Monter",
+      "moveDown": "Descendre",
+      "remove": "Supprimer l’activité"
+    },
+    "activity": {
+      "newTitle": "Nouvelle activité",
+      "editTitle": "Activité {id}",
+      "lede": "Composez la structure de l’élément à partir du catalogue de types de champs, puis choisissez le champ auquel l’apprenant répond. Le schéma et les champs de l’éditeur sont générés automatiquement.",
+      "id": "Identifiant",
+      "idHint": "Lettres latines minuscules, chiffres et tirets.",
+      "skill": "Compétence par défaut",
+      "name": "Nom",
+      "description": "Description",
+      "fieldsTitle": "Champs de l’élément",
+      "fieldsLede": "Dans l’ordre que verront le créateur de contenu et l’apprenant. Chaque champ a une clé fixe et un libellé en anglais, avec deux traductions facultatives.",
+      "noFields": "Aucun champ pour l’instant.",
+      "fieldKey": "Clé du champ",
+      "required": "obligatoire",
+      "label": "Libellé",
+      "hint": "Indication",
+      "addField": "Ajouter un champ",
+      "removeField": "Supprimer",
+      "moveUp": "Monter",
+      "moveDown": "Descendre",
+      "options": {
+        "max_length": "longueur max",
+        "min_items": "entrées min",
+        "max_items": "entrées max",
+        "min_options": "options min",
+        "max_options": "options max",
+        "min_pairs": "paires min",
+        "max_pairs": "paires max",
+        "min_tokens": "mots min",
+        "max_tokens": "mots max",
+        "max_blanks": "trous max"
+      },
+      "scoringTitle": "Notation",
+      "scoringLede": "La note est calculée par les évaluateurs de référence de la plateforme ; l’extension choisit seulement le champ et l’évaluateur et ne porte aucune logique de notation.",
+      "gradedField": "Champ auquel l’apprenant répond",
+      "noGradedField": "— aucun champ noté —",
+      "evaluator": "Évaluateur de référence",
+      "evaluators": {
+        "multiple_choice": "choix multiple",
+        "fill_blank": "texte à trous",
+        "matching": "appariement",
+        "word_order": "ordre des mots",
+        "self_assessment": "auto-évaluation",
+        "none": "affichage seul"
+      },
+      "ignoreCase": "ignorer la casse",
+      "ignoreDiacritics": "ignorer les diacritiques arabes",
+      "selfAssessment": "Auto-évaluation : l’apprenant révèle les champs cachés, puis évalue sa propre mémoire",
+      "revealFields": "Champs cachés jusqu’à ce que l’apprenant les révèle :",
+      "displayOnly": "Affichage seul (sans notation)",
+      "save": "Enregistrer l’activité",
+      "saving": "Enregistrement…",
+      "saved": "Activité enregistrée.",
+      "optional": "facultatif"
+    },
+    "fieldTypes": {
+      "short_text": "texte court",
+      "long_text": "texte long",
+      "item_list": "liste d’entrées",
+      "single_choice": "choix unique",
+      "multiple_choice": "choix multiple",
+      "matching_pairs": "paires à apparier",
+      "ordering": "mise en ordre",
+      "blank_in_text": "trou dans un texte",
+      "image": "image avec texte alternatif"
+    },
+    "skills": {
+      "listening": "écoute",
+      "reading": "lecture",
+      "pronunciation": "prononciation",
+      "writing": "écriture"
+    },
+    "templates": {
+      "title": "Modèles",
+      "lede": "Un modèle est un squelette de départ pour le créateur : les activités par lesquelles commencer et une indication par champ. Il ne porte aucune phrase de contenu.",
+      "empty": "Aucun modèle pour l’instant. Un modèle épargne au créateur la page blanche.",
+      "needActivity": "Ajoutez au moins une activité avant de créer un modèle.",
+      "add": "Ajouter un modèle",
+      "items": "{count, plural, one {# élément} other {# éléments}}",
+      "remove": "Supprimer le modèle"
+    },
+    "template": {
+      "newTitle": "Nouveau modèle",
+      "editTitle": "Modèle {id}",
+      "lede": "Choisissez les activités par lesquelles le modèle commence et écrivez une indication pour chaque champ. Les champs restent toujours vides.",
+      "id": "Identifiant",
+      "name": "Nom",
+      "description": "Description",
+      "itemsTitle": "Éléments de départ",
+      "itemsLede": "Chaque élément renvoie à une activité, avec des indications facultatives dans chaque langue.",
+      "item": "Élément {n}",
+      "activity": "Activité",
+      "hint": "Indication",
+      "addItem": "Ajouter un élément",
+      "removeItem": "Supprimer",
+      "moveUp": "Monter",
+      "moveDown": "Descendre",
+      "save": "Enregistrer le modèle",
+      "saving": "Enregistrement…",
+      "saved": "Modèle enregistré.",
+      "optional": "facultatif"
+    },
+    "preview": {
+      "title": "Aperçu dans le lecteur isolé",
+      "lede": "Remplissez un élément jetable comme le ferait un créateur, puis affichez-le dans le lecteur même que verront les apprenants. Rien de cette page n’est enregistré.",
+      "fixFirst": "Corrigez la définition jusqu’à ce qu’elle respecte le contrat (voir la vue d’ensemble) avant l’aperçu.",
+      "activity": "Activité",
+      "render": "Afficher dans le lecteur",
+      "frameTitle": "Ce que voit l’apprenant",
+      "empty": "Remplissez l’élément, puis appuyez sur « Afficher dans le lecteur ».",
+      "instant": "Résultat immédiat du cadre",
+      "correct": "correct",
+      "incorrect": "incorrect",
+      "instantNote": "Affichage seul ; la note officielle est calculée sur le serveur et un résultat du cadre n’est jamais enregistré.",
+      "answerReceived": "Réponse telle que reçue du cadre"
+    },
+    "advanced": {
+      "title": "Avancé",
+      "lede": "Le schéma est généré à partir des activités. Coller un schéma à la main est une issue de secours pour les cas particuliers seulement, et peut faire diverger l’éditeur de ce que les paquets acceptent.",
+      "generatedTitle": "Schéma généré (lecture seule)",
+      "customTitle": "Coller un JSON Schema à la main (avancé)",
+      "useCustom": "Utiliser le schéma collé au lieu du schéma généré",
+      "schema": "JSON Schema 2020-12",
+      "schemaHint": "Vérifié contre le méta-schéma avant enregistrement.",
+      "save": "Enregistrer",
+      "saving": "Enregistrement…",
+      "saved": "Enregistré."
+    },
+    "overview": {
+      "contractTitle": "Conformité au contrat",
+      "contractOk": "La définition respecte le contrat : {activities, plural, one {# activité} other {# activités}} et {templates, plural, =0 {aucun modèle} one {# modèle} other {# modèles}}.",
+      "contractFails": "{count, plural, one {# problème empêche} other {# problèmes empêchent}} la publication :",
+      "publishTitle": "Publication",
+      "publishLedeDirect": "En tant que propriétaire de la plateforme, vous publiez la version au catalogue immédiatement.",
+      "publishLedeReview": "La demande de publication part à la modération ; une fois acceptée, la version est publiée au catalogue et devient disponible pour les créateurs de contenu.",
+      "pendingReview": "La version {version} attend la revue de la modération.",
+      "decision": {
+        "approved": "La version {version} a été acceptée et publiée.",
+        "rejected": "La version {version} a été refusée."
+      },
+      "reasons": {
+        "contract": "Motif : ne respecte pas le contrat d’extension.",
+        "quality": "Motif : qualité insuffisante (libellés, traductions, structure).",
+        "duplicate": "Motif : doublon d’une extension existante.",
+        "policy": "Motif : contraire aux règles de la communauté.",
+        "other": "Motif : voir la note."
+      },
+      "fixFirst": "Corrigez les problèmes ci-dessus, puis revenez publier.",
+      "versionsTitle": "Versions publiées",
+      "noVersions": "Aucune version publiée pour l’instant.",
+      "current": "actuelle",
+      "versionDisabled": "arrêtée",
+      "dangerTitle": "Supprimer le brouillon",
+      "dangerLede": "Seulement pour un brouillon jamais publié.",
+      "deleteDraft": "Supprimer définitivement le brouillon",
+      "deleteQuestion": "Supprimer définitivement ce brouillon ?"
+    },
+    "publish": {
+      "note": "Note de version",
+      "optional": "facultatif",
+      "publishVersion": "Publier la version {version}",
+      "requestVersion": "Demander la publication de la version {version}",
+      "publishQuestion": "Cette version sera publiée immédiatement et ne pourra plus être modifiée. Confirmer ?",
+      "requestQuestion": "Cette version sera envoyée à la modération pour revue. Confirmer ?",
+      "outcomes": {
+        "published": "Version publiée au catalogue.",
+        "requested": "Demande de publication envoyée à la modération."
+      }
+    },
+    "issues": {
+      "invalid": "valeur non valide",
+      "format_invalid": "format de définition inconnu",
+      "plugin_id_invalid": "identifiant d’extension non valide",
+      "version_invalid": "numéro de version non valide",
+      "name_missing": "nom manquant dans une langue",
+      "description_missing": "description manquante dans une langue",
+      "activities_empty": "aucune activité",
+      "activity_id_duplicate": "identifiant d’activité en double",
+      "field_key_duplicate": "clé de champ en double",
+      "graded_field_missing": "le champ noté n’existe pas",
+      "graded_field_not_gradable": "ce type de champ ne peut pas être noté",
+      "evaluator_incompatible": "l’évaluateur ne convient pas au champ noté",
+      "reveal_field_missing": "un champ révélé n’existe pas",
+      "template_id_duplicate": "identifiant de modèle en double",
+      "template_activity_missing": "le modèle renvoie à une activité absente",
+      "template_hint_field_missing": "indication pour un champ absent",
+      "templates_too_many": "trop de modèles",
+      "capabilities_not_empty": "l’extension demande des capacités, refusées à ce stade",
+      "asset_kind_not_allowed": "type de ressource non autorisé (ou champ image sans autoriser les images dans la définition)",
+      "content_schema_invalid": "le schéma de contenu n’est pas un JSON Schema valide",
+      "authoring_fields_mismatch": "les champs de l’éditeur ne correspondent pas aux activités",
+      "definition_too_large": "la définition dépasse la taille limite"
+    },
+    "errors": {
+      "sign_in_required": "Connectez-vous d’abord.",
+      "contributor_role_required": "Cette action est réservée aux contributeurs.",
+      "invalid_input": "Entrée non valide.",
+      "not_found": "Extension introuvable.",
+      "not_owner": "Ce n’est pas votre extension.",
+      "plugin_disabled": "L’extension a été arrêtée par la modération.",
+      "activity_invalid": "L’activité ne respecte pas le contrat. Vérifiez les champs marqués.",
+      "activity_id_duplicate": "Cet identifiant d’activité est utilisé par une autre activité.",
+      "field_key_duplicate": "Clé de champ en double dans l’activité.",
+      "template_invalid": "Le modèle ne respecte pas le contrat.",
+      "template_id_duplicate": "Cet identifiant de modèle est utilisé par un autre modèle.",
+      "template_activity_missing": "Le modèle renvoie à une activité absente.",
+      "templates_too_many": "Trop de modèles pour la limite autorisée.",
+      "definition_invalid": "La définition ne respecte pas encore le contrat ; voir la vue d’ensemble.",
+      "request_pending": "Une demande de publication est déjà en attente pour cette extension.",
+      "version_exists": "Cette version a déjà été publiée ; augmentez le numéro de version dans Définition.",
+      "not_a_draft": "Seul un brouillon jamais publié peut être supprimé.",
+      "definition_too_large": "Le fichier dépasse la taille autorisée.",
+      "slug_taken": "Cet identifiant d’extension existe déjà dans cet environnement.",
+      "unexpected": "Une erreur inattendue s’est produite. Réessayez.",
+      "storage_unavailable": "Le stockage des fichiers est injoignable pour le moment ; rien n’a été enregistré. Réessayez dans un instant."
+    },
+    "outcomes": {
+      "saved": "Enregistré."
+    }
   }
 }

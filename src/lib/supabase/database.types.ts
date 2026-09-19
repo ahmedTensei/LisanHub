@@ -303,10 +303,18 @@ export type Database = {
           dialect_tag: string | null
           id: string
           is_paid: boolean
+          items_count: number
           kind: Database["public"]["Enums"]["content_kind"]
           license: string | null
           maintenance_paused: boolean
+          moderated_at: string | null
+          moderated_by: string | null
+          moderation_note: string | null
           owner_id: string
+          package_key: string | null
+          package_sha256: string | null
+          plugin_id: string | null
+          plugin_version_id: string | null
           provenance: Json | null
           published_at: string | null
           quality_label: Database["public"]["Enums"]["quality_label"]
@@ -319,6 +327,7 @@ export type Database = {
           tags: string[]
           target_lang: string
           title: string
+          translations: Json
           updated_at: string
         }
         Insert: {
@@ -330,10 +339,18 @@ export type Database = {
           dialect_tag?: string | null
           id?: string
           is_paid?: boolean
+          items_count?: number
           kind: Database["public"]["Enums"]["content_kind"]
           license?: string | null
           maintenance_paused?: boolean
+          moderated_at?: string | null
+          moderated_by?: string | null
+          moderation_note?: string | null
           owner_id: string
+          package_key?: string | null
+          package_sha256?: string | null
+          plugin_id?: string | null
+          plugin_version_id?: string | null
           provenance?: Json | null
           published_at?: string | null
           quality_label?: Database["public"]["Enums"]["quality_label"]
@@ -346,6 +363,7 @@ export type Database = {
           tags?: string[]
           target_lang: string
           title: string
+          translations?: Json
           updated_at?: string
         }
         Update: {
@@ -357,10 +375,18 @@ export type Database = {
           dialect_tag?: string | null
           id?: string
           is_paid?: boolean
+          items_count?: number
           kind?: Database["public"]["Enums"]["content_kind"]
           license?: string | null
           maintenance_paused?: boolean
+          moderated_at?: string | null
+          moderated_by?: string | null
+          moderation_note?: string | null
           owner_id?: string
+          package_key?: string | null
+          package_sha256?: string | null
+          plugin_id?: string | null
+          plugin_version_id?: string | null
           provenance?: Json | null
           published_at?: string | null
           quality_label?: Database["public"]["Enums"]["quality_label"]
@@ -373,6 +399,7 @@ export type Database = {
           tags?: string[]
           target_lang?: string
           title?: string
+          translations?: Json
           updated_at?: string
         }
         Relationships: [
@@ -391,6 +418,20 @@ export type Database = {
             referencedColumns: ["id"]
           },
           {
+            foreignKeyName: "content_items_moderated_by_fkey"
+            columns: ["moderated_by"]
+            isOneToOne: false
+            referencedRelation: "profile_cards"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "content_items_moderated_by_fkey"
+            columns: ["moderated_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
             foreignKeyName: "content_items_owner_id_fkey"
             columns: ["owner_id"]
             isOneToOne: false
@@ -402,6 +443,20 @@ export type Database = {
             columns: ["owner_id"]
             isOneToOne: false
             referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "content_items_plugin_id_fkey"
+            columns: ["plugin_id"]
+            isOneToOne: false
+            referencedRelation: "plugins"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "content_items_plugin_version_id_fkey"
+            columns: ["plugin_version_id"]
+            isOneToOne: false
+            referencedRelation: "plugin_versions"
             referencedColumns: ["id"]
           },
           {
@@ -430,31 +485,40 @@ export type Database = {
       content_versions: {
         Row: {
           author_id: string
-          body: Json
           change_note: string | null
           created_at: string
           id: string
           item_id: string
+          items_count: number
+          package_key: string
+          package_sha256: string
+          plugin_version_id: string | null
           schema_version: number
           version_number: number
         }
         Insert: {
           author_id: string
-          body: Json
           change_note?: string | null
           created_at?: string
           id?: string
           item_id: string
+          items_count?: number
+          package_key: string
+          package_sha256: string
+          plugin_version_id?: string | null
           schema_version?: number
           version_number: number
         }
         Update: {
           author_id?: string
-          body?: Json
           change_note?: string | null
           created_at?: string
           id?: string
           item_id?: string
+          items_count?: number
+          package_key?: string
+          package_sha256?: string
+          plugin_version_id?: string | null
           schema_version?: number
           version_number?: number
         }
@@ -478,6 +542,13 @@ export type Database = {
             columns: ["item_id"]
             isOneToOne: false
             referencedRelation: "content_items"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "content_versions_plugin_version_id_fkey"
+            columns: ["plugin_version_id"]
+            isOneToOne: false
+            referencedRelation: "plugin_versions"
             referencedColumns: ["id"]
           },
         ]
@@ -770,6 +841,224 @@ export type Database = {
           {
             foreignKeyName: "platform_settings_updated_by_fkey"
             columns: ["updated_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      plugin_publish_requests: {
+        Row: {
+          change_note: string | null
+          created_at: string
+          decided_at: string | null
+          decided_by: string | null
+          decision_note: string | null
+          decision_reason: string | null
+          definition_key: string
+          definition_sha256: string
+          id: string
+          plugin_id: string
+          requested_by: string
+          schema_version: number
+          status: Database["public"]["Enums"]["plugin_request_status"]
+          version: string
+        }
+        Insert: {
+          change_note?: string | null
+          created_at?: string
+          decided_at?: string | null
+          decided_by?: string | null
+          decision_note?: string | null
+          decision_reason?: string | null
+          definition_key: string
+          definition_sha256: string
+          id?: string
+          plugin_id: string
+          requested_by: string
+          schema_version: number
+          status?: Database["public"]["Enums"]["plugin_request_status"]
+          version: string
+        }
+        Update: {
+          change_note?: string | null
+          created_at?: string
+          decided_at?: string | null
+          decided_by?: string | null
+          decision_note?: string | null
+          decision_reason?: string | null
+          definition_key?: string
+          definition_sha256?: string
+          id?: string
+          plugin_id?: string
+          requested_by?: string
+          schema_version?: number
+          status?: Database["public"]["Enums"]["plugin_request_status"]
+          version?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "plugin_publish_requests_decided_by_fkey"
+            columns: ["decided_by"]
+            isOneToOne: false
+            referencedRelation: "profile_cards"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "plugin_publish_requests_decided_by_fkey"
+            columns: ["decided_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "plugin_publish_requests_plugin_id_fkey"
+            columns: ["plugin_id"]
+            isOneToOne: false
+            referencedRelation: "plugins"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "plugin_publish_requests_requested_by_fkey"
+            columns: ["requested_by"]
+            isOneToOne: false
+            referencedRelation: "profile_cards"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "plugin_publish_requests_requested_by_fkey"
+            columns: ["requested_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      plugin_versions: {
+        Row: {
+          author_id: string | null
+          change_note: string | null
+          created_at: string
+          definition_key: string
+          definition_sha256: string
+          disabled: boolean
+          id: string
+          plugin_id: string
+          schema_version: number
+          version: string
+          version_number: number
+        }
+        Insert: {
+          author_id?: string | null
+          change_note?: string | null
+          created_at?: string
+          definition_key: string
+          definition_sha256: string
+          disabled?: boolean
+          id?: string
+          plugin_id: string
+          schema_version: number
+          version: string
+          version_number: number
+        }
+        Update: {
+          author_id?: string | null
+          change_note?: string | null
+          created_at?: string
+          definition_key?: string
+          definition_sha256?: string
+          disabled?: boolean
+          id?: string
+          plugin_id?: string
+          schema_version?: number
+          version?: string
+          version_number?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "plugin_versions_author_id_fkey"
+            columns: ["author_id"]
+            isOneToOne: false
+            referencedRelation: "profile_cards"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "plugin_versions_author_id_fkey"
+            columns: ["author_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "plugin_versions_plugin_id_fkey"
+            columns: ["plugin_id"]
+            isOneToOne: false
+            referencedRelation: "plugins"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      plugins: {
+        Row: {
+          created_at: string
+          current_version_id: string | null
+          disabled: boolean
+          disabled_message: Json
+          draft_key: string | null
+          draft_sha256: string | null
+          id: string
+          owner_id: string | null
+          plugin_id: string
+          published_at: string | null
+          status: Database["public"]["Enums"]["plugin_status"]
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          current_version_id?: string | null
+          disabled?: boolean
+          disabled_message?: Json
+          draft_key?: string | null
+          draft_sha256?: string | null
+          id?: string
+          owner_id?: string | null
+          plugin_id: string
+          published_at?: string | null
+          status?: Database["public"]["Enums"]["plugin_status"]
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          current_version_id?: string | null
+          disabled?: boolean
+          disabled_message?: Json
+          draft_key?: string | null
+          draft_sha256?: string | null
+          id?: string
+          owner_id?: string | null
+          plugin_id?: string
+          published_at?: string | null
+          status?: Database["public"]["Enums"]["plugin_status"]
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "plugins_current_version_fk"
+            columns: ["current_version_id"]
+            isOneToOne: false
+            referencedRelation: "plugin_versions"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "plugins_owner_id_fkey"
+            columns: ["owner_id"]
+            isOneToOne: false
+            referencedRelation: "profile_cards"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "plugins_owner_id_fkey"
+            columns: ["owner_id"]
             isOneToOne: false
             referencedRelation: "profiles"
             referencedColumns: ["id"]
@@ -1318,12 +1607,33 @@ export type Database = {
         Args: never
         Returns: Database["public"]["Enums"]["primary_role"]
       }
+      become_contributor: {
+        Args: never
+        Returns: Database["public"]["Enums"]["primary_role"]
+      }
+      content_translations_valid: { Args: { value: Json }; Returns: boolean }
       current_admin_level: { Args: never; Returns: number }
       current_primary_role: {
         Args: never
         Returns: Database["public"]["Enums"]["primary_role"]
       }
       is_moderator: { Args: never; Returns: boolean }
+      moderate_content_item: {
+        Args: { p_hide: boolean; p_item: string; p_note: string }
+        Returns: Database["public"]["Enums"]["content_status"]
+      }
+      plugin_publish_version: {
+        Args: {
+          p_author: string
+          p_definition_key: string
+          p_note: string
+          p_plugin: string
+          p_schema_version: number
+          p_sha256: string
+          p_version: string
+        }
+        Returns: string
+      }
       published_version_number: { Args: { p_item: string }; Returns: number }
       resolve_support_request: {
         Args: {
@@ -1332,6 +1642,19 @@ export type Database = {
           p_status: Database["public"]["Enums"]["support_request_status"]
         }
         Returns: Database["public"]["Enums"]["support_request_status"]
+      }
+      review_plugin_publish_request: {
+        Args: {
+          p_approve: boolean
+          p_note?: string
+          p_reason?: string
+          p_request: string
+        }
+        Returns: Database["public"]["Enums"]["plugin_request_status"]
+      }
+      rollback_content_version: {
+        Args: { p_item: string; p_version: string }
+        Returns: string
       }
       search_languages: {
         Args: { max_results?: number; q: string }
@@ -1342,11 +1665,34 @@ export type Database = {
           name_en: string
         }[]
       }
+      set_plugin_disabled: {
+        Args: {
+          p_disabled: boolean
+          p_message?: Json
+          p_plugin: string
+          p_version: string
+        }
+        Returns: undefined
+      }
+      set_plugin_hidden: {
+        Args: { p_hidden: boolean; p_plugin: string }
+        Returns: Database["public"]["Enums"]["plugin_status"]
+      }
       setting_int: {
         Args: { p_default: number; p_key: string }
         Returns: number
       }
-      storage_object_owner: { Args: { object_name: string }; Returns: string }
+      submit_plugin_version: {
+        Args: {
+          p_definition_key: string
+          p_note?: string
+          p_plugin: string
+          p_schema_version: number
+          p_sha256: string
+          p_version: string
+        }
+        Returns: string
+      }
       username_available: { Args: { p_username: string }; Returns: boolean }
     }
     Enums: {
@@ -1356,10 +1702,12 @@ export type Database = {
         | "super_administrator"
         | "platform_owner"
       cefr_level: "A1" | "A2" | "B1" | "B2" | "C1" | "C2"
-      content_kind: "course" | "lesson" | "deck"
+      content_kind: "course" | "lesson" | "deck" | "package"
       content_status: "draft" | "published" | "archived" | "hidden" | "removed"
       feature_mode: "enabled" | "create_disabled" | "read_only" | "disabled"
       language_skill: "listening" | "reading" | "pronunciation" | "writing"
+      plugin_request_status: "pending" | "approved" | "rejected"
+      plugin_status: "draft" | "pending_review" | "published" | "hidden"
       primary_role: "student" | "content_creator" | "contributor"
       profile_visibility: "public" | "restricted"
       progress_state: "not_started" | "in_progress" | "completed"
@@ -1510,10 +1858,12 @@ export const Constants = {
         "platform_owner",
       ],
       cefr_level: ["A1", "A2", "B1", "B2", "C1", "C2"],
-      content_kind: ["course", "lesson", "deck"],
+      content_kind: ["course", "lesson", "deck", "package"],
       content_status: ["draft", "published", "archived", "hidden", "removed"],
       feature_mode: ["enabled", "create_disabled", "read_only", "disabled"],
       language_skill: ["listening", "reading", "pronunciation", "writing"],
+      plugin_request_status: ["pending", "approved", "rejected"],
+      plugin_status: ["draft", "pending_review", "published", "hidden"],
       primary_role: ["student", "content_creator", "contributor"],
       profile_visibility: ["public", "restricted"],
       progress_state: ["not_started", "in_progress", "completed"],

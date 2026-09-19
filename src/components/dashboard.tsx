@@ -13,8 +13,6 @@ interface DashboardProps {
 /** Every section the platform will have; the ones not built yet carry their stage so the map is honest. */
 const SECTIONS = [
   { key: "learning", icon: CompassIcon, stage: "S3" },
-  { key: "myContent", icon: CloudCheckIcon, stage: "S2", creatorOnly: true },
-  { key: "editor", icon: CloudCheckIcon, stage: "S2", creatorOnly: true },
   { key: "community", icon: PeopleIcon, stage: "S5" },
   { key: "chats", icon: PeopleIcon, stage: "S5" },
   { key: "notifications", icon: UserIcon, stage: "S4" },
@@ -28,6 +26,7 @@ export async function Dashboard({ actor, displayName }: DashboardProps) {
     countLanguagePairs(actor.userId),
   ]);
   const isCreator = can(actor, "content.create");
+  const isContributor = can(actor, "plugins.author");
   const isStaff = can(actor, "moderation.handle_queue");
   const card =
     "flex flex-col gap-3 rounded-[var(--radius-card)] border border-line bg-surface p-5 shadow-[var(--shadow-card)]";
@@ -64,6 +63,28 @@ export async function Dashboard({ actor, displayName }: DashboardProps) {
               <span className="text-sm text-ink-muted">{t("account.body")}</span>
             </Link>
           </li>
+          {isCreator ? (
+            <li>
+              <Link href="/content" className={`${card} h-full hover:border-line-strong`}>
+                <span className="flex size-10 items-center justify-center rounded-xl bg-accent-soft text-accent">
+                  <CloudCheckIcon className="size-5" />
+                </span>
+                <span className="font-bold">{t("myContent.title")}</span>
+                <span className="text-sm text-ink-muted">{t("myContent.body")}</span>
+              </Link>
+            </li>
+          ) : null}
+          {isContributor ? (
+            <li>
+              <Link href="/studio" className={`${card} h-full hover:border-line-strong`}>
+                <span className="flex size-10 items-center justify-center rounded-xl bg-accent-soft text-accent">
+                  <CloudCheckIcon className="size-5" />
+                </span>
+                <span className="font-bold">{t("studio.title")}</span>
+                <span className="text-sm text-ink-muted">{t("studio.body")}</span>
+              </Link>
+            </li>
+          ) : null}
           {isStaff ? (
             <li>
               <Link href="/admin" className={`${card} h-full border-saffron/40 hover:border-saffron`}>
@@ -84,7 +105,7 @@ export async function Dashboard({ actor, displayName }: DashboardProps) {
         </h2>
         <p className="text-sm text-ink-muted">{t("soonBody")}</p>
         <ul className="grid gap-4 sm:grid-cols-3">
-          {SECTIONS.filter((s) => !("creatorOnly" in s) || isCreator).map(({ key, icon: Icon, stage }) => (
+          {SECTIONS.map(({ key, icon: Icon, stage }) => (
             <li key={key} className={`${card} opacity-80`}>
               <div className="flex items-center justify-between">
                 <span className="flex size-10 items-center justify-center rounded-xl bg-paper text-ink-muted">

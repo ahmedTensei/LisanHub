@@ -48,6 +48,12 @@ export class SupabaseStorageProvider implements StorageProvider {
     if (error) throw toStorageError(error);
   }
 
+  async download(ref: StoredObjectRef): Promise<Uint8Array> {
+    const { data, error } = await this.bucket(ref.store).download(ref.key);
+    if (error) throw toStorageError(error);
+    return new Uint8Array(await data.arrayBuffer());
+  }
+
   async remove(refs: readonly StoredObjectRef[]): Promise<void> {
     const byStore = new Map<StoreName, string[]>();
     for (const ref of refs) byStore.set(ref.store, [...(byStore.get(ref.store) ?? []), ref.key]);

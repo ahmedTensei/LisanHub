@@ -81,4 +81,20 @@ describe("exercise evaluation", () => {
   it("normalises whitespace, case and Unicode forms", () => {
     expect(normalizeText("  Je   SUIS ", { ignoreCase: true, ignoreArabicDiacritics: false })).toBe("je suis");
   });
+  it("scores a self-assessed card from the learner's own rating", () => {
+    const card = ExerciseDefinition.parse({
+      type: "self_assessment",
+      id: "c1",
+      skill: "reading",
+      front: "كتاب",
+      back: "livre",
+    });
+    expect(evaluate(card, { type: "self_assessment", rating: "good" })).toMatchObject({
+      correct: true,
+      score: 0.8,
+      expected: "livre",
+    });
+    expect(evaluate(card, { type: "self_assessment", rating: "again" })).toMatchObject({ correct: false, score: 0 });
+    expect(evaluate(card, { type: "self_assessment", rating: "easy" }).score).toBe(1);
+  });
 });

@@ -8,3 +8,8 @@ Commercial use of this software, in whole or in part, requires a separate
 written licence from the copyright holder.
 
 This notice must be preserved in copies and in derived works.
+
+Third-party assets bundled with the platform:
+- IBM Plex Sans Arabic (src/app/fonts/*.woff2) — Copyright 2017 IBM Corp.,
+  SIL Open Font License 1.1 (src/app/fonts/OFL-IBM-Plex-Sans-Arabic.txt).
+  The font keeps its own licence; it is not covered by the PolyForm licence above.

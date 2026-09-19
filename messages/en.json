@@ -16,7 +16,9 @@
     "accountMenu": "Account menu",
     "soon": "Soon",
     "admin": "Administration",
-    "publicProfile": "My public page"
+    "publicProfile": "My public page",
+    "myContent": "My content",
+    "studio": "Studio"
   },
   "home": {
     "eyebrow": "Phase A — free platform",
@@ -72,7 +74,27 @@
       "bio_too_long": "The bio is too long (500 characters maximum).",
       "location_too_long": "The location is too long (80 characters maximum).",
       "avatar_type_invalid": "Choose a JPEG, PNG or WebP image.",
-      "avatar_too_large": "The image is larger than allowed."
+      "avatar_too_large": "The image is larger than allowed.",
+      "invalid": "This value is not valid.",
+      "too_short": "Too short.",
+      "too_long": "Too long.",
+      "too_few": "Fewer entries than the minimum.",
+      "too_many": "More entries than the maximum.",
+      "slug_invalid": "Identifier: lowercase Latin letters, digits and hyphens only, starting with a letter (at least 3 characters).",
+      "slug_taken": "This identifier is already in use. Choose another.",
+      "version_invalid": "Version in the form x.y.z, for example 1.0.0.",
+      "json_invalid": "This is not valid JSON.",
+      "schema_invalid": "This is not a valid JSON Schema (draft 2020-12).",
+      "correct_missing": "Mark the correct answer among the options.",
+      "duplicate_option": "Two options share the same identifier.",
+      "blank_count": "The number of '{{n}}' gaps in the text does not match the number of answers.",
+      "asset_required": "Choose a picture.",
+      "title_too_long": "The title is too long (200 characters at most).",
+      "summary_too_long": "The summary is too long (2000 characters at most).",
+      "tag_invalid": "Tags: letters, digits and hyphens, 40 characters per tag at most.",
+      "cefr_invalid": "Choose a level from the list.",
+      "skill_invalid": "Choose a skill from the list.",
+      "title_latin_required": "Write the title in English (Latin letters, digits and common punctuation). Translating it into other languages is optional, in the metadata."
     },
     "showPassword": "Show password",
     "hidePassword": "Hide password",
@@ -208,7 +230,9 @@
       "unexpected": "Something unexpected happened. Please try again.",
       "acknowledge_required": "Confirm that you have read the commitments first.",
       "request_pending": "You already have a request of this kind under review.",
-      "upload_failed": "The picture could not be uploaded. Try again."
+      "upload_failed": "The picture could not be uploaded. Try again.",
+      "already_contributor": "Your account is already a contributor account.",
+      "contributor_role_required": "This page is for contributors."
     },
     "advanced": {
       "title": "Advanced settings",
@@ -220,7 +244,10 @@
       "soon": {
         "export": "Export your personal data (always free)",
         "delete": "Delete the account permanently"
-      }
+      },
+      "contributorIntro": "Or, if you would rather build new kinds of activities (plugins) than author content:",
+      "becomeContributorLink": "I want to become a contributor (build plugins in the studio)",
+      "contributorBody": "Your account is a contributor account: you build plugins and their templates in the studio. To return to a Student account, send a request to support."
     },
     "creator": {
       "title": "Become a content creator",
@@ -308,6 +335,25 @@
       "confirmRemove": "Remove your picture?",
       "saved": "Picture saved.",
       "removed": "Picture removed."
+    },
+    "contributor": {
+      "title": "Becoming a contributor",
+      "lede": "A contributor builds activity kinds (plugins) and their templates in the studio, and does not author content. One step changes the nature of your account; read the commitments, then confirm.",
+      "commitments": {
+        "build": "You build plugins from inside the platform, in the studio, without code: the item structure, its fields, its templates and its translations in Arabic, French and English.",
+        "review": "Publishing your plugin to the public catalogue goes through moderation review at this stage; it may be refused for a stated reason, and you can revise and ask again.",
+        "sandbox": "Every plugin runs in a sandbox that reaches no user data, and carries no executable code at this stage.",
+        "attribution": "Your name stays attached to every plugin you publish and is shown to the creators who build on it.",
+        "onePath": "An account is never both a content creator and a contributor. If you want to author content later, the switch goes through support.",
+        "noReturn": "You cannot return to a Student account by yourself; support does it after reviewing your case."
+      },
+      "acknowledge": "I have read the commitments and understand that this change is reversed only through support.",
+      "confirm": "Confirm becoming a contributor",
+      "confirming": "Switching…",
+      "alreadyContributor": "Your account is already a contributor account.",
+      "onePathOnly": "Your account is a content creator account, and an account never holds both paths. To become a contributor, send a request to support.",
+      "openStudio": "Open the studio",
+      "backToAdvanced": "Back to account type and support"
     }
   },
   "languages": {
@@ -345,7 +391,7 @@
   "dashboard": {
     "greeting": "Welcome,",
     "ledeStudent": "This is your space. Add your languages and set up your account; lessons and the community will appear here as they are ready.",
-    "ledeCreator": "This is your space as a content creator. The editor and publishing tools arrive in the next stage, right here.",
+    "ledeCreator": "This is your space as a content creator: build and publish your packages from “My content”.",
     "readyTitle": "Ready now",
     "languages": {
       "title": "My languages",
@@ -386,6 +432,15 @@
         "title": "Notifications",
         "body": "Everything about your content, requests and reports."
       }
+    },
+    "ledeContributor": "This is your space as a contributor: build activity kinds and their templates in the studio.",
+    "myContent": {
+      "title": "My content",
+      "body": "Your packages and courses: create, preview, publish, roll back when needed."
+    },
+    "studio": {
+      "title": "Studio",
+      "body": "Build a new plugin (an activity kind) and its templates, without writing code."
     }
   },
   "admin": {
@@ -397,7 +452,9 @@
       "reports": "Reports",
       "feedback": "Feedback",
       "users": "Members",
-      "settings": "Settings"
+      "settings": "Settings",
+      "plugins": "Plugins",
+      "content": "Content"
     },
     "overview": {
       "work": {
@@ -406,7 +463,8 @@
         "inReviewRequests": "Requests under review",
         "newFeedback": "New feedback",
         "contentReports": "Open content reports",
-        "conductReports": "Open conduct reports"
+        "conductReports": "Open conduct reports",
+        "pluginRequests": "Plugin publish requests"
       },
       "members": {
         "title": "Members",
@@ -415,7 +473,8 @@
         "creators": "Content creators",
         "founding": "Founding members",
         "newLast7Days": "Joined in the last 7 days",
-        "byRank": "By administrative rank"
+        "byRank": "By administrative rank",
+        "contributors": "Contributors"
       },
       "content": {
         "title": "Content",
@@ -427,6 +486,12 @@
       "system": {
         "title": "System",
         "settingsLink": "Settings ({count}) and feature switches"
+      },
+      "plugins": {
+        "title": "Plugins",
+        "published": "Published",
+        "pending": "Awaiting review",
+        "disabled": "Stopped"
       }
     },
     "requests": {
@@ -559,6 +624,30 @@
         "support_email": {
           "label": "Support address (optional)",
           "description": "Requests arrive inside the platform; leave empty if you do not want an extra address."
+        },
+        "packages_max_bytes": {
+          "label": "Maximum size of a content package",
+          "description": "The whole .lisanpkg file with its images. A larger package is refused at publication."
+        },
+        "packages_max_items": {
+          "label": "Maximum items per package",
+          "description": "Items (exercises, cards…) inside one package."
+        },
+        "packages_max_assets": {
+          "label": "Maximum images per package",
+          "description": "Assets inside one package."
+        },
+        "packages_max_asset_bytes": {
+          "label": "Maximum size of one image",
+          "description": "Size of each asset inside a package."
+        },
+        "plugins_max_templates": {
+          "label": "Maximum templates per plugin",
+          "description": "Templates carried by one plugin definition in the studio."
+        },
+        "plugins_max_definition_bytes": {
+          "label": "Maximum size of a plugin definition",
+          "description": "Size of the plugin definition file (JSON) at publication."
         }
       },
       "flags": {
@@ -614,7 +703,10 @@
       "invalid_input": "Invalid input.",
       "already_closed": "Request already closed.",
       "unexpected": "Something unexpected happened.",
-      "sign_in_required": "Sign in first."
+      "sign_in_required": "Sign in first.",
+      "reason_required": "Write the reason for hiding; the owner will read it.",
+      "moderation_only": "This action is for moderation.",
+      "contributor_role_required": "This page is for contributors."
     },
     "outcomes": {
       "in_review": "Marked as under review.",
@@ -625,7 +717,15 @@
       "setting_saved": "Setting saved.",
       "flag_saved": "Switch saved.",
       "feedback_triaged": "Status updated.",
-      "report_updated": "Report updated."
+      "report_updated": "Report updated.",
+      "plugin_approved": "Request approved and version published.",
+      "plugin_rejected": "Request rejected; the author sees the reason.",
+      "plugin_disabled": "Plugin stopped at once; existing packages are untouched.",
+      "plugin_enabled": "Plugin re-enabled.",
+      "plugin_hidden": "Plugin hidden from the catalogue.",
+      "plugin_shown": "Plugin back in the catalogue.",
+      "content_hidden": "Content hidden from the community; the file is untouched.",
+      "content_restored": "Content restored to the community."
     },
     "ranks": {
       "none": "No rank",
@@ -633,6 +733,130 @@
       "administrator": "Administrator",
       "super_administrator": "Super administrator",
       "platform_owner": "Platform owner"
+    },
+    "plugins": {
+      "queueTitle": "Publish requests",
+      "queueLede": "Plugins built by contributors who ask for publication to the public catalogue. Approving publishes the version at once; rejecting needs a reason, translated for the author.",
+      "queueEmpty": "No pending publish requests.",
+      "by": "by",
+      "summary": "{activities, plural, one {# activity} other {# activities}} · {templates, plural, =0 {no templates} one {# template} other {# templates}}",
+      "approve": "Approve and publish",
+      "reject": "Reject",
+      "reason": "Rejection reason",
+      "note": "Note",
+      "notePlaceholder": "Note for the author (optional)",
+      "reasons": {
+        "contract": "Does not match the plugin contract",
+        "quality": "Insufficient quality (labels, translations, structure)",
+        "duplicate": "Duplicate of an existing plugin",
+        "policy": "Violates community rules",
+        "other": "Other reason (see note)"
+      },
+      "catalogueTitle": "Catalogue and kill switches",
+      "catalogueLede": "Stopping blocks authoring and playback at once with a translated message and touches no package. Hiding removes the plugin from the catalogue while its packages keep working.",
+      "catalogueEmpty": "No published plugins yet.",
+      "platformOwned": "platform plugin",
+      "enable": "Re-enable",
+      "disable": "Stop plugin",
+      "disableNote": "Reason shown to learners (optional)",
+      "hide": "Hide from catalogue",
+      "show": "Return to catalogue",
+      "current": "current",
+      "enableVersion": "Re-enable version",
+      "disableVersion": "Stop version",
+      "decidedTitle": "Past decisions",
+      "decisions": {
+        "approved": "approved",
+        "rejected": "rejected"
+      },
+      "openDetail": "Details and preview"
+    },
+    "content": {
+      "title": "Content",
+      "lede": "Search for one package or course; the full list is never dumped. Open an item to see its data, derivation chain, versions and preview in the sandboxed player.",
+      "searchPlaceholder": "Search by title or summary",
+      "status": "Status",
+      "anyStatus": "Any status",
+      "kind": "Kind",
+      "anyKind": "Packages and courses",
+      "kinds": {
+        "package": "Package",
+        "course": "Course"
+      },
+      "search": "Search",
+      "results": "{count, plural, =0 {No results} one {# result} other {# results}}",
+      "recent": "Most recently changed",
+      "noResults": "Nothing matches your search.",
+      "empty": "No content on the platform yet.",
+      "items": "{count, plural, =0 {no items} one {# item} other {# items}}",
+      "hiddenBecause": "Hidden: {reason}",
+      "owner": "Owner",
+      "pair": "Language pair",
+      "level": "Level",
+      "skills": "Skills",
+      "tags": "Tags",
+      "dates": "Dates",
+      "createdOn": "created on {date}",
+      "publishedOn": "published on {date}",
+      "moderationTitle": "Moderation",
+      "moderationLede": "Hiding published content takes it off the community at once with a written reason its owner reads; the file and its versions stay intact and it can be restored any time. Every step is logged.",
+      "moderatedBy": "by @{username} on {date}",
+      "warningLater": "Sending a warning to the owner and assigning cases to a specific moderator arrive with the case system in S4.",
+      "moderate": {
+        "reason": "Reason for hiding",
+        "reasonHint": "The owner reads it in their editor. Be precise: which rule, and what it takes to restore.",
+        "hide": "Hide from the community",
+        "hideQuestion": "Confirm hiding? Members will stop seeing this content immediately.",
+        "restore": "Restore to the community",
+        "restoreQuestion": "Confirm restoring? The content becomes visible again.",
+        "notApplicable": "Hiding applies to published content only; drafts and archives are not visible to the community anyway."
+      },
+      "lineageTitle": "Derivation chain",
+      "lessonsTitle": "{count, plural, =0 {Course packages} one {# package in the course} other {# packages in the course}}",
+      "noLessons": "No packages in this course yet.",
+      "inCoursesTitle": "In courses",
+      "versionsTitle": "{count, plural, =0 {Versions} one {# version} other {# versions}}",
+      "noVersions": "No version published yet.",
+      "versionN": "Version {n}",
+      "current": "current",
+      "previewTitle": "Preview of the published version",
+      "previewDraftTitle": "Preview of the draft",
+      "previewLede": "What the learner sees, in the same sandboxed player; nothing is saved from here.",
+      "pluginMissing": "The plugin this package is built on is not available.",
+      "pluginPaused": "The plugin is paused by moderation; the package cannot run until the pause is lifted.",
+      "unreadable": "The package file could not be read."
+    },
+    "pluginDetail": {
+      "communityPlugin": "Community plugin",
+      "platformPlugin": "Core plugin of the platform",
+      "backToModeration": "Back to plugin moderation",
+      "activitiesTitle": "{count, plural, =0 {Activities} one {# activity} other {# activities}}",
+      "showingDraft": "Showing the draft whose publication is requested.",
+      "showingPublished": "Showing the current published version.",
+      "scoring": "Scoring",
+      "graded": "graded field",
+      "templatesCount": "{count, plural, =0 {no templates} one {# template} other {# templates}}",
+      "assetsAllowed": "Assets allowed: {kinds}",
+      "draftInvalid": "This plugin's draft does not pass the contract yet; no preview.",
+      "versionsTitle": "{count, plural, =0 {Versions} one {# version} other {# versions}}",
+      "noVersions": "No version published yet.",
+      "current": "current",
+      "requestLine": "Publish request {version} — {status} — {date}",
+      "previewTitle": "Try the plugin",
+      "previewLede": "Fill in a throwaway item and run it in the sandboxed player as the learner will see it; nothing is written to any table."
+    },
+    "member": {
+      "visibility": "Visibility",
+      "memberSince": "Member since",
+      "uiLocale": "Interface language",
+      "location": "Location",
+      "publicPage": "Public page",
+      "contentTitle": "{count, plural, =0 {Content} one {# content item} other {# content items}}",
+      "noContent": "This member has not created any content.",
+      "pluginsTitle": "{count, plural, =0 {Plugins} one {# plugin} other {# plugins}}",
+      "noPlugins": "No plugins for this member.",
+      "supportTitle": "{count, plural, =0 {Support requests} one {# support request} other {# support requests}}",
+      "noSupport": "No support requests."
     }
   },
   "profile": {
@@ -651,10 +875,602 @@
       "content_creator": "Content creator",
       "moderator": "Moderator",
       "administrator": "Administrator",
-      "super_administrator": "Super administrator"
+      "super_administrator": "Super administrator",
+      "contributor": "Contributor"
     },
     "apply": "Apply",
     "exit": "Back to my permissions",
     "note": "Limits the interface and actions only; the database still knows you as the owner."
+  },
+  "player": {
+    "frameTitle": "Activity player",
+    "frameError": "This activity could not be shown. Reload the page or report the problem.",
+    "disabledTitle": "This activity is paused",
+    "disabledBody": "Moderation has paused this plugin or this version. The content itself is untouched and returns once the pause is lifted.",
+    "check": "Check",
+    "reset": "Reset",
+    "reveal": "Show answer",
+    "correct": "Correct",
+    "incorrect": "Incorrect",
+    "expected": "Expected answer:",
+    "again": "Didn’t know",
+    "hard": "Hard",
+    "good": "Knew it",
+    "easy": "Easy",
+    "chooseOne": "Choose the answer",
+    "orderHint": "Tap the words in the right order; tap a word in the answer to put it back.",
+    "matchHint": "Match each item with its counterpart.",
+    "blankHint": "Fill in the blanks.",
+    "empty": "Nothing to show."
+  },
+  "editor": {
+    "item": {
+      "optional": "optional",
+      "add": "Add",
+      "remove": "Remove",
+      "moveUp": "Up",
+      "moveDown": "Down",
+      "entry": "Entry {n}",
+      "option": "Option {n}",
+      "correct": "Correct answer",
+      "markCorrectOne": "Mark the correct option.",
+      "markCorrectMany": "Mark every correct option.",
+      "left": "First side {n}",
+      "right": "Matching side {n}",
+      "token": "Word {n}",
+      "orderingHint": "Write the words in their correct order; the player shuffles them for the learner.",
+      "blankHint": "Write the text with '{{0}}', '{{1}}'… where the gaps go, then the accepted answers for each gap separated by |.",
+      "blank": "Gap '{{'{n}'}}'",
+      "blankAccepted": "Accepted answers, separated by |",
+      "noImage": "— no picture —",
+      "altText": "Alternative text describing the picture (required)",
+      "edit": "Edit",
+      "preview": "Preview as a learner",
+      "history": "History",
+      "underModeration": "This item is under moderation and cannot be edited now.",
+      "pluginPaused": "The plugin this package is built on has been paused by moderation; it cannot play until the pause is lifted, and the file itself is untouched.",
+      "created": "Draft created. Fill the items, then publish.",
+      "metadataTitle": "Metadata",
+      "itemsTitle": "Items",
+      "itemsLede": "Each item is an activity of the plugin. The order is the learner's order; identifiers never change, whatever you edit.",
+      "itemsEmpty": "No items yet. Add the first one.",
+      "untitledItem": "(item without text yet)",
+      "draftUnreadable": "The package draft could not be read.",
+      "addItem": "Add item",
+      "chooseActivity": "Activity kind",
+      "removeItem": "Remove",
+      "publishTitle": "Publication",
+      "publishLedeFirst": "The whole package is checked (limits, assets, schema), then published as a first immutable version.",
+      "publishLedeAgain": "Publishing again creates a new version from the current draft; earlier versions stay in the history.",
+      "unpublishedChanges": "The draft has changes that are not published yet.",
+      "openHistory": "History",
+      "lessonsTitle": "Packages of the course",
+      "lessonsLede": "In the learner's order. Removing a package from the course does not delete the package.",
+      "lessonsEmpty": "No packages in the course yet.",
+      "addToCourse": "Add to the course",
+      "choosePackage": "Package",
+      "noCandidates": "No other package of yours on this language pair.",
+      "removeFromCourse": "Remove from course",
+      "statusTitle": "Status",
+      "courseStatusLede": "Publish the course to show it to the community; archive it when you no longer offer it.",
+      "hiddenByModeration": "Moderation hid this content from the community. Reason: {reason}",
+      "createdCourse": "Course created. Add your packages, order them, then publish."
+    },
+    "title": "My content",
+    "lede": "Your packages and courses. A package is a standalone file built on a plugin from the catalogue; a course orders your packages.",
+    "nav": {
+      "mine": "All my content",
+      "newPackage": "New package",
+      "newCourse": "New course"
+    },
+    "statuses": {
+      "draft": "Draft",
+      "published": "Published",
+      "archived": "Archived",
+      "hidden": "Hidden",
+      "removed": "Removed"
+    },
+    "list": {
+      "title": "All my content",
+      "filterStatus": "Status",
+      "filterKind": "Kind",
+      "filterPlugin": "Plugin",
+      "filterPair": "Language pair",
+      "all": "All",
+      "apply": "Filter",
+      "kinds": {
+        "package": "Package",
+        "course": "Course"
+      },
+      "items": "{count, plural, =0 {no items} one {# item} other {# items}}",
+      "empty": "No content yet. Create your first package on one of the available plugins, then publish it to the community.",
+      "emptyFiltered": "Nothing matches this filter.",
+      "createFirst": "Create your first package",
+      "notices": {
+        "created": "Created. Add its content, then publish when it is complete."
+      }
+    },
+    "create": {
+      "title": "Title",
+      "lede": "Choose the plugin (activity kind), the language pair you author for, a starting template and a title. The package starts as a draft with empty fields.",
+      "plugin": "Plugin",
+      "pair": "Language pair",
+      "pairHint": "From your language pairs in “My languages”.",
+      "template": "Starting template",
+      "templateHint": "A skeleton with empty items and hints; it holds no ready-made sentence.",
+      "noTemplate": "— no template: one empty item —",
+      "create": "Create the draft",
+      "creating": "Creating…",
+      "noPlugins": "No plugin is available in the catalogue right now.",
+      "noPairs": "Add a language pair first in “My languages”.",
+      "addPair": "Add a language pair",
+      "titleHint": "In English. An optional translation of the title can be added later in the metadata."
+    },
+    "course": {
+      "newTitle": "New course",
+      "lede": "A course orders your packages into one path for a language pair. It may mix packages of different plugins, and holds your own packages only.",
+      "pair": "Language pair",
+      "title": "Title",
+      "summary": "Summary",
+      "optional": "optional",
+      "create": "Create the course",
+      "creating": "Creating…",
+      "noPairs": "Add a language pair first in “My languages”.",
+      "addPair": "Add a language pair",
+      "titleHint": "In English. An optional translation of the title can be added later in the metadata."
+    },
+    "metadata": {
+      "title": "Title",
+      "summary": "Summary",
+      "summaryHint": "Shown in search and browsing.",
+      "optional": "optional",
+      "dialect": "Dialect tag",
+      "dialectHint": "Such as algerian-arabic; Latin letters, digits and hyphens.",
+      "cefr": "Level (CEFR)",
+      "noLevel": "— no level —",
+      "cefrSublevel": "Sub-level",
+      "cefrSublevelHint": "A1.1, A1.2… needs a level.",
+      "skills": "Skills",
+      "tags": "Free tags",
+      "tagsHint": "Comma-separated; normalised automatically (lowercase, hyphens).",
+      "save": "Save metadata",
+      "saving": "Saving…",
+      "saved": "Metadata saved.",
+      "titleHint": "In English; it is the reference name of the package everywhere.",
+      "translationsTitle": "Optional translations of the title and summary",
+      "translationsLede": "Shown to members using that interface language; an empty field falls back to the English text.",
+      "translatedTitle": "Title",
+      "translatedSummary": "Summary"
+    },
+    "itemEditor": {
+      "title": "Item {n} — {activity}",
+      "lede": "The fields are generated from the plugin definition. Save explicitly after editing.",
+      "readOnly": "Read only.",
+      "skill": "Skill",
+      "skillHint": "The skill this item trains (default from the plugin).",
+      "save": "Save item",
+      "saving": "Saving…",
+      "saved": "Item saved.",
+      "uploadTitle": "Picture for “{field}”",
+      "uploadLede": "The picture is stored inside the package itself, never as a link. Alternative text is required.",
+      "file": "Picture file",
+      "alt": "Alternative text",
+      "altHint": "A short description for those who cannot see the picture.",
+      "upload": "Upload into the package",
+      "uploading": "Uploading…",
+      "imageAdded": "Picture added and linked to the field.",
+      "backToPackage": "Back to the package"
+    },
+    "publish": {
+      "note": "Version note",
+      "optional": "optional",
+      "publish": "Publish the first version",
+      "publishAgain": "Publish a new version",
+      "question": "What is in the draft now will be published as a new version. Confirm?",
+      "published": "Version published."
+    },
+    "packageIssues": {
+      "not_a_package": "the file is not a valid package",
+      "too_large": "the package exceeds the size limit",
+      "too_many_entries": "more entries than allowed",
+      "bad_entry_path": "a path inside the package is not allowed",
+      "symlink_entry": "a symbolic link inside the package",
+      "entry_too_large": "an entry exceeds its size limit",
+      "missing_manifest": "manifest missing",
+      "missing_content": "content missing",
+      "manifest_invalid": "invalid manifest",
+      "content_invalid": "invalid content",
+      "too_many_items": "too many items",
+      "too_many_assets": "too many pictures",
+      "asset_too_large": "a picture exceeds its size limit",
+      "asset_missing": "a declared picture is missing",
+      "asset_undeclared": "a picture is not declared in the manifest",
+      "asset_type_mismatch": "a picture's real type differs from the declared one",
+      "asset_sha256_mismatch": "a picture's hash does not match",
+      "asset_reference_missing": "a picture field points at a missing picture",
+      "items_count_mismatch": "the item count does not match the manifest",
+      "duplicate_item_id": "duplicate item identifier",
+      "unknown_plugin": "plugin not found",
+      "unknown_schema_version": "unsupported plugin schema version",
+      "schema_mismatch": "an item does not match the plugin schema (missing or invalid field)",
+      "sha256_mismatch": "the content hash does not match"
+    },
+    "history": {
+      "title": "History",
+      "lede": "Every publication adds an immutable version. Rolling back republishes an earlier version as a newer one and returns the draft to it.",
+      "empty": "No version published yet.",
+      "version": "Version {n}",
+      "current": "current",
+      "items": "{count, plural, one {# item} other {# items}}",
+      "rollbackNote": "Rollback to version {n}",
+      "preview": "Preview",
+      "rollbackTo": "Roll back to version {n}",
+      "rollbackQuestion": "Version {n} will be republished as a newer version and the draft will return to it. Confirm?",
+      "rolledBack": "Rolled back."
+    },
+    "status": {
+      "archive": "Archive",
+      "archiveQuestion": "It will disappear from browsing while its versions remain. Confirm?",
+      "republish": "Republish",
+      "republishQuestion": "It will return to browsing with its current version. Confirm?",
+      "changed": "Status changed.",
+      "publish": "Publish the course",
+      "publishQuestion": "The course will appear to the community with its published packages. Confirm?"
+    },
+    "preview": {
+      "title": "Preview as a learner",
+      "titleVersion": "Preview of version {n}",
+      "lede": "The very player learners will see, fully sandboxed. The instant result is for display; the button below asks the server for the authoritative one.",
+      "unreadable": "The package could not be read.",
+      "noItems": "No items to show.",
+      "previous": "Previous",
+      "next": "Next",
+      "position": "{n} of {total}",
+      "instant": "Instant result from the frame",
+      "none": "not answered yet",
+      "correct": "correct",
+      "incorrect": "incorrect",
+      "instantNote": "Display only; never stored.",
+      "serverCheck": "Check on the server",
+      "checking": "Checking…",
+      "server": "Server result",
+      "displayOnly": "This item is display-only and is not scored.",
+      "serverNote": "The authoritative score is computed on the server from the stored package and your answer, with the platform's evaluators.",
+      "paused": {
+        "plugin_disabled": "Moderation has paused this plugin. The package is untouched and will play once the pause is lifted.",
+        "version_disabled": "Moderation has paused this version of the plugin.",
+        "plugin_not_published": "The plugin is not published."
+      },
+      "errors": {
+        "invalid": "Invalid answer.",
+        "result_field_forbidden": "Refused: no result is accepted from the browser.",
+        "sign_in_required": "Sign in first.",
+        "not_found": "Item not found.",
+        "plugin_paused": "The plugin is paused.",
+        "package_invalid": "The package does not match the plugin schema."
+      }
+    },
+    "errors": {
+      "sign_in_required": "Sign in first.",
+      "invalid_input": "Invalid input.",
+      "not_found": "Item not found.",
+      "not_owner": "Not your content.",
+      "under_moderation": "The item is under moderation.",
+      "content_creator_role_required": "This page is for content creators.",
+      "package_missing": "The package file is missing.",
+      "package_invalid": "The package does not pass validation yet; see the details.",
+      "plugin_unavailable": "The plugin is not available right now.",
+      "pair_invalid": "Choose one of your language pairs.",
+      "fix_fields": "Check the marked fields, then save again.",
+      "too_many_assets": "The package has reached its picture limit.",
+      "publish_first": "Publish a version first.",
+      "already_current": "This is already the current version.",
+      "already_in_course": "The package is already in the course.",
+      "own_packages_only": "Only your own packages on the same language pair can be added to the course.",
+      "unexpected": "Something unexpected happened. Try again.",
+      "pair_mismatch": "This package belongs to a different language pair; a course only holds packages of its own pair."
+    },
+    "outcomes": {
+      "saved": "Saved.",
+      "lesson_added": "Package added to the course.",
+      "lesson_removed": "Removed from the course.",
+      "image_added": "Picture added.",
+      "published": "Published.",
+      "rolled_back": "Rolled back.",
+      "status_archived": "Archived.",
+      "status_published": "Published.",
+      "status_draft": "Back to draft."
+    }
+  },
+  "studio": {
+    "title": "Plugin Studio",
+    "lede": "This is where a kind of activity is built: its item structure, fields, scoring and templates, without code. The content itself is authored by content creators in their editor.",
+    "nav": {
+      "mine": "My plugins",
+      "new": "New plugin"
+    },
+    "plugin": {
+      "overview": "Overview",
+      "info": "Definition",
+      "activities": "Activities",
+      "templates": "Templates",
+      "preview": "Preview",
+      "advanced": "Advanced",
+      "disabledNotice": "Moderation has stopped this plugin. It cannot be edited or published until the stop is lifted; existing packages are untouched."
+    },
+    "status": {
+      "draft": "Draft",
+      "pending_review": "Awaiting review",
+      "published": "Published",
+      "hidden": "Hidden",
+      "disabled": "Stopped"
+    },
+    "notices": {
+      "contributor": "Your account is now a contributor account. Start a new plugin or import a definition.",
+      "deleted": "Draft deleted."
+    },
+    "mine": {
+      "title": "My plugins",
+      "empty": "You have not built a plugin yet. A plugin defines a kind of activity (such as “complete the dialogue”) that content creators build their packages on.",
+      "createFirst": "Build your first plugin",
+      "platformPlugin": "platform plugin",
+      "activities": "{count, plural, =0 {no activities} one {# activity} other {# activities}}",
+      "templates": "{count, plural, =0 {no templates} one {# template} other {# templates}}"
+    },
+    "create": {
+      "title": "New plugin",
+      "lede": "Choose a permanent identifier and a name in each language. Everything else is built in the following sections.",
+      "pluginId": "Identifier",
+      "pluginIdHint": "Lowercase Latin letters, digits and hyphens, for example complete-the-dialogue. It never changes after publication.",
+      "name": "Name",
+      "create": "Create the draft",
+      "creating": "Creating…",
+      "nameHint": "In English; it is the reference name of the plugin. Arabic and French translations are optional.",
+      "optional": "optional"
+    },
+    "info": {
+      "title": "Definition",
+      "lede": "The name and description (in English, with two optional translations), the version number to publish and the schema version.",
+      "name": "Name",
+      "description": "Description",
+      "version": "Version",
+      "versionHint": "In the form x.y.z. Must be new at every publication.",
+      "schemaVersion": "Schema version",
+      "schemaVersionHint": "Raised only for a breaking change of the item structure (usually stays 1).",
+      "allowImages": "The plugin allows pictures inside packages (required if it has a picture field)",
+      "save": "Save",
+      "saving": "Saving…",
+      "saved": "Definition saved.",
+      "optional": "optional",
+      "englishFirst": "The English name and description are required; Arabic and French are optional translations shown instead for members using that language."
+    },
+    "activities": {
+      "title": "Activities",
+      "lede": "Each activity is a kind of item a package may contain: its fields from the catalogue, the graded field and its evaluator.",
+      "empty": "No activities yet. Add the first one to define the item structure.",
+      "add": "Add an activity",
+      "moveUp": "Up",
+      "moveDown": "Down",
+      "remove": "Remove activity"
+    },
+    "activity": {
+      "newTitle": "New activity",
+      "editTitle": "Activity {id}",
+      "lede": "Compose the item structure from the field-type catalogue, then choose the field the learner answers. The schema and the editor fields are generated automatically.",
+      "id": "Identifier",
+      "idHint": "Lowercase Latin letters, digits and hyphens.",
+      "skill": "Default skill",
+      "name": "Name",
+      "description": "Description",
+      "fieldsTitle": "Item fields",
+      "fieldsLede": "In the order the content creator and the learner will see. Each field has a fixed key and an English label, with two optional translations.",
+      "noFields": "No fields yet.",
+      "fieldKey": "Field key",
+      "required": "required",
+      "label": "Label",
+      "hint": "Hint",
+      "addField": "Add field",
+      "removeField": "Remove",
+      "moveUp": "Up",
+      "moveDown": "Down",
+      "options": {
+        "max_length": "max length",
+        "min_items": "min entries",
+        "max_items": "max entries",
+        "min_options": "min options",
+        "max_options": "max options",
+        "min_pairs": "min pairs",
+        "max_pairs": "max pairs",
+        "min_tokens": "min words",
+        "max_tokens": "max words",
+        "max_blanks": "max gaps"
+      },
+      "scoringTitle": "Scoring",
+      "scoringLede": "Scores are computed by the platform's reference evaluators; the plugin only chooses the field and the evaluator and carries no scoring logic.",
+      "gradedField": "Field the learner answers",
+      "noGradedField": "— no graded field —",
+      "evaluator": "Reference evaluator",
+      "evaluators": {
+        "multiple_choice": "multiple choice",
+        "fill_blank": "fill in the blank",
+        "matching": "matching",
+        "word_order": "word order",
+        "self_assessment": "self-assessment",
+        "none": "display only"
+      },
+      "ignoreCase": "ignore letter case",
+      "ignoreDiacritics": "ignore Arabic diacritics",
+      "selfAssessment": "Self-assessment: the learner reveals the hidden fields, then rates their own recall",
+      "revealFields": "Fields hidden until the learner reveals them:",
+      "displayOnly": "Display only (no scoring)",
+      "save": "Save activity",
+      "saving": "Saving…",
+      "saved": "Activity saved.",
+      "optional": "optional"
+    },
+    "fieldTypes": {
+      "short_text": "short text",
+      "long_text": "long text",
+      "item_list": "list of entries",
+      "single_choice": "single choice",
+      "multiple_choice": "multiple choice",
+      "matching_pairs": "matching pairs",
+      "ordering": "ordering",
+      "blank_in_text": "gap in text",
+      "image": "picture with alt text"
+    },
+    "skills": {
+      "listening": "listening",
+      "reading": "reading",
+      "pronunciation": "pronunciation",
+      "writing": "writing"
+    },
+    "templates": {
+      "title": "Templates",
+      "lede": "A template is a starting skeleton for the creator: which activities to begin with and a hint per field. It carries no sentence of content.",
+      "empty": "No templates yet. A template spares the creator a blank page.",
+      "needActivity": "Add at least one activity before creating a template.",
+      "add": "Add a template",
+      "items": "{count, plural, one {# item} other {# items}}",
+      "remove": "Remove template"
+    },
+    "template": {
+      "newTitle": "New template",
+      "editTitle": "Template {id}",
+      "lede": "Choose the activities the template starts with and write a hint for each field. Fields always stay empty.",
+      "id": "Identifier",
+      "name": "Name",
+      "description": "Description",
+      "itemsTitle": "Starting items",
+      "itemsLede": "Each item points at an activity, with optional hints in each language.",
+      "item": "Item {n}",
+      "activity": "Activity",
+      "hint": "Hint",
+      "addItem": "Add item",
+      "removeItem": "Remove",
+      "moveUp": "Up",
+      "moveDown": "Down",
+      "save": "Save template",
+      "saving": "Saving…",
+      "saved": "Template saved.",
+      "optional": "optional"
+    },
+    "preview": {
+      "title": "Preview in the sandboxed player",
+      "lede": "Fill a throwaway item as a creator would, then show it in the very player learners will use. Nothing on this page is saved.",
+      "fixFirst": "Fix the definition until it matches the contract (see Overview) before previewing.",
+      "activity": "Activity",
+      "render": "Show in the player",
+      "frameTitle": "What the learner sees",
+      "empty": "Fill the item, then press “Show in the player”.",
+      "instant": "Instant result from the frame",
+      "correct": "correct",
+      "incorrect": "incorrect",
+      "instantNote": "Display only; the authoritative score is computed on the server and a frame result is never stored.",
+      "answerReceived": "Answer as received from the frame"
+    },
+    "advanced": {
+      "title": "Advanced",
+      "lede": "The schema is generated from the activities. Pasting a schema by hand is an escape hatch for special cases only, and may make the editor diverge from what packages accept.",
+      "generatedTitle": "Generated schema (read-only)",
+      "customTitle": "Paste a JSON Schema by hand (advanced)",
+      "useCustom": "Use the pasted schema instead of the generated one",
+      "schema": "JSON Schema 2020-12",
+      "schemaHint": "Validated against the meta-schema before saving.",
+      "save": "Save",
+      "saving": "Saving…",
+      "saved": "Saved."
+    },
+    "overview": {
+      "contractTitle": "Contract check",
+      "contractOk": "The definition matches the contract: {activities, plural, one {# activity} other {# activities}} and {templates, plural, =0 {no templates} one {# template} other {# templates}}.",
+      "contractFails": "{count, plural, one {# problem prevents} other {# problems prevent}} publication:",
+      "publishTitle": "Publication",
+      "publishLedeDirect": "As the platform owner you publish the version to the catalogue at once.",
+      "publishLedeReview": "A publish request goes to moderation; once approved, the version is published to the catalogue and becomes available to content creators.",
+      "pendingReview": "Version {version} is awaiting moderation review.",
+      "decision": {
+        "approved": "Version {version} was approved and published.",
+        "rejected": "Version {version} was rejected."
+      },
+      "reasons": {
+        "contract": "Reason: does not match the plugin contract.",
+        "quality": "Reason: insufficient quality (labels, translations, structure).",
+        "duplicate": "Reason: duplicate of an existing plugin.",
+        "policy": "Reason: violates community rules.",
+        "other": "Reason: see the note."
+      },
+      "fixFirst": "Fix the problems above, then come back to publish.",
+      "versionsTitle": "Published versions",
+      "noVersions": "No version published yet.",
+      "current": "current",
+      "versionDisabled": "stopped",
+      "dangerTitle": "Delete the draft",
+      "dangerLede": "Only for a draft that has never been published.",
+      "deleteDraft": "Delete the draft permanently",
+      "deleteQuestion": "Delete this draft permanently?"
+    },
+    "publish": {
+      "note": "Version note",
+      "optional": "optional",
+      "publishVersion": "Publish version {version}",
+      "requestVersion": "Request publication of version {version}",
+      "publishQuestion": "This version will be published at once and can no longer be edited. Confirm?",
+      "requestQuestion": "This version will be sent to moderation for review. Confirm?",
+      "outcomes": {
+        "published": "Version published to the catalogue.",
+        "requested": "Publish request sent to moderation."
+      }
+    },
+    "issues": {
+      "invalid": "invalid value",
+      "format_invalid": "unknown definition format",
+      "plugin_id_invalid": "invalid plugin identifier",
+      "version_invalid": "invalid version number",
+      "name_missing": "name missing in one language",
+      "description_missing": "description missing in one language",
+      "activities_empty": "no activities",
+      "activity_id_duplicate": "duplicate activity identifier",
+      "field_key_duplicate": "duplicate field key",
+      "graded_field_missing": "the graded field does not exist",
+      "graded_field_not_gradable": "this kind of field cannot be graded",
+      "evaluator_incompatible": "the evaluator does not fit the graded field",
+      "reveal_field_missing": "a revealed field does not exist",
+      "template_id_duplicate": "duplicate template identifier",
+      "template_activity_missing": "the template points at a missing activity",
+      "template_hint_field_missing": "a hint for a missing field",
+      "templates_too_many": "too many templates",
+      "capabilities_not_empty": "the plugin requests capabilities, which is refused at this stage",
+      "asset_kind_not_allowed": "asset kind not allowed (or a picture field without allowing pictures in the definition)",
+      "content_schema_invalid": "the content schema is not a valid JSON Schema",
+      "authoring_fields_mismatch": "the editor fields do not match the activities",
+      "definition_too_large": "the definition exceeds the size limit"
+    },
+    "errors": {
+      "sign_in_required": "Sign in first.",
+      "contributor_role_required": "This action is for contributors.",
+      "invalid_input": "Invalid input.",
+      "not_found": "Plugin not found.",
+      "not_owner": "Not your plugin.",
+      "plugin_disabled": "The plugin has been stopped by moderation.",
+      "activity_invalid": "The activity does not match the contract. Check the marked fields.",
+      "activity_id_duplicate": "This activity identifier is used by another activity.",
+      "field_key_duplicate": "Duplicate field key inside the activity.",
+      "template_invalid": "The template does not match the contract.",
+      "template_id_duplicate": "This template identifier is used by another template.",
+      "template_activity_missing": "The template points at a missing activity.",
+      "templates_too_many": "Too many templates for the allowed limit.",
+      "definition_invalid": "The definition does not match the contract yet; see Overview.",
+      "request_pending": "A publish request is already pending for this plugin.",
+      "version_exists": "This version was published before; raise the version number in Definition.",
+      "not_a_draft": "Only a never-published draft can be deleted.",
+      "definition_too_large": "The file exceeds the allowed size.",
+      "slug_taken": "This plugin identifier already exists in this environment.",
+      "unexpected": "Something unexpected happened. Try again.",
+      "storage_unavailable": "The file store cannot be reached right now; nothing was saved. Try again in a moment."
+    },
+    "outcomes": {
+      "saved": "Saved."
+    }
   }
 }

@@ -37,6 +37,7 @@ export default async function proxy(request: NextRequest) {
 }
 
 export const config = {
-  // Everything except API routes, Next.js internals and files with an extension.
-  matcher: "/((?!api|trpc|_next|_vercel|.*\\..*).*)",
+  // Everything except API routes, the sandboxed player document (/play: no locale
+  // negotiation, no session cookie), Next.js internals and files with an extension.
+  matcher: "/((?!api|play|trpc|_next|_vercel|.*\\..*).*)",
 };

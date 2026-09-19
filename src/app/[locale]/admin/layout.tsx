@@ -24,6 +24,10 @@ export default async function AdminLayout({ children, params }: LayoutProps<"/[l
       { href: "/admin/feedback", labelKey: "feedback", badge: overview.newFeedback },
     );
   }
+  if (can(actor, "plugins.review"))
+    items.push({ href: "/admin/plugins", labelKey: "plugins", badge: overview.pendingPluginRequests });
+  // Decision R17: only the owner and super administrators browse all content; lower ranks reach items through cases.
+  if (can(actor, "admin.oversee_all")) items.push({ href: "/admin/content", labelKey: "content" });
   if (can(actor, "admin.manage_users")) items.push({ href: "/admin/users", labelKey: "users" });
   if (can(actor, "admin.platform_settings")) items.push({ href: "/admin/settings", labelKey: "settings" });
 

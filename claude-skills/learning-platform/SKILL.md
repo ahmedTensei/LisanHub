@@ -7,6 +7,10 @@ description: Provides domain guidance for the language-learning experience, lang
 
 The platform is learner-driven rather than a single forced curriculum.
 
+**Long-term direction (decision R12, Ahmed 2026-09-18):** a content creator must eventually be able to build a complete course of the kind Duolingo and the other language apps offer — a path of units and lessons with varied activities, progress, review and motivation — entirely from the platform's plugins, packages and courses, without code. Every stage from S3 on moves toward that: the learner experience (S3) plays packages and courses with progress and spaced repetition; later stages add paths, units, placement and motivation loops. Do not build Duolingo-specific shortcuts into platform code: each kind of activity stays a plugin (decision R7) and each course stays data.
+
+**Language pair confinement (decision R15):** every package and course belongs to exactly one pair; a course holds packages of its own pair only; a learner studying a pair is shown that pair's material only. Never mix pairs in a path or a review queue.
+
 ## Language model
 
 - Educational resources are associated with a language pair: comfortable/native language -> target language.

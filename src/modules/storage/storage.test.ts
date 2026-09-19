@@ -49,7 +49,7 @@ describe("storage provider contract (memory implementation)", () => {
     });
     await storage.upload(ref, new Uint8Array([4]), { contentType: "image/png", upsert: true });
     expect(storage.get(ref)?.bytes).toEqual(new Uint8Array([4]));
-    expect(storage.publicUrl(ref)).toBe("https://cdn.example/public/avatars/u1/a.png");
+    expect(storage.publicUrl(ref)).toBe("https://cdn.example/avatars/u1/a.png");
   });
 
   it("keeps private objects behind signed urls only", async () => {

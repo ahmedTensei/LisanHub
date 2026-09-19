@@ -1,5 +1,14 @@
 import { beforeAll, describe, expect, it } from "vitest";
-import { asAnon, asUser, createMigratedDb, createUser, type Db } from "./harness";
+import {
+  asAnon,
+  asUser,
+  createMigratedDb,
+  createReferencePlugin,
+  createUser,
+  PACKAGE_SHA,
+  packageKey,
+  type Db,
+} from "./harness";
 
 /**
  * Support requests and the administration functions (decision R4 and the
@@ -134,6 +143,75 @@ describe("support requests and administration", () => {
     expect(audited.rows[0].count).toBeGreaterThanOrEqual(3);
   });
 
+  it("lets moderation hide published content with a reason and restore it, keeping the file (decision R17)", async () => {
+    const plugin = await createReferencePlugin(db, "moderation-plugin");
+    const author = await createUser(db, "moderated_author");
+    await asUser(db, author, () => db.query("select public.become_content_creator()"));
+    const item = await asUser(db, author, () =>
+      db.query<{ id: string }>(
+        `insert into public.content_items (kind, owner_id, source_lang, target_lang, title, plugin_id, package_key, package_sha256)
+         values ('package', $1, 'ara', 'fra', 'Moderated pack', $2, $3, $4) returning id`,
+        [author, plugin, packageKey(author, "draft-moderated"), PACKAGE_SHA],
+      ),
+    );
+    const itemId = item.rows[0].id;
+    const version = await asUser(db, author, () =>
+      db.query<{ id: string }>(
+        "insert into public.content_versions (item_id, package_key, package_sha256, items_count) values ($1, $2, $3, 1) returning id",
+        [itemId, packageKey(author, itemId + "-v1"), PACKAGE_SHA],
+      ),
+    );
+    await asUser(db, author, () =>
+      db.query("update public.content_items set status = 'published', current_version_id = $2 where id = $1", [
+        itemId,
+        version.rows[0].id,
+      ]),
+    );
+
+    const moderate = (who: string, hide: boolean, note: string | null) =>
+      asUser(db, who, () => db.query("select public.moderate_content_item($1, $2, $3)", [itemId, hide, note]));
+    await expect(moderate(other, true, "spam")).rejects.toThrow(/moderation only/);
+    await expect(moderate(moderator, true, "  ")).rejects.toThrow(/reason is required/);
+    await moderate(moderator, true, "Copied from a textbook");
+
+    const hidden = await db.query<{
+      status: string;
+      moderation_note: string;
+      package_key: string;
+      current_version_id: string;
+    }>("select status, moderation_note, package_key, current_version_id from public.content_items where id = $1", [
+      itemId,
+    ]);
+    expect(hidden.rows[0]).toMatchObject({
+      status: "hidden",
+      moderation_note: "Copied from a textbook",
+      package_key: packageKey(author, "draft-moderated"),
+      current_version_id: version.rows[0].id,
+    });
+    // The owner still reads the reason; other members no longer see the item.
+    const ownerView = await asUser(db, author, () =>
+      db.query<{ moderation_note: string }>("select moderation_note from public.content_items where id = $1", [itemId]),
+    );
+    expect(ownerView.rows[0].moderation_note).toBe("Copied from a textbook");
+    const otherView = await asUser(db, other, () =>
+      db.query("select id from public.content_items where id = $1", [itemId]),
+    );
+    expect(otherView.rows).toHaveLength(0);
+
+    await expect(moderate(moderator, true, "again")).rejects.toThrow(/only published content can be hidden/);
+    await moderate(moderator, false, null);
+    const restored = await db.query<{ status: string; moderation_note: string | null }>(
+      "select status, moderation_note from public.content_items where id = $1",
+      [itemId],
+    );
+    expect(restored.rows[0]).toEqual({ status: "published", moderation_note: null });
+    const audit = await db.query<{ n: string }>(
+      "select count(*)::text as n from public.audit_log where target_table = 'content_items' and target_id = $1 and action = 'update'",
+      [itemId],
+    );
+    expect(Number(audit.rows[0].n)).toBeGreaterThanOrEqual(3);
+  });
+
   it("lets moderation triage platform feedback", async () => {
     const inserted = await asUser(db, other, () =>
       db.query<{ id: string }>(
@@ -159,21 +237,22 @@ describe("platform owner and profile details", () => {
     const owner = await createUser(db, "owner_2");
     const student = await createUser(db, "student_2");
     await db.query("insert into public.admin_ranks (user_id, rank) values ($1, 'platform_owner')", [owner]);
+    const plugin = await createReferencePlugin(db);
 
     const created = await asUser(db, owner, () =>
       db.query<{ id: string }>(
-        `insert into public.content_items (kind, owner_id, source_lang, target_lang, title)
-         values ('lesson', $1, 'arq', 'fra', 'Owner lesson') returning id`,
-        [owner],
+        `insert into public.content_items (kind, owner_id, source_lang, target_lang, title, plugin_id)
+         values ('package', $1, 'arq', 'fra', 'Owner lesson', $2) returning id`,
+        [owner, plugin],
       ),
     );
     expect(created.rows).toHaveLength(1);
     await expect(
       asUser(db, student, () =>
         db.query(
-          `insert into public.content_items (kind, owner_id, source_lang, target_lang, title)
-           values ('lesson', $1, 'arq', 'fra', 'Not allowed')`,
-          [student],
+          `insert into public.content_items (kind, owner_id, source_lang, target_lang, title, plugin_id)
+           values ('package', $1, 'arq', 'fra', 'Not allowed', $2)`,
+          [student, plugin],
         ),
       ),
     ).rejects.toThrow(/row-level security/);

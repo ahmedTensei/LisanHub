@@ -1,4 +1,4 @@
-import type { ExerciseAnswer, ExerciseDefinition } from "./definitions";
+import { SELF_RATING_SCORES, type ExerciseAnswer, type ExerciseDefinition } from "./definitions";
 
 export interface Evaluation {
   correct: boolean;
@@ -70,6 +70,12 @@ export function evaluate(exercise: ExerciseDefinition, answer: ExerciseAnswer): 
       const hits = exercise.tokens.filter((t, i) => tokens[i] === t).length;
       const isCorrect = hits === exercise.tokens.length && tokens.length === exercise.tokens.length;
       return { correct: isCorrect, score: isCorrect ? 1 : hits / exercise.tokens.length, expected: exercise.tokens };
+    }
+
+    case "self_assessment": {
+      const rating = (answer as Extract<ExerciseAnswer, { type: "self_assessment" }>).rating;
+      const score = SELF_RATING_SCORES[rating];
+      return { correct: score >= SELF_RATING_SCORES.good, score, expected: exercise.back };
     }
   }
 }

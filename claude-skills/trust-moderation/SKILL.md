@@ -48,6 +48,13 @@ Reports should have:
 
 Separate reporting from final moderation action.
 
+## The administration area is search-first and case-based (decision R17)
+
+- The owner and super administrators oversee everything; every other rank works on **cases**: a report, a support request, a publish request, or an item/member assigned to them. A moderator opens the case, sees exactly what it is about (the item with its preview, the member with their account state and content, the derivation chain if any) and acts from there. No page lists all content or all members to a rank that does not hold `admin.oversee_all`.
+- **Case lifecycle (S4):** open → assigned (by a top rank) or accepted (by the moderator) → in progress → handed over (transfer, help request from a colleague, reassignment after no response, member's request for another moderator) → closed with a decision. Each step is a row in an audit trail with who, when and why; a case is never edited by someone it is not assigned to unless one of those transitions happened.
+- **Actions on content are reversible and explained:** hide with a reason the owner reads (already: `moderate_content_item()`, `content_items.moderation_note`), restore, warning to the owner (S4, needs the notification channel — open decision Q24), request an edit; deletion is never the first tool.
+- **Previews are part of moderation:** a reviewer sees a plugin run in the sandboxed player before approving it, and sees a package as the learner would before deciding on a report.
+
 ## Personal safety
 
 Support personal mute/block behavior where specified, in addition to platform moderation.

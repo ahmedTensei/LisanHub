@@ -12,13 +12,17 @@ export const CAPABILITIES = [
   "chat.participate",
   "profile.edit_own",
   "language_pairs.manage_own",
-  "extension.create",
+  "plugins.author",
+  "plugins.publish",
+  "plugins.review",
+  "plugins.disable",
   "moderation.edit_any_content",
   "moderation.hide_content",
   "moderation.handle_queue",
   "admin.manage_users",
   "admin.approve_roles",
   "admin.platform_settings",
+  "admin.oversee_all",
   "super_admin.manage_administrators",
   "owner.platform_core",
 ] as const;
@@ -40,14 +44,23 @@ const SIGNED_IN: Capability[] = [
 const BY_PRIMARY_ROLE = {
   student: [],
   content_creator: ["content.create", "content.derive_publish"],
-  contributor: ["extension.create"],
+  contributor: ["plugins.author"],
 } as const satisfies Record<string, readonly Capability[]>;
 
 const BY_ADMIN_LEVEL: Record<number, Capability[]> = {
-  1: ["moderation.edit_any_content", "moderation.hide_content", "moderation.handle_queue"],
+  1: [
+    "moderation.edit_any_content",
+    "moderation.hide_content",
+    "moderation.handle_queue",
+    "plugins.review",
+    "plugins.disable",
+  ],
   2: ["admin.manage_users", "admin.approve_roles", "admin.platform_settings"],
-  3: ["super_admin.manage_administrators"],
-  4: ["owner.platform_core"],
+  // admin.oversee_all: the owner and the rank right below act as deputies and see everything (decision R17);
+  // lower ranks reach content, plugins and members through the cases assigned to or accepted by them (S4).
+  3: ["super_admin.manage_administrators", "admin.oversee_all"],
+  // plugins.publish: direct publication (decision R10) — the owner in phase A, verified Contributors later.
+  4: ["owner.platform_core", "plugins.publish", "plugins.author"],
 };
 
 /**

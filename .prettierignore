@@ -6,3 +6,4 @@ docs/specification
 *.md
 src/lib/supabase/database.types.ts
 supabase/templates
+src/player/runtime.generated.ts

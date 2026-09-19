@@ -37,9 +37,26 @@ Storage and indexing:
 - Each row in `content_versions` points at a package key and hash, so rollback is a pointer change.
 - Search in phase A covers metadata only (title, summary, tags, level, language pair). Indexing item text is a separate, later decision.
 
+## Two authoring surfaces — never merge them
+
+1. **Plugin Studio** — a **standalone page at `/studio`, not a section of `/admin`** (decision R10), open to **Contributors**, verified contributors and the platform owner: creates and versions **plugins and their templates** from inside the platform, with no code and no SQL. A guided form picks from a catalogue of field types (short text, long text, item list, single/multiple choice, matching pairs, ordering, blank-in-text, image with alt text) and **generates** `content_schema` and `authoring_fields`; pasting raw JSON Schema is an advanced escape hatch, not the default path. Draft → contract validation (fail closed) → preview in the **same sandboxed player** with a throwaway item that is never persisted → publish an append-only version with its sha256 → kill switch. **Members never import or export plugins or packages** (decision R14): content and plugins move through the community, inside the platform. The only file format is internal — the core plugins are written by `scripts/core-plugins.ts` to `plugins/core/*.lisanplugin.json`, seeded by a generated migration (keys and hashes only) and uploaded to the store by `npm run core:plugins:upload`. **A definition is a file in the store, never a document in the database** (decision R13): the studio draft and every submitted version are `.lisanplugin.json` objects under the owner's folder, rows carry `draft_key`/`definition_key` with a sha256, and `src/server/plugins/store.ts` verifies the hash on every read.
+2. **Content editor** (content creators): builds a **package** for an existing plugin, starting from one of that plugin's templates, with fields generated from `authoring_fields`.
+
+A template is part of the plugin definition (`templates[]`): translated name and description plus an empty structure with hint labels — **never sample sentences** (R8). Templates follow the plugin's version.
+
+Who may do what in the studio (R10): every Contributor authors, edits and previews **their own** plugins and templates; **publishing to the public catalogue** goes through a publish request and moderation review in phase A, and becomes direct for a **verified** contributor once verification exists; **disabling or hiding** a plugin stays with moderation and the owner. Each plugin has an owner and is attributed to them. A member is either a Content Creator or a Contributor, never both, and switching is an explicit, server-verified step.
+
+The studio never accepts code while plugins are declarative; code plugins stay closed until verification and security review.
+
+Dogfood rule: the core plugins are produced **by the studio pipeline** (`scripts/core-plugins.ts`), then written to `plugins/core/`. If the studio cannot express a core plugin, the contract is incomplete — do not hand-write the plugin around it.
+
+Names and descriptions (decision R16): the **English** name and description of a plugin, an activity and a field are required; Arabic and French are optional translations that fall back to English. The same rule names packages and courses (`title` in Latin script, `translations` for the rest).
+
+Every package belongs to exactly one language pair and a course holds packages of its own pair only (decision R15, enforced by a trigger); learners of one pair never meet material of another.
+
 ## Validation before a package is accepted — all of these must fail closed
 
-Validation lives in a framework-free module with tests, and runs server-side on upload, publish and import:
+Validation lives in a framework-free module with tests, and runs server-side on every save and on publish:
 
 - size over the configured limit; item count over the configured limit; asset count or single-asset size over the limit (all of these are `platform_settings`, never constants);
 - any entry with `..`, an absolute path, a symlink, or a path outside the package root;
@@ -90,6 +107,8 @@ Isolation covers the plugin itself — including the plugins we write. This is t
 ## Anti-patterns — reject these in review
 
 - A new activity kind implemented as a `switch` in a React component or a server action.
+- Defining a plugin or a template by hand-editing a migration or SQL instead of the studio, once the studio exists.
+- A template that ships example sentences, or a preview item that gets persisted as content.
 - Content stored as platform-specific rows with no exportable file, or a "package" that is really a database join.
 - Passing the actor, the session, the progress row or a signed URL scoped to the user into the player.
 - Rendering content outside the sandbox "just for the preview", or for first-party plugins.

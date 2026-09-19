@@ -14,13 +14,15 @@ async function toBytes(body: StorageBody): Promise<Uint8Array> {
 
 /**
  * In-memory provider for tests and for running the app without any storage
- * configured. Behaves exactly like a real provider at the interface level.
+ * account. Behaves exactly like a real provider at the interface level; public
+ * objects are served by /api/media, like R2 without a public domain, so
+ * pictures uploaded during a development session display.
  */
 export class MemoryStorageProvider implements StorageProvider {
   readonly name = "memory";
   private readonly objects = new Map<string, StoredObject>();
 
-  constructor(private readonly baseUrl = "memory://storage") {}
+  constructor(private readonly baseUrl = "/api/media") {}
 
   private id(ref: StoredObjectRef): string {
     return `${ref.store}/${ref.key}`;
@@ -32,13 +34,19 @@ export class MemoryStorageProvider implements StorageProvider {
     this.objects.set(id, { bytes: await toBytes(body), contentType: options.contentType });
   }
 
+  async download(ref: StoredObjectRef): Promise<Uint8Array> {
+    const object = this.objects.get(this.id(ref));
+    if (!object) throw new StorageError("not_found", this.id(ref));
+    return object.bytes;
+  }
+
   async remove(refs: readonly StoredObjectRef[]): Promise<void> {
     for (const ref of refs) this.objects.delete(this.id(ref));
   }
 
   publicUrl(ref: StoredObjectRef): string {
     if (ref.store !== "public") throw new StorageError("unauthorized", "private objects need a signed url");
-    return `${this.baseUrl}/public/${ref.key}`;
+    return `${this.baseUrl}/${ref.key}`;
   }
 
   async signedUrl(ref: StoredObjectRef, expiresInSeconds: number): Promise<string> {

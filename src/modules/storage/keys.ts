@@ -15,7 +15,7 @@ export const STORES = ["public", "private"] as const;
 export type StoreName = (typeof STORES)[number];
 
 /** Top-level folders. Adding one here documents the convention for everyone. */
-export const STORAGE_AREAS = ["avatars", "lesson-media", "exports"] as const;
+export const STORAGE_AREAS = ["avatars", "lesson-media", "exports", "packages", "plugins"] as const;
 export type StorageArea = (typeof STORAGE_AREAS)[number];
 
 export const OBJECT_KEY_MAX_LENGTH = 255;
@@ -58,6 +58,8 @@ export const EXTENSION_BY_CONTENT_TYPE: Readonly<Record<string, string>> = {
   "audio/ogg": "ogg",
   "audio/webm": "weba",
   "application/json": "json",
+  // A .lisanpkg content package is a zip (ADR 0006).
+  "application/zip": "lisanpkg",
 };
 
 export function extensionFor(contentType: string): string | null {

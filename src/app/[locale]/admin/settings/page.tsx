@@ -3,7 +3,14 @@ import { ActionForm } from "@/components/forms/action-form";
 import { Alert } from "@/components/ui/alert";
 import { inputClass } from "@/components/ui/field";
 import { canEditPlatformSettings } from "@/modules/authorization/policies";
-import { FEATURE_MODES, SETTING_FIELDS, isFeatureKey, isPlatformSettingKey } from "@/modules/platform/settings";
+import {
+  FEATURE_MODES,
+  SETTING_FIELDS,
+  formatSettingOption,
+  isFeatureKey,
+  isPlatformSettingKey,
+  settingMessageKey,
+} from "@/modules/platform/settings";
 import { updateFeatureFlag, updatePlatformSetting } from "@/server/actions/admin";
 import { getSession, requireCapability } from "@/server/actor";
 import { listFeatureFlags, listPlatformSettings } from "@/server/queries/admin";
@@ -44,8 +51,7 @@ export default async function AdminSettingsPage({ params }: PageProps<"/[locale]
             const known = isPlatformSettingKey(setting.key);
             const field = isPlatformSettingKey(setting.key) ? SETTING_FIELDS[setting.key] : null;
             const current: unknown = JSON.parse(setting.value);
-            // Message keys cannot contain dots (namespace separators).
-            const messageKey = setting.key.replace(/./g, "_");
+            const messageKey = isPlatformSettingKey(setting.key) ? settingMessageKey(setting.key) : setting.key;
             return (
               <li key={setting.key} className={card}>
                 <div className="flex flex-col gap-0.5">
@@ -65,7 +71,7 @@ export default async function AdminSettingsPage({ params }: PageProps<"/[locale]
                       <select name="value" defaultValue={String(current)} className={`${inputClass} h-9 w-auto`}>
                         {field.options.map((option) => (
                           <option key={option} value={String(option)}>
-                            {option}
+                            {formatSettingOption(field, option)}
                           </option>
                         ))}
                       </select>

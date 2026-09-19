@@ -12,9 +12,9 @@ import {
   USERNAME_MAX_LENGTH,
   USERNAME_MIN_LENGTH,
 } from "@/modules/account/schemas";
-import { UI_LOCALES } from "@/modules/account/ui-locales";
+import { UI_LOCALE_NAMES, UI_LOCALES } from "@/modules/account/ui-locales";
 import { SUPPORT_MESSAGE_MAX_LENGTH } from "@/modules/support/requests";
-import { becomeContentCreator, updatePreferences, updateProfile } from "@/server/actions/account";
+import { becomeContentCreator, becomeContributor, updatePreferences, updateProfile } from "@/server/actions/account";
 import { changeEmail, changePassword } from "@/server/actions/auth";
 import { createSupportRequest } from "@/server/actions/support";
 import { Alert } from "@/components/ui/alert";
@@ -23,8 +23,6 @@ import { ConfirmSubmit } from "@/components/ui/confirm-submit";
 import { describedBy, Field, inputClass } from "@/components/ui/field";
 import { PasswordInput } from "@/components/ui/password-input";
 import { fieldCode, formError, formValues } from "./form-state";
-
-const LOCALE_NAMES: Record<string, string> = { ar: "العربية", fr: "Français", en: "English" };
 
 export function ProfileForm(profile: {
   username: string;
@@ -162,7 +160,7 @@ export function PreferencesForm(prefs: { uiLocale: string; visibility: "public" 
         >
           {UI_LOCALES.map((l) => (
             <option key={l} value={l} lang={l}>
-              {LOCALE_NAMES[l] ?? l}
+              {UI_LOCALE_NAMES[l]}
             </option>
           ))}
         </select>
@@ -313,6 +311,32 @@ export function BecomeCreatorForm() {
   const t = useTranslations("account.creator");
   const tAccountErrors = useTranslations("account.errors");
   const [state, action, pending] = useActionState(becomeContentCreator.bind(null, locale), idle);
+  const error = formError(state);
+
+  return (
+    <form
+      action={action}
+      className="flex flex-col gap-4 rounded-[var(--radius-control)] border border-line bg-paper p-4"
+    >
+      {error ? <Alert tone="error">{tAccountErrors(error)}</Alert> : null}
+      <label className="flex cursor-pointer items-start gap-3 text-sm">
+        <input type="checkbox" name="acknowledge" required className="mt-1 size-4 accent-accent" />
+        <span>{t("acknowledge")}</span>
+      </label>
+      <div>
+        <Button type="submit" disabled={pending}>
+          {pending ? t("confirming") : t("confirm")}
+        </Button>
+      </div>
+    </form>
+  );
+}
+
+export function BecomeContributorForm() {
+  const locale = useLocale();
+  const t = useTranslations("account.contributor");
+  const tAccountErrors = useTranslations("account.errors");
+  const [state, action, pending] = useActionState(becomeContributor.bind(null, locale), idle);
   const error = formError(state);
 
   return (

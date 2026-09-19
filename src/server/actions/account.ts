@@ -11,7 +11,7 @@ import { getStorage } from "@/server/storage";
 import { writeViewAs } from "@/server/view-as";
 import { isUiLocale } from "@/modules/account/ui-locales";
 import { can } from "@/modules/authorization/capabilities";
-import { canBecomeContentCreator } from "@/modules/authorization/policies";
+import { canBecomeContentCreator, canBecomeContributor } from "@/modules/authorization/policies";
 import { getSession } from "@/server/actor";
 
 /**
@@ -158,6 +158,22 @@ export async function becomeContentCreator(locale: string, _prev: FormState, for
 
   revalidatePath(`/${uiLocale}/account`);
   redirect(`/${uiLocale}/account?notice=content_creator`);
+}
+
+/** Student -> Contributor (decision R10): the mirror of becomeContentCreator, one path per member. */
+export async function becomeContributor(locale: string, _prev: FormState, formData: FormData): Promise<FormState> {
+  const uiLocale = localeOf(locale);
+  const { actor } = await getSession();
+  const decision = canBecomeContributor(actor);
+  if (!decision.allowed) return { status: "error", error: decision.reason };
+  if (formData.get("acknowledge") !== "on") return { status: "error", error: "acknowledge_required" };
+
+  const supabase = await createSupabaseServerClient();
+  const { error } = await supabase.rpc("become_contributor");
+  if (error) return { status: "error", error: "unexpected" };
+
+  revalidatePath(`/${uiLocale}/account`);
+  redirect(`/${uiLocale}/studio?notice=contributor`);
 }
 
 export async function addLanguagePair(locale: string, _prev: FormState, formData: FormData): Promise<FormState> {

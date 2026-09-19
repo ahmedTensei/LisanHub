@@ -61,7 +61,11 @@ export default async function AdminUsersPage({ params, searchParams }: PageProps
               className="flex flex-col gap-3 rounded-[var(--radius-card)] border border-line bg-surface p-4 shadow-[var(--shadow-card)]"
             >
               <div className="flex flex-wrap items-center gap-2 text-sm">
-                <Link href={`/u/${member.username}`} className="font-semibold hover:text-accent-strong" dir="auto">
+                <Link
+                  href={`/admin/users/${member.username}`}
+                  className="font-semibold hover:text-accent-strong"
+                  dir="auto"
+                >
                   {member.displayName}
                 </Link>
                 <span className="text-ink-muted" dir="ltr">

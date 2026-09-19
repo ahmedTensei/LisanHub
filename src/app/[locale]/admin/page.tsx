@@ -60,6 +60,26 @@ export default async function AdminOverviewPage({ params }: PageProps<"/[locale]
           <li>
             <Stat label={t("work.conductReports")} value={stats.work.conductReports} href="/admin/reports" />
           </li>
+          <li>
+            <Stat label={t("work.pluginRequests")} value={stats.work.pluginRequests} href="/admin/plugins" />
+          </li>
+        </ul>
+      </section>
+
+      <section aria-labelledby="plugins" className="flex flex-col gap-3">
+        <h2 id="plugins" className="text-lg font-bold">
+          {t("plugins.title")}
+        </h2>
+        <ul className="grid gap-3 sm:grid-cols-3">
+          <li>
+            <Stat label={t("plugins.published")} value={stats.plugins.published} href="/admin/plugins" />
+          </li>
+          <li>
+            <Stat label={t("plugins.pending")} value={stats.plugins.pending} href="/admin/plugins" />
+          </li>
+          <li>
+            <Stat label={t("plugins.disabled")} value={stats.plugins.disabled} href="/admin/plugins" />
+          </li>
         </ul>
       </section>
 
@@ -80,6 +100,9 @@ export default async function AdminOverviewPage({ params }: PageProps<"/[locale]
           </li>
           <li>
             <Stat label={t("members.creators")} value={stats.members.creators} />
+          </li>
+          <li>
+            <Stat label={t("members.contributors")} value={stats.members.contributors} />
           </li>
           <li>
             <Stat label={t("members.founding")} value={stats.members.founding} />

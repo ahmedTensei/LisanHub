@@ -49,3 +49,32 @@ export async function asAnon<T>(db: Db, fn: () => Promise<T>): Promise<T> {
     await db.exec("reset role");
   }
 }
+
+/**
+ * Inserts a published platform plugin (owner null, like seeded reference data)
+ * with one version, as a migration would. Returns the plugins.id.
+ */
+export async function createReferencePlugin(db: Db, pluginId = "test-plugin"): Promise<string> {
+  const plugin = await db.query<{ id: string }>(
+    "insert into public.plugins (plugin_id, status) values ($1, 'published') returning id",
+    [pluginId],
+  );
+  const id = plugin.rows[0].id;
+  // The definition itself is a file in the store (decision R13); the row carries its key and hash.
+  const key = `plugins/core/${pluginId}-1.0.0.lisanplugin.json`;
+  const version = await db.query<{ id: string }>(
+    `insert into public.plugin_versions (plugin_id, version, schema_version, definition_key, definition_sha256)
+     values ($1, '1.0.0', 1, $2, $3) returning id`,
+    [id, key, "c".repeat(64)],
+  );
+  await db.query("update public.plugins set current_version_id = $2, draft_key = $3, draft_sha256 = $4 where id = $1", [
+    id,
+    version.rows[0].id,
+    key,
+    "c".repeat(64),
+  ]);
+  return id;
+}
+
+export const PACKAGE_SHA = "b".repeat(64);
+export const packageKey = (ownerId: string, objectId: string) => `packages/${ownerId}/${objectId}.lisanpkg`;

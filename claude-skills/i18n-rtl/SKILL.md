@@ -28,7 +28,9 @@ When implementing UI:
 
 ## Localization
 
-Do not hard-code user-visible strings in business logic.
+Do not hard-code user-visible strings in business logic. No raw key, code or placeholder ever reaches the screen: follow `no-raw-keys` (catalogue tests for dynamic keys, loud failure on a missing message outside production).
+
+Names of things members create are **English first** (decision R16): a package or course title is written in Latin script and stored in `title`; Arabic and French titles and summaries are optional `translations` that fall back to English. A plugin's name, description and field labels follow the same rule (`en` required, others optional).
 
 Use translation keys and support:
 - pluralization

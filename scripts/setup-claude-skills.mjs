@@ -2,7 +2,7 @@
 //
 // Remote tools cannot write .claude, .github or .vscode, so the project keeps their
 // sources in visible folders and this script installs them locally:
-//   claude-skills/   -> .claude/skills/   (the 17 project skills for Claude Code)
+//   claude-skills/   -> .claude/skills/   (the 19 project skills for Claude Code)
 //   setup/github/    -> .github/          (CI workflow)
 //   setup/vscode/    -> .vscode/          (editor settings)
 // The visible folders stay the source of truth; re-run after changing them.

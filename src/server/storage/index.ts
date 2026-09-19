@@ -1,34 +1,37 @@
 import "server-only";
 
-import { readStorageEnv } from "@/lib/env";
-import { createSupabaseServerClient } from "@/lib/supabase/server";
+import { readR2Config, readStorageEnv } from "@/lib/env";
 import { MemoryStorageProvider } from "@/modules/storage/memory-provider";
-import type { StorageProvider } from "@/modules/storage/provider";
-import { SupabaseStorageProvider } from "./supabase-provider";
+import { StorageError, type StorageProvider } from "@/modules/storage/provider";
+import { R2StorageProvider } from "./r2-provider";
 
 let memory: MemoryStorageProvider | null = null;
+let r2: R2StorageProvider | null = null;
 
 /**
  * The storage provider selected by configuration (STORAGE_PROVIDER). Feature
- * code receives a StorageProvider and never imports a vendor SDK, so moving
- * files to Cloudflare R2 or S3 means adding a provider here and changing
- * environment variables — not touching features or the database
+ * code receives a StorageProvider and never imports a vendor SDK, so the move
+ * from Supabase Storage to Cloudflare R2 (decision R13, ADR 0008) touched this
+ * file and the environment only — not features, not the database
  * (docs/adr/0005-storage-abstraction.md).
  */
 export async function getStorage(): Promise<StorageProvider> {
   const env = readStorageEnv();
   switch (env.STORAGE_PROVIDER) {
-    case "supabase":
-      return new SupabaseStorageProvider(await createSupabaseServerClient(), {
-        public: env.STORAGE_BUCKET_PUBLIC,
-        private: env.STORAGE_BUCKET_PRIVATE,
-      });
+    case "r2": {
+      if (r2) return r2;
+      const read = readR2Config(env);
+      if (!read.ok) {
+        throw new StorageError(
+          "unavailable",
+          `Cloudflare R2 is not configured: set ${read.missing.join(", ")} in .env.local (docs/SETUP.md), or STORAGE_PROVIDER=memory for a session without files`,
+        );
+      }
+      r2 = new R2StorageProvider(read.config);
+      return r2;
+    }
     case "memory":
       memory ??= new MemoryStorageProvider();
       return memory;
-    case "s3":
-      // Reserved: implement src/server/storage/s3-provider.ts against the S3 API
-      // (works for Cloudflare R2, MinIO, AWS) when the team decides to move.
-      throw new Error("STORAGE_PROVIDER=s3 is not implemented yet (docs/adr/0005-storage-abstraction.md)");
   }
 }

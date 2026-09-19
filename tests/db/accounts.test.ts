@@ -151,9 +151,9 @@ describe("accounts, roles and language pairs", () => {
       db.query<{ admin_set_primary_role: string }>("select public.admin_set_primary_role($1, 'student')", [bob]),
     );
     expect(reverted.rows[0].admin_set_primary_role).toBe("student");
-    await expect(
-      asUser(db, admin, () => db.query("select public.admin_set_primary_role($1, 'contributor')", [bob])),
-    ).rejects.toThrow(/not open yet/);
+    // Support may also move an account to Contributor and back (decision R10).
+    await asUser(db, admin, () => db.query("select public.admin_set_primary_role($1, 'contributor')", [bob]));
+    await asUser(db, admin, () => db.query("select public.admin_set_primary_role($1, 'student')", [bob]));
 
     const audit = await db.query<{ actor_id: string; role_after: string }>(
       `select actor_id, after ->> 'primary_role' as role_after from public.audit_log

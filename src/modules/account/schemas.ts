@@ -41,6 +41,27 @@ export const FORM_ERROR_CODES = [
   "location_too_long",
   "avatar_type_invalid",
   "avatar_too_large",
+  // Generic codes of the studio and the content editor (S2).
+  "invalid",
+  "too_short",
+  "too_long",
+  "too_few",
+  "too_many",
+  "slug_invalid",
+  "slug_taken",
+  "version_invalid",
+  "json_invalid",
+  "schema_invalid",
+  "correct_missing",
+  "duplicate_option",
+  "blank_count",
+  "asset_required",
+  "title_too_long",
+  "title_latin_required",
+  "summary_too_long",
+  "tag_invalid",
+  "cefr_invalid",
+  "skill_invalid",
 ] as const;
 export type FormErrorCode = (typeof FORM_ERROR_CODES)[number];
 

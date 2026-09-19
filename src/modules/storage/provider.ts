@@ -37,6 +37,8 @@ export interface StorageProvider {
   /** Configuration name (`supabase`, `s3`, `memory`), for diagnostics only. */
   readonly name: string;
   upload(ref: StoredObjectRef, body: StorageBody, options: UploadOptions): Promise<void>;
+  /** Reads an object the caller is allowed to see; `not_found` otherwise. */
+  download(ref: StoredObjectRef): Promise<Uint8Array>;
   remove(refs: readonly StoredObjectRef[]): Promise<void>;
   /** Stable URL of an object in the public store. */
   publicUrl(ref: StoredObjectRef): string;

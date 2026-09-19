@@ -1,0 +1,331 @@
+{
+  "format": "lisanhub.plugin/1",
+  "plugin_id": "vocab-cards",
+  "version": "1.0.0",
+  "schema_version": 1,
+  "name": {
+    "ar": "بطاقات المفردات",
+    "fr": "Cartes de vocabulaire",
+    "en": "Vocabulary cards"
+  },
+  "description": {
+    "ar": "بطاقة بوجه وظهر ومثال اختياري وصورة اختيارية ووسوم. يكشف المتعلّم الظهر ثم يقيّم نفسه، فتُجدول المراجعة على ذلك.",
+    "fr": "Une carte avec un recto, un verso, un exemple facultatif, une image facultative et des étiquettes. L’apprenant révèle le verso puis s’auto-évalue, ce qui alimente la révision espacée.",
+    "en": "A card with a front, a back, an optional example, an optional picture and tags. The learner reveals the back and rates their own recall, which drives spaced review."
+  },
+  "activities": [
+    {
+      "id": "card",
+      "name": {
+        "ar": "بطاقة",
+        "fr": "Carte",
+        "en": "Card"
+      },
+      "description": {
+        "ar": "وجه يُعرض أولًا، وظهر يُكشف عند الطلب.",
+        "fr": "Un recto affiché d’abord, un verso révélé à la demande.",
+        "en": "A front shown first, a back revealed on request."
+      },
+      "skill": "reading",
+      "fields": [
+        {
+          "key": "front",
+          "label": {
+            "ar": "الوجه",
+            "fr": "Recto",
+            "en": "Front"
+          },
+          "hint": {
+            "ar": "الكلمة أو العبارة التي يراها المتعلّم أولًا.",
+            "fr": "Le mot ou l’expression que l’apprenant voit en premier.",
+            "en": "The word or phrase the learner sees first."
+          },
+          "required": true,
+          "type": "short_text",
+          "max_length": 200
+        },
+        {
+          "key": "picture",
+          "label": {
+            "ar": "صورة",
+            "fr": "Image",
+            "en": "Picture"
+          },
+          "hint": {
+            "ar": "اختياري. صورة توضّح السؤال، مع نصّ بديل يصفها.",
+            "fr": "Facultatif. Une image qui illustre la question, avec un texte alternatif.",
+            "en": "Optional. A picture illustrating the prompt, with alternative text."
+          },
+          "required": false,
+          "type": "image"
+        },
+        {
+          "key": "back",
+          "label": {
+            "ar": "الظهر",
+            "fr": "Verso",
+            "en": "Back"
+          },
+          "hint": {
+            "ar": "المعنى أو الترجمة، يُكشف عند الطلب.",
+            "fr": "Le sens ou la traduction, révélé à la demande.",
+            "en": "The meaning or translation, revealed on request."
+          },
+          "required": true,
+          "type": "short_text",
+          "max_length": 300
+        },
+        {
+          "key": "example",
+          "label": {
+            "ar": "مثال",
+            "fr": "Exemple",
+            "en": "Example"
+          },
+          "hint": {
+            "ar": "اختياري. جملة تُظهر الاستعمال؛ تُكشف مع الظهر.",
+            "fr": "Facultatif. Une phrase d’usage, révélée avec le verso.",
+            "en": "Optional. A sentence showing usage, revealed with the back."
+          },
+          "required": false,
+          "type": "long_text",
+          "max_length": 1000
+        },
+        {
+          "key": "tags",
+          "label": {
+            "ar": "وسوم",
+            "fr": "Étiquettes",
+            "en": "Tags"
+          },
+          "hint": {
+            "ar": "اختياري. كلمات لتصنيف البطاقة.",
+            "fr": "Facultatif. Des mots pour classer la carte.",
+            "en": "Optional. Words to classify the card."
+          },
+          "required": false,
+          "type": "item_list",
+          "min_items": 0,
+          "max_items": 10
+        }
+      ],
+      "graded_field": null,
+      "scoring": {
+        "evaluator": "self_assessment",
+        "reveal_fields": ["back", "example"]
+      }
+    }
+  ],
+  "templates": [
+    {
+      "id": "deck-starter",
+      "name": {
+        "ar": "مجموعة بطاقات",
+        "fr": "Jeu de cartes",
+        "en": "Card deck"
+      },
+      "description": {
+        "ar": "ثلاث بطاقات فارغة لتبدأ منها.",
+        "fr": "Trois cartes vides pour commencer.",
+        "en": "Three empty cards to start from."
+      },
+      "items": [
+        {
+          "activity": "card",
+          "hints": {}
+        },
+        {
+          "activity": "card",
+          "hints": {}
+        },
+        {
+          "activity": "card",
+          "hints": {}
+        }
+      ]
+    }
+  ],
+  "content_schema": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "required": ["items"],
+    "properties": {
+      "items": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "required": ["item_id", "activity", "fields"],
+          "properties": {
+            "item_id": {
+              "type": "string",
+              "pattern": "^[a-z0-9][a-z0-9-]{3,63}$"
+            },
+            "activity": {
+              "const": "card"
+            },
+            "skill": {
+              "enum": ["listening", "reading", "pronunciation", "writing"]
+            },
+            "fields": {
+              "type": "object",
+              "required": ["front", "back"],
+              "properties": {
+                "front": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 200
+                },
+                "picture": {
+                  "type": "object",
+                  "required": ["asset", "alt"],
+                  "properties": {
+                    "asset": {
+                      "type": "string",
+                      "pattern": "^assets\\/[a-z0-9][a-z0-9._-]*$"
+                    },
+                    "alt": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 300
+                    }
+                  },
+                  "additionalProperties": false
+                },
+                "back": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 300
+                },
+                "example": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 1000
+                },
+                "tags": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 500
+                  },
+                  "minItems": 0,
+                  "maxItems": 10
+                }
+              },
+              "additionalProperties": false
+            }
+          },
+          "additionalProperties": false
+        }
+      }
+    },
+    "additionalProperties": false
+  },
+  "authoring_fields": [
+    {
+      "activity": "card",
+      "name": {
+        "ar": "بطاقة",
+        "fr": "Carte",
+        "en": "Card"
+      },
+      "skill": "reading",
+      "graded_field": null,
+      "evaluator": "self_assessment",
+      "fields": [
+        {
+          "key": "front",
+          "type": "short_text",
+          "label": {
+            "ar": "الوجه",
+            "fr": "Recto",
+            "en": "Front"
+          },
+          "hint": {
+            "ar": "الكلمة أو العبارة التي يراها المتعلّم أولًا.",
+            "fr": "Le mot ou l’expression que l’apprenant voit en premier.",
+            "en": "The word or phrase the learner sees first."
+          },
+          "required": true,
+          "options": {
+            "max_length": 200
+          }
+        },
+        {
+          "key": "picture",
+          "type": "image",
+          "label": {
+            "ar": "صورة",
+            "fr": "Image",
+            "en": "Picture"
+          },
+          "hint": {
+            "ar": "اختياري. صورة توضّح السؤال، مع نصّ بديل يصفها.",
+            "fr": "Facultatif. Une image qui illustre la question, avec un texte alternatif.",
+            "en": "Optional. A picture illustrating the prompt, with alternative text."
+          },
+          "required": false,
+          "options": {}
+        },
+        {
+          "key": "back",
+          "type": "short_text",
+          "label": {
+            "ar": "الظهر",
+            "fr": "Verso",
+            "en": "Back"
+          },
+          "hint": {
+            "ar": "المعنى أو الترجمة، يُكشف عند الطلب.",
+            "fr": "Le sens ou la traduction, révélé à la demande.",
+            "en": "The meaning or translation, revealed on request."
+          },
+          "required": true,
+          "options": {
+            "max_length": 300
+          }
+        },
+        {
+          "key": "example",
+          "type": "long_text",
+          "label": {
+            "ar": "مثال",
+            "fr": "Exemple",
+            "en": "Example"
+          },
+          "hint": {
+            "ar": "اختياري. جملة تُظهر الاستعمال؛ تُكشف مع الظهر.",
+            "fr": "Facultatif. Une phrase d’usage, révélée avec le verso.",
+            "en": "Optional. A sentence showing usage, revealed with the back."
+          },
+          "required": false,
+          "options": {
+            "max_length": 1000
+          }
+        },
+        {
+          "key": "tags",
+          "type": "item_list",
+          "label": {
+            "ar": "وسوم",
+            "fr": "Étiquettes",
+            "en": "Tags"
+          },
+          "hint": {
+            "ar": "اختياري. كلمات لتصنيف البطاقة.",
+            "fr": "Facultatif. Des mots pour classer la carte.",
+            "en": "Optional. Words to classify the card."
+          },
+          "required": false,
+          "options": {
+            "min_items": 0,
+            "max_items": 10
+          }
+        }
+      ]
+    }
+  ],
+  "assets_allowed": ["image"],
+  "capabilities_required": [],
+  "sha256": "ae59d4e8dc5f3724b87d8d93a28777245022779026dcf6fbd519a1c2f41d8bc2"
+}

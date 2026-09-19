@@ -3,11 +3,14 @@
 import { revalidatePath } from "next/cache";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import type { FormState } from "@/modules/account/forms";
-import { isUiLocale } from "@/modules/account/ui-locales";
+import { isUiLocale, UI_LOCALES } from "@/modules/account/ui-locales";
 import {
   canAssignRank,
   canDecideSupportRequest,
+  canDisablePlugin,
   canEditPlatformSettings,
+  canModerateContent,
+  canReviewPlugin,
   canSetPrimaryRoleAsAdmin,
 } from "@/modules/authorization/policies";
 import { ADMIN_RANKS, type AdminRank } from "@/modules/authorization/roles";
@@ -217,4 +220,118 @@ export async function updateReportStatus(locale: string, _prev: FormState, formD
 
   revalidatePath(`/${uiLocale}/admin/reports`);
   return { status: "ok", outcome: "report_updated" };
+}
+
+// ---------------------------------------------------------------------------
+// Plugins (decision R10): review publish requests, kill switch, hiding
+// ---------------------------------------------------------------------------
+
+const PLUGIN_REJECTION_REASONS = ["contract", "quality", "duplicate", "policy", "other"] as const;
+
+export async function reviewPluginRequest(locale: string, _prev: FormState, formData: FormData): Promise<FormState> {
+  const uiLocale = localeOf(locale);
+  const { actor } = await getSession();
+  const allowed = canReviewPlugin(actor);
+  if (!allowed.allowed) return { status: "error", error: allowed.reason };
+  const id = formData.get("id");
+  const decision = formData.get("decision");
+  if (typeof id !== "string" || !UUID.test(id)) return { status: "error", error: "invalid_input" };
+  if (decision !== "approve" && decision !== "reject") return { status: "error", error: "invalid_input" };
+  const reason = text(formData, "reason", 20);
+  if (decision === "reject" && !(PLUGIN_REJECTION_REASONS as readonly string[]).includes(String(reason))) {
+    return { status: "error", error: "reason_required" };
+  }
+
+  const supabase = await createSupabaseServerClient();
+  const { error } = await supabase.rpc("review_plugin_publish_request", {
+    p_request: id,
+    p_approve: decision === "approve",
+    p_reason: decision === "reject" ? (reason ?? undefined) : undefined,
+    p_note: text(formData, "note", 1000) ?? undefined,
+  });
+  if (error) {
+    return { status: "error", error: error.message.includes("already decided") ? "already_closed" : "unexpected" };
+  }
+  revalidatePath(`/${uiLocale}/admin`);
+  revalidatePath(`/${uiLocale}/admin/plugins`);
+  revalidatePath(`/${uiLocale}/studio`, "layout");
+  return { status: "ok", outcome: decision === "approve" ? "plugin_approved" : "plugin_rejected" };
+}
+
+export async function setPluginKillSwitch(locale: string, _prev: FormState, formData: FormData): Promise<FormState> {
+  const uiLocale = localeOf(locale);
+  const { actor } = await getSession();
+  const allowed = canDisablePlugin(actor);
+  if (!allowed.allowed) return { status: "error", error: allowed.reason };
+  const plugin = formData.get("plugin");
+  const version = formData.get("version");
+  const disabled = formData.get("disabled") === "true";
+  if (typeof plugin !== "string" || !UUID.test(plugin)) return { status: "error", error: "invalid_input" };
+  if (typeof version === "string" && version !== "" && !UUID.test(version))
+    return { status: "error", error: "invalid_input" };
+  const note = text(formData, "note", 300);
+  const message = note ? Object.fromEntries(UI_LOCALES.map((l) => [l, note])) : {};
+
+  const supabase = await createSupabaseServerClient();
+  const { error } = await supabase.rpc("set_plugin_disabled", {
+    p_plugin: plugin,
+    // Null means the whole plugin; the generated type does not know the column is nullable.
+    p_version: (typeof version === "string" && version !== "" ? version : null) as unknown as string,
+    p_disabled: disabled,
+    p_message: message,
+  });
+  if (error) return { status: "error", error: "unexpected" };
+  revalidatePath(`/${uiLocale}/admin/plugins`);
+  revalidatePath(`/${uiLocale}/studio`, "layout");
+  return { status: "ok", outcome: disabled ? "plugin_disabled" : "plugin_enabled" };
+}
+
+export async function setPluginHidden(locale: string, _prev: FormState, formData: FormData): Promise<FormState> {
+  const uiLocale = localeOf(locale);
+  const { actor } = await getSession();
+  const allowed = canDisablePlugin(actor);
+  if (!allowed.allowed) return { status: "error", error: allowed.reason };
+  const plugin = formData.get("plugin");
+  const hidden = formData.get("hidden") === "true";
+  if (typeof plugin !== "string" || !UUID.test(plugin)) return { status: "error", error: "invalid_input" };
+
+  const supabase = await createSupabaseServerClient();
+  const { error } = await supabase.rpc("set_plugin_hidden", { p_plugin: plugin, p_hidden: hidden });
+  if (error) return { status: "error", error: "unexpected" };
+  revalidatePath(`/${uiLocale}/admin/plugins`);
+  revalidatePath(`/${uiLocale}/studio`, "layout");
+  return { status: "ok", outcome: hidden ? "plugin_hidden" : "plugin_shown" };
+}
+
+/**
+ * Decision R17: take a published package or course off the community with a
+ * written reason, or put a hidden one back. The database function checks the
+ * rank again, keeps the reason on the item for its owner and audits the change;
+ * the package file and its versions are never touched.
+ */
+export async function moderateContent(locale: string, _prev: FormState, formData: FormData): Promise<FormState> {
+  const uiLocale = localeOf(locale);
+  const { actor } = await getSession();
+  const allowed = canModerateContent(actor);
+  if (!allowed.allowed) return { status: "error", error: allowed.reason };
+  const item = formData.get("item");
+  const hide = formData.get("hide") === "true";
+  if (typeof item !== "string" || !UUID.test(item)) return { status: "error", error: "invalid_input" };
+  const note = text(formData, "note", 500);
+  if (hide && note === null) return { status: "error", error: "reason_required" };
+
+  const supabase = await createSupabaseServerClient();
+  const { error } = await supabase.rpc("moderate_content_item", {
+    p_item: item,
+    p_hide: hide,
+    // Null when restoring; the generated type does not know the argument is nullable.
+    p_note: note as unknown as string,
+  });
+  if (error) {
+    if (error.code === "23514") return { status: "error", error: "already_closed" };
+    return { status: "error", error: "unexpected" };
+  }
+  revalidatePath(`/${uiLocale}/admin/content`, "layout");
+  revalidatePath(`/${uiLocale}/content`, "layout");
+  return { status: "ok", outcome: hide ? "content_hidden" : "content_restored" };
 }

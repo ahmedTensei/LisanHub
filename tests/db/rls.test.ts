@@ -1,5 +1,14 @@
 import { beforeAll, describe, expect, it } from "vitest";
-import { asAnon, asUser, createMigratedDb, createUser, type Db } from "./harness";
+import {
+  asAnon,
+  asUser,
+  createMigratedDb,
+  createReferencePlugin,
+  createUser,
+  packageKey,
+  PACKAGE_SHA,
+  type Db,
+} from "./harness";
 
 /**
  * Database-level invariants from the specification, verified against the real
@@ -11,20 +20,19 @@ describe("database invariants", () => {
   let creatorA: string;
   let creatorB: string;
   let moderator: string;
-
-  const lessonBody = JSON.stringify({ schemaVersion: 1, blocks: [] });
+  let plugin: string;
 
   async function createPublishedLesson(ownerId: string, title: string, isPaid = false) {
     return asUser(db, ownerId, async () => {
       const item = await db.query<{ id: string }>(
-        `insert into public.content_items (kind, owner_id, source_lang, target_lang, title, status)
-         values ('lesson', $1, 'fra', 'arb', $2, 'draft') returning id`,
-        [ownerId, title],
+        `insert into public.content_items (kind, owner_id, source_lang, target_lang, title, status, plugin_id)
+         values ('package', $1, 'fra', 'arb', $2, 'draft', $3) returning id`,
+        [ownerId, title, plugin],
       );
       const itemId = item.rows[0].id;
       const version = await db.query<{ id: string }>(
-        `insert into public.content_versions (item_id, body, author_id) values ($1, $2, $3) returning id`,
-        [itemId, lessonBody, ownerId],
+        `insert into public.content_versions (item_id, package_key, package_sha256, author_id) values ($1, $2, $3, $4) returning id`,
+        [itemId, packageKey(ownerId, itemId), PACKAGE_SHA, ownerId],
       );
       await db.query(`update public.content_items set status = 'published', current_version_id = $2 where id = $1`, [
         itemId,
@@ -46,6 +54,7 @@ describe("database invariants", () => {
     creatorA = await createUser(db, "creator_a");
     creatorB = await createUser(db, "creator_b");
     moderator = await createUser(db, "moderator");
+    plugin = await createReferencePlugin(db);
     for (const id of [creatorA, creatorB]) {
       await asUser(db, id, () => db.query("select public.become_content_creator()"));
     }
@@ -68,9 +77,9 @@ describe("database invariants", () => {
     await expect(
       asUser(db, student, () =>
         db.query(
-          `insert into public.content_items (kind, owner_id, source_lang, target_lang, title)
-           values ('lesson', $1, 'fra', 'arb', 'Not allowed')`,
-          [student],
+          `insert into public.content_items (kind, owner_id, source_lang, target_lang, title, plugin_id)
+           values ('package', $1, 'fra', 'arb', 'Not allowed', $2)`,
+          [student, plugin],
         ),
       ),
     ).rejects.toThrow(/row-level security/);
@@ -88,9 +97,9 @@ describe("database invariants", () => {
     const { itemId } = await createPublishedLesson(creatorA, "Greetings");
     const draft = await asUser(db, creatorA, () =>
       db.query<{ id: string }>(
-        `insert into public.content_items (kind, owner_id, source_lang, target_lang, title)
-         values ('lesson', $1, 'fra', 'arb', 'Draft') returning id`,
-        [creatorA],
+        `insert into public.content_items (kind, owner_id, source_lang, target_lang, title, plugin_id)
+         values ('package', $1, 'fra', 'arb', 'Draft', $2) returning id`,
+        [creatorA, plugin],
       ),
     );
 
@@ -111,7 +120,9 @@ describe("database invariants", () => {
   it("keeps content history append-only", async () => {
     const { versionId } = await createPublishedLesson(creatorA, "Colours");
     await expect(
-      asUser(db, creatorA, () => db.query("update public.content_versions set body = '{}' where id = $1", [versionId])),
+      asUser(db, creatorA, () =>
+        db.query("update public.content_versions set package_sha256 = $2 where id = $1", [versionId, "d".repeat(64)]),
+      ),
     ).rejects.toThrow(/permission denied|append-only/);
   });
 
@@ -119,9 +130,9 @@ describe("database invariants", () => {
     const { itemId, versionId } = await createPublishedLesson(creatorA, "Family");
     const derived = await asUser(db, creatorB, () =>
       db.query<{ root_item_id: string; provenance: { source_item_id: string } }>(
-        `insert into public.content_items (kind, owner_id, source_lang, target_lang, title, derived_from_version_id)
-         values ('lesson', $1, 'eng', 'arb', 'Family (English)', $2) returning root_item_id, provenance`,
-        [creatorB, versionId],
+        `insert into public.content_items (kind, owner_id, source_lang, target_lang, title, derived_from_version_id, plugin_id)
+         values ('package', $1, 'eng', 'arb', 'Family (English)', $2, $3) returning root_item_id, provenance`,
+        [creatorB, versionId, plugin],
       ),
     );
     expect(derived.rows[0].root_item_id).toBe(itemId);
@@ -133,9 +144,9 @@ describe("database invariants", () => {
     await expect(
       asUser(db, creatorB, () =>
         db.query(
-          `insert into public.content_items (kind, owner_id, source_lang, target_lang, title, derived_from_version_id)
-           values ('lesson', $1, 'fra', 'arb', 'Copy', $2)`,
-          [creatorB, versionId],
+          `insert into public.content_items (kind, owner_id, source_lang, target_lang, title, derived_from_version_id, plugin_id)
+           values ('package', $1, 'fra', 'arb', 'Copy', $2, $3)`,
+          [creatorB, versionId, plugin],
         ),
       ),
     ).rejects.toThrow(/paid content cannot be copied/);

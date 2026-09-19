@@ -13,6 +13,8 @@ export async function SiteHeader() {
   const [t, session] = await Promise.all([getTranslations("nav"), getSession()]);
   const signedIn = session.actor.kind === "user";
   const isStaff = can(session.actor, "moderation.handle_queue");
+  const isCreator = can(session.actor, "content.create");
+  const isContributor = can(session.actor, "plugins.author");
   const navLink =
     "hidden h-10 items-center rounded-full px-3 text-sm font-semibold text-ink hover:bg-accent-soft hover:text-accent-strong md:inline-flex";
 
@@ -31,6 +33,16 @@ export async function SiteHeader() {
               <Link href="/account/languages" className={navLink}>
                 {t("languages")}
               </Link>
+              {isCreator ? (
+                <Link href="/content" className={navLink}>
+                  {t("myContent")}
+                </Link>
+              ) : null}
+              {isContributor ? (
+                <Link href="/studio" className={navLink}>
+                  {t("studio")}
+                </Link>
+              ) : null}
               {isStaff ? (
                 <Link href="/admin" className={`${navLink} text-saffron hover:text-saffron`}>
                   {t("admin")}

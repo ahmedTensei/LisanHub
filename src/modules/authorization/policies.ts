@@ -61,8 +61,8 @@ export function canCopy(actor: Actor, source: ContentRef, mode: CopyMode): Decis
 }
 
 /**
- * The only role change of the current stage: Student -> Content Creator, chosen by
- * the user. Contributor is deferred with executable content (mvp-scope).
+ * Role changes a member chooses for themselves: Student -> Content Creator (R4)
+ * or Student -> Contributor (R10). One path only; the way back goes through support.
  */
 export function canBecomeContentCreator(actor: Actor): Decision {
   if (actor.kind === "guest") return deny("sign_in_required");
@@ -72,11 +72,77 @@ export function canBecomeContentCreator(actor: Actor): Decision {
     : deny("role_change_not_allowed");
 }
 
+export function canBecomeContributor(actor: Actor): Decision {
+  if (actor.kind === "guest") return deny("sign_in_required");
+  if (actor.primaryRole === "contributor") return deny("already_contributor");
+  return allowedRoleTransitions(actor.primaryRole).includes("contributor") ? allow : deny("role_change_not_allowed");
+}
+
+// ---------------------------------------------------------------------------
+// Plugin Studio and plugin moderation (decisions R7 and R10; mirrors migration 20260918000100)
+// ---------------------------------------------------------------------------
+
+export interface PluginRef {
+  /** Null for the platform's own reference plugins. */
+  ownerId: string | null;
+  status: "draft" | "pending_review" | "published" | "hidden";
+  disabled: boolean;
+}
+
+/** Entering the studio: Contributors and the Platform Owner (never Students or Content Creators). */
+export function canAccessStudio(actor: Actor): Decision {
+  return can(actor, "plugins.author") ? allow : deny("contributor_role_required");
+}
+
+/** Building, previewing and exporting: only the owner of the plugin; the platform's plugins belong to the owner rank. */
+export function canEditPlugin(actor: Actor, plugin: PluginRef): Decision {
+  if (actor.kind === "guest") return deny("sign_in_required");
+  if (!can(actor, "plugins.author")) return deny("contributor_role_required");
+  if (plugin.disabled) return deny("plugin_disabled");
+  if (plugin.ownerId === null) return can(actor, "owner.platform_core") ? allow : deny("not_owner");
+  return plugin.ownerId === actor.userId ? allow : deny("not_owner");
+}
+
+/** Submitting a version: the owner of the plugin; it is published at once only with plugins.publish. */
+export function canSubmitPlugin(actor: Actor, plugin: PluginRef): Decision {
+  const edit = canEditPlugin(actor, plugin);
+  if (!edit.allowed) return edit;
+  return allow;
+}
+
+export function publishesDirectly(actor: Actor): boolean {
+  return can(actor, "plugins.publish");
+}
+
+/** Approving or rejecting a publish request: moderation. */
+export function canReviewPlugin(actor: Actor): Decision {
+  return can(actor, "plugins.review") ? allow : deny("moderation_only");
+}
+
+/** Kill switch and hiding: moderation and the owner of the platform. */
+export function canDisablePlugin(actor: Actor): Decision {
+  return can(actor, "plugins.disable") ? allow : deny("moderation_only");
+}
+
 // ---------------------------------------------------------------------------
 // Administration area (mirrors the database functions of migration 0900)
 // ---------------------------------------------------------------------------
 
 /** Entering the administration area: any administrative rank. */
+/**
+ * Decision R17: the Platform Owner and Super Administrators oversee everything —
+ * every item, plugin and member, with previews — from the administration area.
+ * Moderators and Administrators see only what is assigned to them or what they
+ * accepted (cases, S4), so they never wander through all the content.
+ */
+export function canOverseeAll(actor: Actor): Decision {
+  return can(actor, "admin.oversee_all") ? allow : deny("super_administrator_required");
+}
+
+export function canModerateContent(actor: Actor): Decision {
+  return can(actor, "moderation.hide_content") ? allow : deny("moderation_only");
+}
+
 export function canAccessAdminArea(actor: Actor): Decision {
   return can(actor, "moderation.handle_queue") ? allow : deny("staff_only");
 }

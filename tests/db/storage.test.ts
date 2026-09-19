@@ -1,86 +1,58 @@
 import { beforeAll, describe, expect, it } from "vitest";
-import { EXTENSION_BY_CONTENT_TYPE } from "../../src/modules/storage/keys";
 import { asAnon, asUser, createMigratedDb, createUser, type Db } from "./harness";
 
 /**
- * Storage buckets and object ownership (ADR 0005), verified against the
- * migrations with the Supabase Storage stub of the harness.
+ * Files live in Cloudflare R2 behind the StorageProvider (decision R13,
+ * ADR 0008); Supabase keeps accounts and metadata only. The migrations must
+ * leave no bucket, no storage policy and no storage helper behind, and the
+ * metadata rows keep relative object keys, never URLs (ADR 0005).
  */
-describe("storage buckets and object ownership", () => {
+describe("no files in Supabase Storage (decision R13)", () => {
   let db: Db;
-  let alice: string;
-  let bob: string;
-  let moderator: string;
-
-  const insertObject = (bucket: string, name: string) =>
-    db.query("insert into storage.objects (bucket_id, name, metadata) values ($1, $2, '{}')", [bucket, name]);
 
   beforeAll(async () => {
     db = await createMigratedDb();
-    alice = await createUser(db, "Alice");
-    bob = await createUser(db, "bob_01");
-    moderator = await createUser(db, "moderator");
-    await db.query("insert into public.admin_ranks (user_id, rank) values ($1, 'moderator')", [moderator]);
   });
 
-  it("defines one public and one private bucket that accept every content type the platform knows", async () => {
-    const res = await db.query<{ id: string; public: boolean; allowed_mime_types: string[] }>(
-      "select id, public, allowed_mime_types from storage.buckets order by id",
+  it("leaves the former buckets inert: nobody can write to or read from them", async () => {
+    const alice = await createUser(db, "storage_alice");
+    const insert = () =>
+      db.query("insert into storage.objects (bucket_id, name, metadata) values ('media-public', $1, '{}')", [
+        `avatars/${alice}/a.png`,
+      ]);
+    await expect(asUser(db, alice, insert)).rejects.toThrow(/row-level security/);
+    await expect(asAnon(db, insert)).rejects.toThrow(/row-level security/);
+    const seen = await asUser(db, alice, () => db.query("select name from storage.objects"));
+    expect(seen.rows).toEqual([]);
+  });
+
+  it("leaves no policy and no helper function on storage objects", async () => {
+    const policies = await db.query<{ policyname: string }>(
+      "select policyname from pg_policies where schemaname = 'storage' and tablename = 'objects'",
     );
-    expect(res.rows.map((b) => [b.id, b.public])).toEqual([
-      ["media-private", false],
-      ["media-public", true],
+    expect(policies.rows).toEqual([]);
+    const functions = await db.query<{ proname: string }>(
+      "select p.proname from pg_proc p join pg_namespace n on n.oid = p.pronamespace where n.nspname = 'public' and p.proname in ('package_readable', 'storage_object_owner')",
+    );
+    expect(functions.rows).toEqual([]);
+  });
+
+  it("keeps relative object keys in the metadata, never a bucket or a URL", async () => {
+    const columns = await db.query<{ table_name: string; column_name: string }>(
+      `select table_name, column_name from information_schema.columns
+        where table_schema = 'public' and (column_name like '%url%' or column_name like '%bucket%')`,
+    );
+    expect(columns.rows).toEqual([]);
+    const keys = await db.query<{ table_name: string; column_name: string }>(
+      `select table_name, column_name from information_schema.columns
+        where table_schema = 'public' and column_name in ('avatar_key', 'package_key')
+        order by table_name, column_name`,
+    );
+    expect(keys.rows.map((c) => `${c.table_name}.${c.column_name}`)).toEqual([
+      "content_items.package_key",
+      "content_versions.package_key",
+      "profile_cards.avatar_key",
+      "profiles.avatar_key",
     ]);
-    const privateBucket = res.rows.find((b) => b.id === "media-private")!;
-    for (const contentType of Object.keys(EXTENSION_BY_CONTENT_TYPE)) {
-      expect(privateBucket.allowed_mime_types, contentType).toContain(contentType);
-    }
-  });
-
-  it("reads the owner from the key layout area/<owner_id>/file only", async () => {
-    const res = await db.query<{ owner: string | null }>(
-      `select public.storage_object_owner(k) as owner
-         from unnest(array['avatars/u1/a.png', 'a.png', 'avatars/u1/deep/a.png']) as k`,
-    );
-    expect(res.rows.map((r) => r.owner)).toEqual(["u1", null, null]);
-  });
-
-  it("lets users write only inside their own folder", async () => {
-    await asUser(db, alice, () => insertObject("media-public", `avatars/${alice}/a.png`));
-    await expect(asUser(db, alice, () => insertObject("media-public", `avatars/${bob}/hijack.png`))).rejects.toThrow(
-      /row-level security/,
-    );
-    await expect(asUser(db, alice, () => insertObject("media-public", "loose.png"))).rejects.toThrow(
-      /row-level security/,
-    );
-    await expect(asAnon(db, () => insertObject("media-public", `avatars/${alice}/anon.png`))).rejects.toThrow(
-      /row-level security/,
-    );
-  });
-
-  it("serves public objects to everyone and private objects to their owner and moderation", async () => {
-    await asUser(db, alice, () => insertObject("media-private", `exports/${alice}/data.json`));
-
-    const publicSeenByGuest = await asAnon(db, () =>
-      db.query("select name from storage.objects where bucket_id = 'media-public'"),
-    );
-    expect(publicSeenByGuest.rows).toHaveLength(1);
-
-    const privateSeenBy = async (userId: string) =>
-      (await asUser(db, userId, () => db.query("select name from storage.objects where bucket_id = 'media-private'")))
-        .rows.length;
-    expect(await privateSeenBy(alice)).toBe(1);
-    expect(await privateSeenBy(bob)).toBe(0);
-    expect(await privateSeenBy(moderator)).toBe(1);
-  });
-
-  it("lets only the owner or moderation delete a public object", async () => {
-    const name = `avatars/${alice}/a.png`;
-    const byBob = await asUser(db, bob, () => db.query("delete from storage.objects where name = $1", [name]));
-    expect(byBob.affectedRows).toBe(0);
-    const byModerator = await asUser(db, moderator, () =>
-      db.query("delete from storage.objects where name = $1", [name]),
-    );
-    expect(byModerator.affectedRows).toBe(1);
   });
 });

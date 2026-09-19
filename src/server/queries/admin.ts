@@ -15,6 +15,7 @@ export interface AdminOverview {
   newFeedback: number;
   members: number;
   creators: number;
+  pendingPluginRequests: number;
 }
 
 export async function getAdminOverview(): Promise<AdminOverview> {
@@ -24,22 +25,31 @@ export async function getAdminOverview(): Promise<AdminOverview> {
     if (error) throw new Error(`admin overview: ${error.message}`);
     return n ?? 0;
   };
-  const [openRequests, openReports, openConductReports, newFeedback, members, creators] = await Promise.all([
-    count(
-      supabase
-        .from("support_requests")
-        .select("id", { count: "exact", head: true })
-        .in("status", ["open", "in_review"]),
-    ),
-    count(supabase.from("reports").select("id", { count: "exact", head: true }).in("status", ["open", "escalated"])),
-    count(
-      supabase.from("conduct_reports").select("id", { count: "exact", head: true }).in("status", ["open", "escalated"]),
-    ),
-    count(supabase.from("product_feedback").select("id", { count: "exact", head: true }).eq("status", "new")),
-    count(supabase.from("profiles").select("id", { count: "exact", head: true })),
-    count(supabase.from("profiles").select("id", { count: "exact", head: true }).eq("primary_role", "content_creator")),
-  ]);
-  return { openRequests, openReports, openConductReports, newFeedback, members, creators };
+  const [openRequests, openReports, openConductReports, newFeedback, members, creators, pendingPluginRequests] =
+    await Promise.all([
+      count(
+        supabase
+          .from("support_requests")
+          .select("id", { count: "exact", head: true })
+          .in("status", ["open", "in_review"]),
+      ),
+      count(supabase.from("reports").select("id", { count: "exact", head: true }).in("status", ["open", "escalated"])),
+      count(
+        supabase
+          .from("conduct_reports")
+          .select("id", { count: "exact", head: true })
+          .in("status", ["open", "escalated"]),
+      ),
+      count(supabase.from("product_feedback").select("id", { count: "exact", head: true }).eq("status", "new")),
+      count(supabase.from("profiles").select("id", { count: "exact", head: true })),
+      count(
+        supabase.from("profiles").select("id", { count: "exact", head: true }).eq("primary_role", "content_creator"),
+      ),
+      count(
+        supabase.from("plugin_publish_requests").select("id", { count: "exact", head: true }).eq("status", "pending"),
+      ),
+    ]);
+  return { openRequests, openReports, openConductReports, newFeedback, members, creators, pendingPluginRequests };
 }
 
 export interface SupportRequestRow {
@@ -288,6 +298,7 @@ export interface AdminStats {
     total: number;
     students: number;
     creators: number;
+    contributors: number;
     founding: number;
     newLast7Days: number;
     byRank: Record<"moderator" | "administrator" | "super_administrator" | "platform_owner", number>;
@@ -298,8 +309,10 @@ export interface AdminStats {
     contentReports: number;
     conductReports: number;
     newFeedback: number;
+    pluginRequests: number;
   };
   content: { published: number; drafts: number; hidden: number };
+  plugins: { published: number; pending: number; disabled: number };
   system: { flags: Array<{ key: string; mode: string }>; settings: number };
 }
 
@@ -330,6 +343,11 @@ export async function getAdminStats(): Promise<AdminStats> {
     hidden,
     flags,
     settings,
+    pluginRequests,
+    pluginsPublished,
+    pluginsPending,
+    pluginsDisabled,
+    contributors,
   ] = await Promise.all([
     count(supabase.from("profiles").select("id", head)),
     count(supabase.from("profiles").select("id", head).eq("primary_role", "student")),
@@ -347,13 +365,19 @@ export async function getAdminStats(): Promise<AdminStats> {
     count(supabase.from("content_items").select("id", head).in("status", ["hidden", "removed"])),
     supabase.from("feature_flags").select("key, mode").order("key"),
     count(supabase.from("platform_settings").select("key", head)),
+    count(supabase.from("plugin_publish_requests").select("id", head).eq("status", "pending")),
+    count(supabase.from("plugins").select("id", head).eq("status", "published")),
+    count(supabase.from("plugins").select("id", head).eq("status", "pending_review")),
+    count(supabase.from("plugins").select("id", head).eq("disabled", true)),
+    count(supabase.from("profiles").select("id", head).eq("primary_role", "contributor")),
   ]);
   const byRank = { moderator: 0, administrator: 0, super_administrator: 0, platform_owner: 0 };
   for (const row of ranks.data ?? []) byRank[row.rank] += 1;
   return {
-    members: { total, students, creators, founding, newLast7Days, byRank },
-    work: { openRequests, inReviewRequests, contentReports, conductReports, newFeedback },
+    members: { total, students, creators, contributors, founding, newLast7Days, byRank },
+    work: { openRequests, inReviewRequests, contentReports, conductReports, newFeedback, pluginRequests },
     content: { published, drafts, hidden },
+    plugins: { published: pluginsPublished, pending: pluginsPending, disabled: pluginsDisabled },
     system: { flags: (flags.data ?? []).map((f) => ({ key: f.key, mode: f.mode })), settings },
   };
 }

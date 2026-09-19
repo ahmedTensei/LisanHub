@@ -12,6 +12,8 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Generated player bundle (scripts/build-player.mjs).
+    "src/player/runtime.generated.ts",
   ]),
 ]);
 

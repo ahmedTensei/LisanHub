@@ -2,8 +2,16 @@ import { describe, expect, it } from "vitest";
 import { can, capabilitiesOf } from "./capabilities";
 import {
   canAccessAdminArea,
+  canModerateContent,
+  canOverseeAll,
   canAssignRank,
+  canAccessStudio,
   canBecomeContentCreator,
+  canBecomeContributor,
+  canDisablePlugin,
+  canEditPlugin,
+  canReviewPlugin,
+  publishesDirectly,
   canCopy,
   canCreateContent,
   canDecideSupportRequest,
@@ -42,9 +50,10 @@ describe("capabilities", () => {
     expect(can(moderator, "admin.platform_settings")).toBe(false);
   });
 
-  it("only allows Student -> Content Creator in the current stage", () => {
-    expect(allowedRoleTransitions("student")).toEqual(["content_creator"]);
+  it("lets a Student choose Content Creator or Contributor, with no self-service way back", () => {
+    expect(allowedRoleTransitions("student")).toEqual(["content_creator", "contributor"]);
     expect(allowedRoleTransitions("content_creator")).toEqual([]);
+    expect(allowedRoleTransitions("contributor")).toEqual([]);
   });
 });
 
@@ -115,6 +124,14 @@ describe("role change", () => {
     expect(canBecomeContentCreator(contributor)).toEqual({ allowed: false, reason: "role_change_not_allowed" });
   });
 
+  it("opens the Contributor path to Students only, one path per member (decision R10)", () => {
+    const contributor: Actor = { kind: "user", userId: "x", primaryRole: "contributor", adminRank: null };
+    expect(canBecomeContributor(student).allowed).toBe(true);
+    expect(canBecomeContributor(creator)).toEqual({ allowed: false, reason: "role_change_not_allowed" });
+    expect(canBecomeContributor(contributor)).toEqual({ allowed: false, reason: "already_contributor" });
+    expect(canBecomeContributor(guest)).toEqual({ allowed: false, reason: "sign_in_required" });
+  });
+
   it("grants every signed-in user their own profile and language pairs", () => {
     expect(can(student, "profile.edit_own")).toBe(true);
     expect(can(student, "language_pairs.manage_own")).toBe(true);
@@ -125,7 +142,7 @@ describe("role change", () => {
 describe("platform owner", () => {
   it("holds every capability whatever the primary role", () => {
     expect(can(owner, "content.create")).toBe(true);
-    expect(can(owner, "extension.create")).toBe(true);
+    expect(can(owner, "plugins.publish")).toBe(true);
     expect(capabilitiesOf(owner).size).toBeGreaterThan(capabilitiesOf(moderator).size);
   });
 
@@ -142,7 +159,7 @@ describe("platform owner", () => {
 describe("platform owner", () => {
   it("holds every capability whatever the primary role", () => {
     expect(can(owner, "content.create")).toBe(true);
-    expect(can(owner, "extension.create")).toBe(true);
+    expect(can(owner, "plugins.publish")).toBe(true);
     expect(capabilitiesOf(owner).size).toBeGreaterThan(capabilitiesOf(moderator).size);
   });
 
@@ -159,7 +176,7 @@ describe("platform owner", () => {
 describe("platform owner", () => {
   it("holds every capability whatever the primary role", () => {
     expect(can(owner, "content.create")).toBe(true);
-    expect(can(owner, "extension.create")).toBe(true);
+    expect(can(owner, "plugins.publish")).toBe(true);
     expect(capabilitiesOf(owner).size).toBeGreaterThan(capabilitiesOf(moderator).size);
   });
 
@@ -211,5 +228,52 @@ describe("administration area", () => {
     expect(canAssignRank(owner, nobody, "super_administrator").allowed).toBe(true);
     expect(canEditPlatformSettings(moderator).allowed).toBe(false);
     expect(canEditPlatformSettings(admin).allowed).toBe(true);
+  });
+
+  it("lets the owner and super administrators oversee everything; lower ranks moderate what reaches them (decision R17)", () => {
+    expect(canOverseeAll(owner).allowed).toBe(true);
+    expect(canOverseeAll(superAdmin).allowed).toBe(true);
+    expect(canOverseeAll(admin)).toEqual({ allowed: false, reason: "super_administrator_required" });
+    expect(canOverseeAll(moderator).allowed).toBe(false);
+    expect(canOverseeAll(creator).allowed).toBe(false);
+    expect(canModerateContent(moderator).allowed).toBe(true);
+    expect(canModerateContent(creator)).toEqual({ allowed: false, reason: "moderation_only" });
+  });
+});
+
+describe("plugin studio (decisions R7 and R10)", () => {
+  const contributor: Actor = { kind: "user", userId: "c1", primaryRole: "contributor", adminRank: null };
+  const other: Actor = { kind: "user", userId: "c2", primaryRole: "contributor", adminRank: null };
+  const moderator: Actor = { kind: "user", userId: "m", primaryRole: "student", adminRank: "moderator" };
+  const owner: Actor = { kind: "user", userId: "o", primaryRole: "student", adminRank: "platform_owner" };
+  const draft = { ownerId: "c1", status: "draft" as const, disabled: false };
+
+  it("admits Contributors and the owner, never Students or Content Creators", () => {
+    expect(canAccessStudio(contributor).allowed).toBe(true);
+    expect(canAccessStudio(owner).allowed).toBe(true);
+    expect(canAccessStudio(student)).toEqual({ allowed: false, reason: "contributor_role_required" });
+    expect(canAccessStudio(creator).allowed).toBe(false);
+    expect(canAccessStudio(moderator).allowed).toBe(false);
+    expect(canAccessStudio(guest).allowed).toBe(false);
+  });
+
+  it("lets a Contributor edit only their own plugin, and nobody a disabled one", () => {
+    expect(canEditPlugin(contributor, draft).allowed).toBe(true);
+    expect(canEditPlugin(other, draft)).toEqual({ allowed: false, reason: "not_owner" });
+    expect(canEditPlugin(contributor, { ...draft, disabled: true })).toEqual({
+      allowed: false,
+      reason: "plugin_disabled",
+    });
+    expect(canEditPlugin(owner, { ...draft, ownerId: null }).allowed).toBe(true);
+    expect(canEditPlugin(contributor, { ...draft, ownerId: null })).toEqual({ allowed: false, reason: "not_owner" });
+  });
+
+  it("publishes directly only with plugins.publish; review and kill switch stay with moderation", () => {
+    expect(publishesDirectly(contributor)).toBe(false);
+    expect(publishesDirectly(owner)).toBe(true);
+    expect(canReviewPlugin(contributor)).toEqual({ allowed: false, reason: "moderation_only" });
+    expect(canReviewPlugin(moderator).allowed).toBe(true);
+    expect(canDisablePlugin(moderator).allowed).toBe(true);
+    expect(canDisablePlugin(contributor).allowed).toBe(false);
   });
 });

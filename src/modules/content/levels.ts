@@ -1,4 +1,6 @@
-import { z } from "zod";
+import * as z from "zod/mini";
+
+// zod/mini: this module is bundled into the sandboxed player (ADR 0007).
 
 export const CEFR_LEVELS = ["A1", "A2", "B1", "B2", "C1", "C2"] as const;
 export const CefrLevel = z.enum(CEFR_LEVELS);
@@ -7,7 +9,7 @@ export type CefrLevel = z.infer<typeof CefrLevel>;
 /** Structured level: a CEFR band plus an optional sub-step (A1.1, A1.2 ...). Never free text. */
 export const ProficiencyLevel = z.object({
   band: CefrLevel,
-  sub: z.number().int().min(1).max(9).optional(),
+  sub: z.optional(z.int().check(z.gte(1), z.lte(9))),
 });
 export type ProficiencyLevel = z.infer<typeof ProficiencyLevel>;
 
