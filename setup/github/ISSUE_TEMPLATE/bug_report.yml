@@ -1,0 +1,49 @@
+name: Bug report
+description: Something behaves differently from what the code or the documentation says.
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you. There is no public instance yet, so most bugs will come from running the project locally; say so below. **Security problems go through private reporting, not here** (see SECURITY.md).
+  - type: textarea
+    id: expected
+    attributes:
+      label: What you expected
+      placeholder: Publishing the package should create a new version and keep the previous one in the history.
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: What happened instead
+      placeholder: The page showed an error message and no version appeared.
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      placeholder: |
+        1. Sign in as a content creator
+        2. Open /ar/content/new and ...
+    validations:
+      required: true
+  - type: input
+    id: where
+    attributes:
+      label: Where it happened
+      description: The page or the command, the interface language, and the browser or terminal.
+      placeholder: /ar/content/<id>, Arabic interface, Firefox 131 on Windows
+  - type: input
+    id: commit
+    attributes:
+      label: Commit
+      description: The output of `git rev-parse --short HEAD` in your clone, if you know it.
+      placeholder: f3a0aac
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs or screenshots
+      description: Terminal output, browser console errors, or a screenshot. Remove anything personal first.
+      render: text

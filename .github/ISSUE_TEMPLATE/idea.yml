@@ -1,0 +1,44 @@
+name: Idea or proposal
+description: A feature, a change, or a question about a decision — before any code is written.
+labels: ["idea"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Please look at `docs/mvp-roadmap.md` and `docs/decisions/` first: many ideas are already scheduled for a later stage, or were decided against with a reason. A proposal that names the stage it belongs to is much easier to answer.
+  - type: textarea
+    id: problem
+    attributes:
+      label: The need or the problem
+      description: What is hard, missing or wrong today, from the point of view of a learner, a content creator or a contributor?
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: What you propose
+      description: The change as you imagine it. A rough sketch is fine.
+    validations:
+      required: true
+  - type: dropdown
+    id: stage
+    attributes:
+      label: Which part of the project it touches
+      options:
+        - Accounts, roles or language pairs
+        - Plugins, the studio or the sandboxed player
+        - Packages, courses or the content editor
+        - The learner experience (not built yet)
+        - Administration and moderation
+        - Interface languages and RTL
+        - Documentation
+        - Not sure
+    validations:
+      required: true
+  - type: checkboxes
+    id: scope
+    attributes:
+      label: Scope
+      options:
+        - label: This does not add a subscription, payment or any other commercial feature (those belong to phase C).
+        - label: This does not add a built-in kind of learning to the platform (every activity is a plugin).

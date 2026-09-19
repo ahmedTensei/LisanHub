@@ -1,0 +1,347 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>LisanHub — community-driven language learning</title>
+    <meta
+      name="description"
+      content="LisanHub is a community-driven platform for creating, reviewing, translating and improving language-learning material, organised by language pair. Source-available, noncommercial licence. In early development."
+    />
+    <meta name="color-scheme" content="light dark" />
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%231f6f4a'/%3E%3Cpath d='M9 8h4v12h9v4H9z' fill='%23fff'/%3E%3C/svg%3E"
+    />
+    <style>
+      :root {
+        --bg: #f6f8f4;
+        --surface: #ffffff;
+        --ink: #1b2420;
+        --muted: #56645c;
+        --line: #d9e1d9;
+        --accent: #1f6f4a;
+        --accent-ink: #ffffff;
+        --note-bg: #fff6e0;
+        --note-line: #e7c96f;
+        --max: 60rem;
+      }
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --bg: #131816;
+          --surface: #1b211e;
+          --ink: #e8ece9;
+          --muted: #a7b3ac;
+          --line: #2c3631;
+          --accent: #5fb98c;
+          --accent-ink: #0f1a14;
+          --note-bg: #2a2413;
+          --note-line: #7a6320;
+        }
+      }
+      * {
+        box-sizing: border-box;
+      }
+      html {
+        font-family:
+          system-ui,
+          -apple-system,
+          "Segoe UI",
+          Roboto,
+          "Helvetica Neue",
+          Arial,
+          sans-serif;
+        line-height: 1.55;
+        -webkit-text-size-adjust: 100%;
+      }
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--ink);
+      }
+      a {
+        color: var(--accent);
+      }
+      header,
+      main,
+      footer {
+        width: min(var(--max), 100% - 2rem);
+        margin-inline: auto;
+      }
+      header {
+        padding-block: 2.5rem 1rem;
+      }
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        text-decoration: none;
+        color: inherit;
+      }
+      .brand svg {
+        width: 2.25rem;
+        height: 2.25rem;
+        flex: none;
+      }
+      .brand strong {
+        font-size: 1.5rem;
+        letter-spacing: -0.01em;
+      }
+      h1 {
+        font-size: clamp(1.9rem, 4.5vw, 3rem);
+        line-height: 1.15;
+        letter-spacing: -0.02em;
+        margin: 1.5rem 0 0.75rem;
+        max-width: 24ch;
+      }
+      .lede {
+        font-size: 1.15rem;
+        color: var(--muted);
+        max-width: 60ch;
+        margin: 0;
+      }
+      .status {
+        margin-top: 1.5rem;
+        padding: 0.9rem 1.1rem;
+        border: 1px solid var(--note-line);
+        background: var(--note-bg);
+        border-radius: 0.75rem;
+        max-width: 64ch;
+      }
+      .status strong {
+        display: block;
+        margin-bottom: 0.2rem;
+      }
+      .actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.75rem;
+        margin-top: 1.5rem;
+      }
+      .button {
+        display: inline-block;
+        padding: 0.65rem 1.1rem;
+        border-radius: 0.6rem;
+        border: 1px solid var(--accent);
+        text-decoration: none;
+        font-weight: 600;
+      }
+      .button.primary {
+        background: var(--accent);
+        color: var(--accent-ink);
+      }
+      main {
+        padding-block: 2rem 3rem;
+        display: grid;
+        gap: 2rem;
+      }
+      section {
+        background: var(--surface);
+        border: 1px solid var(--line);
+        border-radius: 1rem;
+        padding: 1.5rem;
+      }
+      section h2 {
+        margin: 0 0 0.75rem;
+        font-size: 1.35rem;
+        letter-spacing: -0.01em;
+      }
+      section p,
+      section li {
+        max-width: 70ch;
+      }
+      section p:last-child,
+      section ul:last-child {
+        margin-bottom: 0;
+      }
+      ul {
+        padding-inline-start: 1.25rem;
+      }
+      li + li {
+        margin-top: 0.35rem;
+      }
+      .grid {
+        display: grid;
+        gap: 1rem;
+        grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+      }
+      .grid > div {
+        border: 1px solid var(--line);
+        border-radius: 0.75rem;
+        padding: 1rem;
+      }
+      .grid h3 {
+        margin: 0 0 0.4rem;
+        font-size: 1.05rem;
+      }
+      .grid p {
+        margin: 0;
+        color: var(--muted);
+      }
+      code {
+        font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+        font-size: 0.92em;
+        background: var(--bg);
+        border: 1px solid var(--line);
+        border-radius: 0.3rem;
+        padding: 0.05rem 0.3rem;
+      }
+      footer {
+        padding-block: 1rem 3rem;
+        color: var(--muted);
+        font-size: 0.95rem;
+        border-top: 1px solid var(--line);
+      }
+      footer p {
+        margin: 0.4rem 0;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <a class="brand" href="https://github.com/ahmedTensei/LisanHub" aria-label="LisanHub on GitHub">
+        <svg viewBox="0 0 32 32" aria-hidden="true">
+          <rect width="32" height="32" rx="7" fill="var(--accent)" />
+          <path d="M9 8h4v12h9v4H9z" fill="var(--accent-ink)" />
+        </svg>
+        <strong>LisanHub</strong>
+      </a>
+      <h1>Language learning built by the people who speak the languages.</h1>
+      <p class="lede">
+        A community-driven platform where members create, review, translate and improve learning material. Every
+        resource belongs to a <strong>language pair</strong> — the learner's comfortable language and the language they
+        are learning — so a Kabyle speaker learning Turkish and a French speaker learning Algerian Arabic are
+        first-class cases, not afterthoughts.
+      </p>
+      <div class="status" role="note">
+        <strong>Status: early development.</strong>
+        There is no public instance, no sign-up and no learning content yet. The code is published for transparency
+        while it is being built, and nothing in it pretends otherwise: no demo lessons, no sample members, no invented
+        numbers.
+      </div>
+      <div class="actions">
+        <a class="button primary" href="https://github.com/ahmedTensei/LisanHub">View the source on GitHub</a>
+        <a class="button" href="https://github.com/ahmedTensei/LisanHub/blob/main/CONTRIBUTING.md">How to contribute</a>
+      </div>
+    </header>
+
+    <main>
+      <section aria-labelledby="idea">
+        <h2 id="idea">The idea</h2>
+        <p>
+          Most language apps are built for a handful of large languages and a single direction of learning. LisanHub
+          starts from the other end: any pair of languages, chosen by the learner, and a community — not a central team
+          — that writes the lessons, checks them, and carries them into other pairs by copying and adapting them with
+          clear attribution to the original author.
+        </p>
+        <p>
+          The platform is entirely free in its first phase. Subscriptions and payments are deliberately left for a final
+          phase, after real users have used the platform and said what works.
+        </p>
+      </section>
+
+      <section aria-labelledby="how">
+        <h2 id="how">How it is built</h2>
+        <div class="grid">
+          <div>
+            <h3>No built-in kind of learning</h3>
+            <p>
+              Every activity type — exercises, vocabulary cards, anything that comes next — is a <em>plugin</em>: a
+              declarative contract that describes its activities, its content schema and its editor fields. Contributors
+              compose plugins in a studio inside the platform, without writing code.
+            </p>
+          </div>
+          <div>
+            <h3>Content is a file</h3>
+            <p>
+              A lesson is a portable package built for one plugin and stored as a single file. Copying, translating and
+              rolling back a lesson are file operations with a provenance record, not rows scattered across a database.
+            </p>
+          </div>
+          <div>
+            <h3>A sandbox that never sees the user</h3>
+            <p>
+              Plugins and content run only inside an isolated frame with no network, no storage and no access to the
+              page. No identity, progress or settings ever cross that boundary, and the authoritative score is
+              recomputed on the server.
+            </p>
+          </div>
+          <div>
+            <h3>Accounts and files kept apart</h3>
+            <p>
+              Accounts and metadata live in a Postgres database with row-level security; every file — packages,
+              pictures, plugin definitions — lives in object storage and is pinned by its hash.
+            </p>
+          </div>
+        </div>
+        <p style="margin-top: 1rem">
+          Stack: Next.js, React, TypeScript, Tailwind CSS, next-intl, Supabase, Cloudflare R2, Zod, ts-fsrs, Vitest with
+          PGlite. The interface is Arabic-first (right-to-left) with French and English.
+        </p>
+      </section>
+
+      <section aria-labelledby="state">
+        <h2 id="state">What exists, what does not</h2>
+        <p>
+          <strong>Exists today:</strong> accounts, roles and administrative ranks with authorization enforced in code
+          and in the database; language pairs over the full ISO 639-3 set; the plugin architecture with its studio,
+          package format and sandboxed player; a content editor with versions, rollback and courses; an in-platform
+          administration area with search-first oversight and moderation with a written reason.
+        </p>
+        <p>
+          <strong>Not yet:</strong> the learner experience (browsing, studying, spaced review, progress), derivation and
+          attribution between members, community chat, ratings. They are next, in that order. The current state is kept
+          honest in the repository's <code>README.md</code> and roadmap.
+        </p>
+      </section>
+
+      <section aria-labelledby="licence">
+        <h2 id="licence">Licence</h2>
+        <p>
+          LisanHub is <strong>source-available, not open source</strong>. It is licensed under the
+          <a href="https://github.com/ahmedTensei/LisanHub/blob/main/LICENSE">PolyForm Noncommercial License 1.0.0</a>:
+          you may read, run, modify and share it for any noncommercial purpose — personal study, research, nonprofits,
+          schools and public institutions. <strong>Any commercial use requires a separate written licence</strong> from
+          the copyright holder.
+        </p>
+        <p>
+          The licence of the learning content that members will create inside the platform is a separate question and is
+          not decided yet.
+        </p>
+      </section>
+
+      <section aria-labelledby="contribute">
+        <h2 id="contribute">Contributing</h2>
+        <p>
+          Anyone may send changes: bug reports and ideas through issues, and code, documentation or interface-text
+          improvements through pull requests. Open an issue before anything larger than a small fix — the architecture
+          and the roadmap are deliberate.
+        </p>
+        <p>
+          <strong>A contribution is a voluntary gift, not a stake.</strong> Contributors keep the copyright of their own
+          work and license it to the project owner, including the right to relicense it; a contribution creates no
+          ownership, share, revenue right or say in the project's direction. The full terms are in
+          <a href="https://github.com/ahmedTensei/LisanHub/blob/main/CONTRIBUTING.md#contribution-terms"
+            >CONTRIBUTING.md</a
+          >
+          and are confirmed in every pull request.
+        </p>
+        <p>
+          Security problems go through
+          <a href="https://github.com/ahmedTensei/LisanHub/security/advisories/new">private vulnerability reporting</a>,
+          never through a public issue.
+        </p>
+      </section>
+    </main>
+
+    <footer>
+      <p>© 2026 Ahmed Hayani. LisanHub is source-available under the PolyForm Noncommercial License 1.0.0.</p>
+      <p>
+        <a href="https://github.com/ahmedTensei/LisanHub">Repository</a> ·
+        <a href="https://github.com/ahmedTensei/LisanHub/blob/main/CONTRIBUTING.md">Contributing</a> ·
+        <a href="https://github.com/ahmedTensei/LisanHub/blob/main/SECURITY.md">Security</a> ·
+        <a href="https://github.com/ahmedTensei/LisanHub/blob/main/docs/mvp-roadmap.md">Roadmap</a>
+      </p>
+    </footer>
+  </body>
+</html>

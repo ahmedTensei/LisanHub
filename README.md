@@ -2,20 +2,24 @@
 
 A community-driven platform where people create, review, translate and improve language-learning material. Every resource belongs to a **language pair** — the learner's comfortable language → the language they are learning — so a Kabyle speaker learning Turkish and a French speaker learning Algerian Arabic are first-class cases, not afterthoughts.
 
-**Status: early development. Not usable yet, and not deployed.** There is no public instance, no content, and no sign-up. This repository is published for transparency while it is being built.
+**Status: early development. Not usable yet, and not deployed.** There is no public instance, no content, and no sign-up. This repository is published for transparency while it is being built. A short project page lives at **https://ahmedtensei.github.io/LisanHub/**.
 
 ## What exists today
 
 - Accounts: email sign-up with confirmation, sign-in, password reset, unique usernames, public profile pages with a visibility setting.
 - Roles and ranks: Student and Content Creator, four administrative ranks, capability-based authorization enforced in TypeScript **and** in Postgres row-level security.
 - Language pairs over the full ISO 639-3 set (7,919 languages), with dialect handled as a tag rather than a separate language.
-- An in-platform admin area: members, ranks, support requests, reports, product feedback, platform settings.
+- An in-platform admin area: members, ranks, support requests, reports, product feedback, platform settings, plugin review with a live preview, and — for the owner and super administrators — search-first oversight of any content item with its versions, derivation chain and sandboxed preview, plus hiding with a written reason.
+- Files (packages, package assets, profile pictures, plugin definitions) in Cloudflare R2 behind a storage abstraction, each pinned by its sha256 hash; Supabase holds accounts and metadata only — no file and no learning content.
+- The plugin architecture (decision R7): a declarative plugin contract, a Plugin Studio at `/studio` where Contributors compose a kind of activity from a field-type catalogue without code (with templates and moderation review before publication), a `.lisanpkg` package format with a fail-closed validator, and a sandboxed player document (`/play`) that never receives user data.
+- A content editor at `/content`: packages generated from a plugin's authoring fields, pictures stored inside the package, metadata (CEFR, skills, tags), learner preview in the sandboxed player, versioned publication with rollback, optional translations of English titles, and courses that order a creator's own packages of the same language pair.
+- Two core plugins produced by the studio pipeline and seeded as reference data: classic exercises (multiple choice, fill in the blank, matching, word order) and self-assessed vocabulary cards.
 - Interface in Arabic (default, RTL), French and English.
-- 123 automated tests, including database invariants run against the real migrations.
+- 208 automated tests, including database invariants run against the real migrations, and guards that no raw translation key can reach the screen.
 
 ## What does not exist yet
 
-Content authoring, the learner experience, derivation and attribution, community chat, ratings — all of it is next. Nothing in this repository fakes those: there is no demo content, no sample lessons and no placeholder statistics anywhere, by design.
+The learner experience (browsing, studying, spaced review, progress), derivation and attribution, community chat, ratings — all of it is next. Nothing in this repository fakes those: there is no demo content, no sample lessons and no placeholder statistics anywhere, by design.
 
 ## Architecture in one paragraph
 
@@ -31,22 +35,6 @@ Learning content created by members inside the platform is a separate question a
 
 ## Contributions
 
-Code contributions are **closed for now** — pull requests will not be merged while the architecture is still moving. Bug reports and ideas through Issues are welcome, and security reports are covered in [SECURITY.md](SECURITY.md). Community participation is designed to happen **inside the platform** (creating, reviewing and translating learning material), not in this repository.
+Anyone may send changes: bug reports and ideas through Issues, and code, documentation or interface-text improvements through pull requests — please open an issue first for anything beyond a small fix. **A contribution is a voluntary gift, not a stake:** contributors keep the copyright of their own work and license it to the project owner, including the right to relicense it, and a contribution creates no ownership, share, revenue right or say in the project's direction. The full terms are in [CONTRIBUTING.md](CONTRIBUTING.md#contribution-terms) and are confirmed in every pull request. Security reports are covered in [SECURITY.md](SECURITY.md).
 
----
-
-<div dir="rtl">
-
-## بالعربية
-
-**LisanHub** منصّة مجتمعية لصناعة محتوى تعلّم اللغات ومراجعته وترجمته وتحسينه. كل مورد تعليمي ينتمي إلى **زوج لغوي**: لغتك المريحة ← اللغة التي تتعلّمها.
-
-**الحالة: قيد التطوير المبكّر.** لا نسخة منشورة ولا تسجيل ولا محتوى بعد. ما أُنجز: الحسابات والأدوار والرتب والأزواج اللغوية ولوحة الإدارة، بواجهة عربية (افتراضية) وفرنسية وإنجليزية.
-
-**المعمارية:** لا نوع تعلّم مدمج في المنصّة؛ لكل نشاط **إضافة** تُبنى أولًا، والمحتوى **ملف مستقلّ** يُشغَّل في **بيئة معزولة لا تصل إلى بيانات المستخدم**.
-
-**الترخيص:** PolyForm Noncommercial 1.0.0 — الاستعمال غير التجاري مسموح، و**الاستعمال التجاري يحتاج إذنًا مكتوبًا** من صاحب الحقوق. المشروع مصدره متاح، لكنه ليس «مفتوح المصدر» بالتعريف الرسمي.
-
-**المساهمات:** مغلقة على الكود حاليًا. البلاغات والأفكار عبر Issues مرحّب بها، ومشاركة المجتمع مكانها داخل المنصّة نفسها.
-
-</div>
+The repository is written in English only (the product's three interface languages live in `messages/`). Community participation in the product itself is designed to happen **inside the platform** — creating, reviewing and translating learning material — not in this repository.
