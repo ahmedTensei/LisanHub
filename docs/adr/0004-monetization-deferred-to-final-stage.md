@@ -1,28 +1,28 @@
-# ADR 0004 — تأجيل الاشتراكات والمدفوعات إلى المرحلة الأخيرة
+# ADR 0004 — Deferring subscriptions and payments to the last phase
 
-- **الحالة:** معتمد (17 سبتمبر 2026)، تطبيقًا للقرار ح2.
+- **Status:** adopted (17 September 2026), applying decision R2.
 
-## السياق
+## Context
 
-المواصفات تفعّل خدمة مدفوعة واحدة منذ الإصدار الأول (الوصول دون اتصال ومزامنة المحتوى الثقيل). قرّر أحمد بناء منصّة مجانية متكاملة أولًا، وجمع تقييمات المستخدمين والتحسين، ثم الاشتراكات والمدفوعات مع التجهيز القانوني في آخر مرحلة.
+The specification activates one paid service from the first release (offline access and heavy-content sync). Ahmed decided to build a complete free platform first, collect user feedback and improve, then subscriptions and payments with the legal preparation in the last phase.
 
-## القرار
+## Decision
 
-1. أُزيلت من الترحيل الأولي: أنواع `entitlement_product` و`entitlement_source`، وجداول `entitlements` و`personal_heavy_content`، والدالة `has_active_entitlement`، وإعدادات `founding.benefit_days` و`trial.offline_sync_days`، ومفاتيح `offline_sync` و`marketplace` و`executable_content`.
-2. أُزيلت وحدة `src/modules/entitlements`. يحذفها `npm run setup` تلقائيًا من النسخ القديمة.
-3. أُضيف جدول `product_feedback` ووحدة `src/modules/feedback` لجمع تقييمات المستخدمين للمنصّة.
-4. بقي الحقل `content_items.is_paid` (دائمًا `false`) لأن قاعدة منع اشتقاق المحتوى المدفوع جزء من نموذج الملكية منذ اليوم الأول.
-5. اختبار قاعدة البيانات «لا جداول اشتراك أو دفع أو استحقاقات» يمنع تسرّب المرحلة ج إلى ما قبلها.
+1. Removed from the initial migration: the types `entitlement_product` and `entitlement_source`, the tables `entitlements` and `personal_heavy_content`, the function `has_active_entitlement`, the settings `founding.benefit_days` and `trial.offline_sync_days`, and the flags `offline_sync`, `marketplace` and `executable_content`.
+2. The module `src/modules/entitlements` was removed. `npm run setup` deletes it automatically from older copies.
+3. The table `product_feedback` and the module `src/modules/feedback` were added to collect users' feedback about the platform.
+4. The field `content_items.is_paid` stays (always `false`) because the rule that paid content cannot be derived is part of the ownership model from day one.
+5. The database test "no subscription, payment or entitlement tables" prevents phase C from leaking into what precedes it.
 
-## التصميم المحفوظ للمرحلة ج
+## The design kept for phase C
 
-- `entitlements(id, user_id, product, source, starts_at, ends_at, granted_by, created_at)`، والمنتج الأول `offline_heavy_sync`، والمصادر: `founding_member`، `trial`، `referral`، `paid`، `admin_grant`. لا يكتب فيه العميل؛ القراءة للمالك والإدارة.
-- `has_active_entitlement(user, product)`: نشط إذا بدأ ولم ينتهِ.
-- `personal_heavy_content(id, user_id, kind, source_item_id, body, client_updated_at, updated_at)` مع RLS تشترط اشتراكًا نشطًا، ولا يُفهرس ولا يراه غير مالكه.
-- إعدادات قابلة للتعديل: مدة امتياز المؤسّسين (365 يومًا مقترحة في المواصفات)، ومدة التجربة المجانية (أسبوع مثلًا).
-- ترتيب المرحلة ج: التجهيز القانوني (شركة، شروط، خصوصية، ANPDP، ترخيص المحتوى) ← مزوّد الدفع (ق4) ← الاشتراك في الخدمة المدفوعة ← لاحقًا السوق وKYC.
+- `entitlements(id, user_id, product, source, starts_at, ends_at, granted_by, created_at)`, the first product `offline_heavy_sync`, and the sources: `founding_member`, `trial`, `referral`, `paid`, `admin_grant`. The client never writes to it; reading is for the owner and the administration.
+- `has_active_entitlement(user, product)`: active if it has started and not ended.
+- `personal_heavy_content(id, user_id, kind, source_item_id, body, client_updated_at, updated_at)` with RLS that requires an active subscription; never indexed and seen by nobody but its owner.
+- Editable settings: the duration of the founders' benefit (365 days proposed in the specification), and the duration of the free trial (a week, for example).
+- The order of phase C: legal preparation (company, terms, privacy, ANPDP, content licence) ← the payment provider (Q4) ← the subscription to the paid service ← later the marketplace and KYC.
 
-## العواقب
+## Consequences
 
-- المستخدمون الأوائل يحصلون على كل ميزات المرحلتين أ وب مجانًا.
-- قيمة الاشتراك المستقبلي تعتمد على الوصول دون اتصال ومزامنة المحتوى الثقيل، وتُقاس في المرحلة ب عبر تقييمات المستخدمين قبل بنائها.
+- The first users get every feature of phases A and B free.
+- The value of the future subscription rests on offline access and heavy-content sync, and is measured in phase B through user feedback before it is built.

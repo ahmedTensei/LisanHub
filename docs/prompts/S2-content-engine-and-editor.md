@@ -1,126 +1,159 @@
-# أمر البدء — المرحلة S2: معمارية الإضافات وحزم المحتوى والمشغّل المعزول
+# Start prompt — stage S2: the plugin architecture, content packages and the sandboxed player
 
-> **هذا الملف أُعيد كتابته بعد قرارَي ح7 وح8 (17 سبتمبر 2026).** لم يبقَ في S2 «محرّر دروس مدمج»: تُبنى الإضافة أولًا، ثم المحتوى والمنهج لتلك الإضافة، والمحتوى ملف منفصل يعمل في بيئة معزولة.
+> **This file was rewritten after decisions R7 and R8 (17 September 2026), and updated on 18 September with the engine that creates plugins and templates.** There is no "built-in lesson editor" left in S2: the plugin is built first (with the studio), then the content and the curriculum for that plugin (with the editor), and the content is a separate file that runs in an isolated environment.
 >
-> طريقة الاستخدام: في Claude Code، شغّل أولًا `npm run setup` (المهارات تغيّرت وأُضيفت مهارة جديدة)، ثم فعّل وضع التخطيط (Shift+Tab حتى يظهر «plan mode on»)، ثم اكتب:
-> «نفّذ التعليمات في docs/prompts/S2-content-engine-and-editor.md»
+> How to use: in Claude Code, first run `npm run setup` (the skills changed and a new skill was added), then enable plan mode (Shift+Tab until "plan mode on" appears), then write:
+> "Execute the instructions in docs/prompts/S2-content-engine-and-editor.md"
 
-## السياق
+## Context
 
-اقرأ أولًا: `CLAUDE.md`، ثم **`docs/adr/0006-learning-plugins-and-content-packages.md`** (التفاصيل التقنية للقرار)، ثم `docs/decisions/resolved-decisions.md` (القرارَان **ح8 وح7** أولًا، ثم ح6 وح5 وح4 وح3 وح2 وح1)، ثم `docs/decisions/open-decisions.md` (ق17 وق18 وق19 وق20 خاصة)، ثم `docs/mvp-roadmap.md` و`docs/adr/0005-storage-abstraction.md`.
+Read first: `CLAUDE.md`, then **`docs/adr/0006-learning-plugins-and-content-packages.md`** (the technical details of the decision), then `docs/decisions/resolved-decisions.md` (decisions **R8 and R7** first, then R6, R5, R4, R3, R2 and R1), then `docs/decisions/open-decisions.md` (Q17, Q18, Q19 and Q20 in particular), then `docs/mvp-roadmap.md` and `docs/adr/0005-storage-abstraction.md`.
 
-ثم المهارات، بهذا الترتيب: **`plugin-architecture`** (المرجع الأول لكل ما في هذه المرحلة)، `project-governance`، `mvp-scope`، `ugc-content-system`، `learning-exercise-engine`، `architecture-guardian`، `api-data-architecture`، `platform-security`، `i18n-rtl`، `testing-quality`. واقرأ `content-lineage` و`search-discovery` للاطّلاع فقط حتى لا تبني ما يعيق S3 وS4.
+Then the skills, in this order: **`plugin-architecture`** (the first reference for everything in this stage), `project-governance`, `mvp-scope`, `ugc-content-system`, `learning-exercise-engine`, `architecture-guardian`, `api-data-architecture`, `platform-security`, `i18n-rtl`, `testing-quality`. Read `content-lineage` and `search-discovery` for awareness only, so that you do not build anything that obstructs S3 and S4.
 
-نحن في **المرحلة أ (منصّة مجانية متكاملة)**، وS0 وS1 منجزان، والمهمة هي **S2 فقط**.
+We are in **phase A (a complete free platform)**, S0 and S1 are done, and the task is **S2 only**.
 
-## قبل كتابة أي كود
+## Before writing any code
 
-1. `npm run setup` ثم `npm run check` ثم `npm run db:verify`. إن فشل شيء أصلحه أولًا وأخبرني بالسبب في سطر واحد.
-2. **لا تسألني أكثر من ثلاثة أسئلة**، كل سؤال بخيارين أو ثلاثة مع توصيتك الواضحة، بعربية بسيطة، ومكتوبة بشكل يسمح لي بالرد «أوافق على توصياتك» دفعة واحدة. لا تسألني في أمور تحسمها المواصفات أو المهارات أو ADR 0006.
-3. اكتب الخطة بالعربية: المراحل بالترتيب أدناه، الملفات الجديدة، الترحيلات، الاختبارات، وما سيراه المستخدم في النهاية. وانتظر موافقتي.
-4. كل ما يُنفَّذ بأمر نفّذه أنت (`npm run db:push`، `db:types`، `db:verify`، `db:config:push`). لا تطلب مني خطوة يدوية في لوحة Supabase، ولا تطلب مفتاح `service_role` أبدًا.
+1. `npm run setup`, then `npm run check`, then `npm run db:verify`. If something fails, fix it first and tell me why in one line.
+2. **Do not ask me more than three questions**, each with two or three options and your clear recommendation, in simple Arabic, written so that I can answer "I agree with your recommendations" in one go. Do not ask me about matters the specification, the skills or ADR 0006 settle.
+3. Write the plan in Arabic: the stages in the order below, the new files, the migrations, the tests, and what the user will see at the end. Then wait for my approval.
+4. Everything that runs as a command, you run (`npm run db:push`, `db:types`, `db:verify`, `db:config:push`). Do not ask me for a manual step in the Supabase dashboard, and never ask for the `service_role` key.
 
-## قاعدتان حاكمتان في كل هذه المرحلة
+## Two governing rules for the whole stage
 
-**١. الإضافة نفسها غير موثوقة، لا المحتوى فقط (ح7 البند 8).** نحن نبني الأساس الذي سيُضاف عليه KYC والتوثيق في آخر مرحلة، والتوثيق لا يخفّف العزل أبدًا:
+**1. The plugin itself is untrusted, not only the content (R7 item 8).** We are building the foundation on which KYC and verification will be added in the last phase, and verification never weakens isolation:
 
-- كود المنصّة **لا يستورد أي ملف إضافة** ولا يضمّه إلى حزمة التطبيق؛ تعريف الإضافة وملفاتها بيانات وأصول تُقدَّم إلى مستند المشغّل، مثبَّتة ببصمة sha256 يتحقّق منها قبل التحميل.
-- **لا منطق إضافة ينفَّذ في عملية المنصّة**، لا في الصفحة ولا في الخادم. **التقييم المُعتمَد خادمي** بمقيّمات المنصّة، ونتيجة الإطار للعرض الفوري فقط: لا تُخزَّن ولا تُصدَّق.
-- إطار لكل نشاط، ولا متغيّرات مشتركة ولا رسائل بين الإطارات؛ إضافة لا ترى إضافة أخرى ولا محتواها.
-- القدرات **صفر**: لا شبكة، ولا تخزين، ولا كاميرا أو ميكروفون، ولا رفع، ولا حافظة.
-- مفتاح تعطيل لكل إضافة وإصدار يعمل فورًا دون نشر، ويُظهر نصًّا مترجمًا للمتعلّم دون أن يُتلف حزمًا.
-- عنوان المشغّل من إعداد `PLAYER_ORIGIN` (ق20)، ليُنقل لاحقًا إلى نطاق فرعي دون تغيير كود.
+- Platform code **imports no plugin file** and does not bundle it into the app; the plugin definition and its files are data and assets handed to the player document, pinned by a sha256 hash verified before loading.
+- **No plugin logic runs in the platform process**, neither in the page nor on the server. **The authoritative evaluation is server-side** with the platform's evaluators, and the frame's result is for immediate display only: never stored, never trusted.
+- One frame per activity, no shared globals and no messages between frames; a plugin sees neither another plugin nor its content.
+- Capabilities are **zero**: no network, no storage, no camera or microphone, no upload, no clipboard.
+- A kill switch per plugin and per version that works immediately without a deployment, and shows the learner a translated text without damaging packages.
+- The player address comes from the `PLAYER_ORIGIN` setting (Q20), to be moved later to a subdomain without a code change.
 
-**٢. لا محتوى وهمي أبدًا (ح8).** لا دروس ولا حزم ولا دورات ولا أعضاء ولا تقييمات ولا نصّ حشو، في أي مكان: لا في ترحيل، ولا في `seed.sql`، ولا في الواجهة. الترحيلات تزرع بيانات مرجعية فقط (اللغات، الإعدادات، مفاتيح الميزات، **تعريفات الإضافات** لأن الإضافة برنامج لا محتوى). الأرقام من استعلام حقيقي أو لا تُعرض. حالات الفراغ صريحة ومترجمة («لا يوجد محتوى لهذا الزوج بعد — كن أوّل من ينشئه») لا بطاقات وهمية. وبيانات الاختبار تبقى في ملفات الاختبار.
+**2. No fake content, ever (R8).** No lessons, packages, courses, members, ratings or filler text, anywhere: not in a migration, not in `seed.sql`, not in the interface. Migrations seed reference data only (languages, settings, feature flags, **plugin definitions** because a plugin is software, not content). Numbers come from a real query or are not shown. Empty states are explicit and translated ("There is no content for this pair yet — be the first to create it"), not fake cards. Test data stays in test files.
 
-## النطاق، بترتيب التنفيذ
+## Scope, in order of execution
 
-نفّذ هذه الكتل بالترتيب، و`npm run check` بعد كل كتلة.
+Execute these blocks in order, with `npm run check` after every block.
 
-### 1. عقد الإضافة (Plugin Contract v1)
+> **The two authoring surfaces this stage builds, never merged:**
+> **(a) The engine that creates plugins and templates** — a standalone page `/studio` **for Contributors** (not the administration area), which defines the *kind* of activity and its templates (block 6).
+> **(b) The content editor** — for the content creator, which fills the *content* of a package on an existing plugin starting from a template (block 5).
+> If either falls, the architecture falls: without (a) every new activity needs a developer, and without (b) there is no content at all.
 
-- وحدة `src/modules/plugins` **دون إطار ومع اختبارات**: مخطّط البيان (Zod) لعقد الإضافة كما في ADR 0006، والتحقّق من `content_schema` (JSON Schema 2020-12)، ووصف حقول المحرّر `authoring_fields`، وإحالات التقييم إلى مقيّمات المنصّة.
-- **ارفض** أي إضافة تعلن `capabilities_required` غير فارغة، أو أصولًا غير مسموحة، أو `plugin_id` غير مطابق للنمط.
-- `plugin_versions` يحفظ **بصمة sha256 للتعريف**، والمشغّل يتحقّق منها قبل الاستعمال.
-- **اختبار معماري**: يفشل إذا استورد أي ملف داخل `src/` تعريف إضافة أو ملفًا من دليل أصول الإضافات (الوصول عبر قراءة بيانات فقط).
-- ترحيل جديد: `plugins` و`plugin_versions` (إلحاقي بمحفّز، مثل `content_versions`)، سياسات RLS: القراءة للجميع، الكتابة **لمالك المنصّة وحده**، ومفتاح ميزة لتعطيل إضافة على مستوى المنصّة (kill switch).
-- اختبارات في `tests/db`: غير المالك لا ينشر إضافة، ولا يعدّل إصدارًا منشورًا، والتعطيل يُخفي الإضافة عن الإنشاء دون أن يُتلف حزمًا قائمة.
+### 1. The plugin contract (Plugin Contract v1)
 
-### 2. حزمة المحتوى `.lisanpkg`
+- A module `src/modules/plugins` **framework-free and with tests**: the manifest schema (Zod) of the plugin contract as in ADR 0006, validation of `content_schema` (JSON Schema 2020-12), the description of the editor fields `authoring_fields`, and the scoring references to the platform's evaluators.
+- **Reject** any plugin that declares a non-empty `capabilities_required`, disallowed assets, or a `plugin_id` that does not match the pattern.
+- `plugin_versions` keeps **the sha256 hash of the definition**, and the player verifies it before use.
+- **An architecture test**: fails if any file inside `src/` imports a plugin definition or a file from the plugin assets directory (access through data reads only).
+- A new migration: `plugins` (with an owner column) and `plugin_versions` (append-only with a trigger, like `content_versions`), and a publication state (draft, pending review, published, disabled). RLS policies: **published ones are readable by everyone**, **a draft is read and written by its owner alone and by oversight**, nobody publishes a version without the `plugins.publish` capability, and disabling is for oversight and the owner (R10). And a platform-wide kill switch per plugin and per version.
+- Tests in `tests/db`: a non-owner does not publish a plugin and does not edit a published version, and disabling hides the plugin from creation without damaging existing packages.
 
-- وحدة `src/modules/packages` **دون إطار ومع اختبارات**: قراءة وكتابة الحزمة (zip)، `manifest.json` و`content.json` و`assets/`، وحساب البصمة sha256، والتحقّق الكامل.
-- **كل حالات الرفض التالية يجب أن يكون لها اختبار يفشل**: تجاوز حجم الحزمة، تجاوز عدد العناصر، تجاوز عدد الأصول أو حجم الأصل، مدخل فيه `..` أو مسار مطلق أو رابط رمزي، أصل نوعه الحقيقي لا يطابق ما يعلنه البيان، `content.json` لا يطابق مخطّط الإضافة، إضافة أو `schema_version` غير موجود، بصمة غير مطابقة.
-- الحدود كلها في `platform_settings` عبر كتالوج `SETTING_FIELDS`، **لا ثوابت في الكود**.
-- التخزين عبر `StorageProvider` بمفتاح يحمل هوية المالك (ADR 0005). قاعدة البيانات لا تحفظ المحتوى ولا رابطًا.
-- ترحيل جديد: أعمدة على `content_items` (`plugin_id`، `plugin_version`، `package_key`، `package_sha256`، `items_count`) وعلى `content_versions` (مفتاح الحزمة وبصمتها)، مع اختبارات: كل إصدار يشير إلى حزمة، ولا عمود اسمه `url` أو ينتهي بـ `_url`، والتراجع تبديل مؤشّر لا كتابة محتوى.
-- **معرّف العنصر (`item_id`) ثابت** ولا يُعاد توليده عند أي تعديل، لأن التقدّم وFSRS مرتبطان به. اختبار يثبت ذلك.
+### 2. The `.lisanpkg` content package
 
-### 3. المشغّل المعزول (Player)
+- A module `src/modules/packages` **framework-free and with tests**: reading and writing the package (zip), `manifest.json`, `content.json` and `assets/`, computing the sha256 hash, and the full validation.
+- **Every rejection case below must have a failing test**: exceeding the package size, exceeding the number of items, exceeding the number of assets or the size of an asset, an entry with `..`, an absolute path or a symbolic link, an asset whose real type does not match what the manifest declares, `content.json` not matching the plugin schema, a plugin or `schema_version` that does not exist, a mismatched hash.
+- All the limits live in `platform_settings` through the `SETTING_FIELDS` catalogue, **no constants in the code**.
+- Storage through `StorageProvider` with a key carrying the owner's identity (ADR 0005). The database stores neither the content nor a link.
+- A new migration: columns on `content_items` (`plugin_id`, `plugin_version`, `package_key`, `package_sha256`, `items_count`) and on `content_versions` (the package key and its hash), with tests: every version points to a package, no column named `url` or ending in `_url`, and rollback is a pointer switch rather than writing content.
+- **The item identifier (`item_id`) is stable** and is never regenerated on any edit, because progress and FSRS are tied to it. A test proves it.
 
-- مسار يخدم مستند المشغّل بترويسات صارمة: `Content-Security-Policy` بـ `default-src 'none'` و`connect-src 'none'` و`img-src blob:`، ولا كوكيز.
-- مكوّن يغلّف المشغّل في `iframe` بسمة `sandbox="allow-scripts"` **دون** `allow-same-origin`.
-- بروتوكول `postMessage` بمخطّطات Zod على الطرفين مع فحص الأصل: `render` و`check` و`reset` من المنصّة، و`ready` و`height` و`answer` و`result` و`error` من المشغّل. الأصول تُمرَّر كـ blob لا كرابط موقَّع للمستخدم.
-- **لا تُرسل أي بيانات مستخدم إلى المشغّل**: لا معرّف، ولا بريد، ولا اسم، ولا اسم مستخدم، ولا تقدّم، ولا حالة مراجعة، ولا إعدادات، ولا رمز جلسة. اكتب **اختبارًا يفشل** إذا احتوى أي نوع رسالة حقلًا من هذه.
-- نفس المشغّل يُستعمل في المعاينة داخل المحرّر الآن، وفي تجربة المتعلّم في S3، وفي المحتوى المشتقّ في S4. مسار واحد، لا مسار مميّز للإضافات الأساسية.
-- حساب النتيجة للعرض الفوري يجري في المشغّل، لكن **التقييم المُعتمَد يُعاد حسابه في الخادم** بمقيّمات المنصّة قبل أي حفظ؛ **لا تُخزَّن نتيجة قادمة من الإطار أبدًا** (اختبار يثبت ذلك)، والتقدّم وجدولة FSRS في الخادم.
-- **إطار واحد لكل نشاط**، ولا حالة مشتركة بين إطارين، ولا رسائل بين الإطارات.
-- **عنوان المشغّل من إعداد `PLAYER_ORIGIN`** (افتراضه نفس الأصل الآن)، مع اختبار لترويسات المستند.
-- **مفتاح تعطيل لكل إضافة وإصدار**: يمنع الإنشاء والتشغيل فورًا، ويُظهر نصًّا مترجمًا، ولا يُتلف حزمًا قائمة (اختبار).
+### 3. The sandboxed player
 
-### 4. أول إضافتين أساسيتين
+- A route that serves the player document with strict headers: `Content-Security-Policy` with `default-src 'none'`, `connect-src 'none'` and `img-src blob:`, and no cookies.
+- A component that wraps the player in an `iframe` with `sandbox="allow-scripts"` **without** `allow-same-origin`.
+- A `postMessage` protocol with Zod schemas on both sides and an origin check: `render`, `check` and `reset` from the platform, and `ready`, `height`, `answer`, `result` and `error` from the player. Assets are passed as blobs, not as a link signed for the user.
+- **No user data is sent to the player**: no identifier, e-mail, name, username, progress, review state, settings or session token. Write **a failing test** if any message type contains one of these fields.
+- The same player is used for the preview inside the editor now, for the learner experience in S3, and for derived content in S4. One path, no privileged path for the core plugins.
+- The score for immediate display is computed in the player, but **the authoritative evaluation is recomputed on the server** with the platform's evaluators before any save; **a result coming from the frame is never stored** (a test proves it), and progress and FSRS scheduling are on the server.
+- **One frame per activity**, no shared state between two frames, no messages between frames.
+- **The player address from the `PLAYER_ORIGIN` setting** (defaulting to the same origin for now), with a test for the document headers.
+- **A kill switch per plugin and per version**: prevents creation and running immediately, shows a translated text, and damages no existing package (a test).
 
-- `classic-exercises`: الأنواع الأربعة الموجودة (اختيار من متعدّد، إكمال فراغ بتجاهل التشكيل العربي، مطابقة، ترتيب كلمات). **لا تحذف `src/modules/exercises`**: يبقى مقيّمات المنصّة المرجعية التي تحيل إليها الإضافة، وتُنقل واجهة العرض فقط إلى المشغّل.
-- `vocab-cards`: بطاقة بوجه وظهر ومثال اختياري وصورة اختيارية ووسوم.
-- الإضافتان تُزرعان بترحيل، ونصوصهما مترجمة إلى ar وfr وen.
+### 4. The first two core plugins
 
-### 5. المحرّر المولَّد من المخطّط
+- `classic-exercises`: the four existing types (multiple choice, fill in the blank ignoring Arabic diacritics, matching, word ordering). **Do not delete `src/modules/exercises`**: it remains the platform's reference evaluators the plugin refers to, and only the rendering moves to the player.
+- `vocab-cards`: a card with a front, a back, an optional example, an optional picture and tags.
+- **They are created with the studio (block 6), not by writing JSON by hand**, then exported, and the two definition files are seeded in a migration as reference data, with their texts translated into ar, fr and en. Execute block 6 before seeding them, or create them temporarily then reproduce them with the studio and make sure the hash matches.
 
-- قائمة «محتوايَ» مع تصفية بالحالة (مسودّة، منشور، مؤرشف) والإضافة والزوج اللغوي.
-- إنشاء حزمة: اختيار الإضافة ← الزوج اللغوي من أزواج صانع المحتوى ← قالب بداية من الإضافة: **هيكل جاهز بحقول وتلميحات** حتى لا يبدأ الصانع من صفحة بيضاء، ودون أي جُمَل مؤلَّفة تبدو درسًا (ح8).
-- الحقول **تُولَّد من `authoring_fields`** لا مكتوبة يدويًا لكل نوع، مع تحقّق Zod ورسائل خطأ مترجمة.
-- عناصر متعدّدة داخل الحزمة: إضافة، حذف، إعادة ترتيب بأزرار تعمل بلوحة المفاتيح.
-- بيانات وصفية: العنوان، النبذة، اللهجة كوسم، CEFR ومستوى فرعي، المهارات، وسوم حرّة مطبَّعة.
-- مسودّات متعدّدة في الوقت نفسه (حزمة غير منشورة)، وحفظ واضح، ومعاينة كمتعلّم عبر المشغّل.
-- **قالب البداية هيكل فارغ بحقول وتلميحات**، لا جُمَل جاهزة تبدو درسًا (ح8). وكل شاشة فارغة تحمل نصًّا صريحًا مترجمًا لا بطاقات وهمية.
-- النشر يُنشئ إصدارًا، وصفحة «سجل التعديلات» تعرض الإصدارات، و**التراجع** إلى إصدار منشور سابق إجراء مُدقَّق في `audit_log`.
-- رفع صورة **داخل الحزمة** (لا رابط خارجي) بنصّ بديل (alt) إلزامي.
-- الصلاحيات عبر `can()` والسياسات فقط: صانع المحتوى (والرتب الإدارية بحدود قدراتها) ينشئ وينشر؛ **الطالب لا يرى أي مسار نشر ولا ينشر**؛ المالك غير محدود (ح6).
+### 5. The editor generated from the schema
 
-### 6. الدورات والمناهج
+- A "my content" list filtered by state (draft, published, archived), plugin and language pair.
+- Creating a package: choose the plugin ← the language pair from the creator's pairs ← a starter template from the plugin: **a ready skeleton with fields and hints** so the creator does not start from a blank page, without any composed sentences that look like a lesson (R8).
+- Fields **are generated from `authoring_fields`**, not written by hand per type, with Zod validation and translated error messages.
+- Several items inside the package: add, remove, reorder with keyboard-operable buttons.
+- Metadata: title, summary, the dialect as a tag, CEFR and a sub-level, skills, normalised free tags.
+- Several drafts at the same time (an unpublished package), a clear save, and a preview as a learner through the player.
+- **The starter template is an empty skeleton with fields and hints**, not ready-made sentences that look like a lesson (R8). Every empty screen carries an explicit translated text, not fake cards.
+- Publishing creates a version, a "change history" page shows the versions, and **rollback** to an earlier published version is an audited action in `audit_log`.
+- Picture upload **inside the package** (no external link) with a required alternative text (alt).
+- Permissions through `can()` and the policies only: the content creator (and the administrative ranks within their capabilities) creates and publishes; **the student sees no publishing path and does not publish**; the owner is unlimited (R6).
 
-- إنشاء دورة، إضافة حزم إليها وترتيبها عبر `course_lessons.position`، وحذف حزمة من الدورة دون حذفها.
-- كل حزمة تابعة لإضافة واحدة؛ الدورة قد تجمع حزمًا من إضافات مختلفة.
+### 6. The engine that creates plugins and templates (Plugin Studio v1)
 
-## خارج النطاق
+This is **the first authoring surface**, and without it every new activity kind needs a developer.
 
-- الاشتقاق و«أنشئ نسختك» و«ترجم هذا الدرس» وسلسلة الإسناد (S4) — لكن لا تكتب ما يمنعها: البيان يحمل حقل `provenance` من الآن.
-- تجربة المتعلّم وتتبّع التقدّم وصفحة البحث (S3).
-- **استيراد حزم من خارج المنصّة** (ق17): التأليف داخل المنصّة فقط في S2.
-- **كود داخل الإضافات، وإضافات يؤلّفها المجتمع**: مؤجَّلة إلى ما بعد التوثيق والمراجعة (ح7). الإضافة وصفية الآن.
-- البحث داخل نصّ العناصر (ق19)، والصوت والفيديو والذكاء الاصطناعي، والتقييمات والبلاغات كواجهات جديدة (S4/S5)، والدردشة (S5).
-- أي اشتراك أو دفع أو استحقاق (المرحلة ج فقط، ح2)، وإنشاء مستودع Git.
+**Its place is a standalone page at `/studio`, not a section of `/admin`** (R10). The administration is the place of oversight; the studio is a place of building, with its own header, navigation and experience.
 
-## تعريف الانتهاء
+**Who enters it:** the **Contributor** (`contributor`), the verified contributor later, and the platform owner. This means **the Contributor role enters phase A in this block**:
 
-- صانع محتوى ينشئ حزمة على إضافة `classic-exercises` فيها الأنواع الأربعة وصورة بنصّ بديل، يعاينها كمتعلّم داخل الإطار المعزول، ينشرها، يعدّلها، ثم يتراجع إلى الإصدار السابق.
-- ينشئ حزمة بطاقات على `vocab-cards`، ثم دورة تضمّ ثلاث حزم ويعيد ترتيبها.
-- الحزمة المنشورة **ملف قابل للتنزيل** يحمل بيانه وبصمته، والمنصّة تقبل إعادة قراءته وتشغيله.
-- الطالب لا ينشر، ولا حتى باستدعاء مباشر لقاعدة البيانات؛ وصانع محتوى لا يعدّل حزمة غيره؛ والمسودّة لا يراها غير مالكها والإشراف (اختبارات).
-- غير المالك لا ينشر إضافة (اختبار)، وحزمة تخالف أي حدّ أو أي قاعدة تحقّق تُرفض برسالة واضحة (اختبار لكل حالة).
-- لا حقل بيانات مستخدم في أي رسالة إلى المشغّل (اختبار)، والمشغّل يعمل بلا شبكة.
-- لا استيراد لملفات الإضافات في `src/`، ولا تخزين لنتيجة قادمة من الإطار، وبصمة تعريف الإضافة مُتحقَّق منها (اختبارات).
-- تعطيل إضافة من الإعدادات يوقف الإنشاء والتشغيل فورًا برسالة مترجمة دون إتلاف حزم.
-- **لا محتوى في أي ترحيل ولا في `seed.sql`** (اختبار يفشل على إدراج محتوى)، وكل شاشة فارغة تشرح الفراغ وتدعو للإنشاء بثلاث لغات.
-- `npm run check` و`npm run build` و`npm run db:verify` تنجح، والصفحات تعمل بالعربية والفرنسية والإنجليزية على الحاسوب والهاتف.
+- A page to become a Contributor like "become a content creator" (R4): the commitments explained, one confirmation verified on the server, and a database function like `become_content_creator()`. **A member does not combine Content Creator and Contributor** (specification), and going back is through support only.
+- New capabilities in `src/modules/authorization`: `plugins.author` (every Contributor, on what they own), `plugins.publish` (direct for the verified member, after review for the others), `plugins.review` and `plugins.disable` (oversight and the owner).
+- An owner column on `plugins`, and RLS policies: everyone reads what is published, the owner writes their own draft only, and nobody publishes a version without the capability.
+- **A plugin review list in `/admin`**: publish request ← accept or reject with a translated reason ← auditing in `audit_log`. Immediate disabling stays with oversight.
 
-## طريقة العمل
+- **Creating a plugin with a guided form, without writing code or SQL:** the identifier, the name and the description in every language, then the activities, then building the item structure from **the catalogue of field types**: short text, long text, list of items, single choice, multiple choice, matching pairs, ordering items, a blank inside a text, a picture with a required alternative text.
+- **Automatic generation:** from this choice `content_schema` (JSON Schema) and `authoring_fields` are generated together, so the schema never drifts from the editor. Pasting a JSON Schema by hand is **an advanced exit** in a collapsed section, not the default path.
+- **Scoring binding:** for every activity a reference evaluator is chosen from the platform's evaluators (`src/modules/exercises`) with its options (such as ignoring Arabic diacritics), and no scoring logic is written inside the plugin.
+- **Templates inside the plugin definition** (`templates[]`): every template has a translated name and description and an item skeleton with empty fields and translated hints. **Not a single sentence of content** (R8). The template follows the plugin version and is exported with it.
+- **The preview:** a temporary trial item the owner fills in the studio and shows in **the same sandboxed player**; **it is never saved in the database or in the store** (a test proves it).
+- **Validation fails closed before saving:** any definition that does not match the contract (non-empty capabilities, a disallowed asset type, an invalid schema, a duplicate identifier, a template that does not match its schema) is rejected with a translated message that points to the field.
+- **Publishing and versions:** draft ← publishing a version in `plugin_versions` (append-only + sha256 hash) ← a kill switch per version. No editing of a published version.
+- **Export and import:** the plugin definition is a portable JSON file with a hash, exported and imported from the studio, so the plugin moves between environments without writing a new migration.
+- **The studio tests itself:** create the two core plugins of block 4 with it, then export them, and seed the two resulting files in the migration (reference data, R8). **If the studio cannot express one of them, the gap is in the contract** — fix the contract rather than writing the plugin by hand around it.
+- **Two new limits in `platform_settings`:** the number of templates per plugin, and the size of a plugin definition.
+- Tests: the Student and the Content Creator do not open `/studio` (404); a Contributor does not edit another's plugin and does not publish to the catalogue without review; only oversight disables; a definition that breaks the contract is rejected; the preview item is written to no table and no store; export then import gives the same hash.
 
-- خطوات صغيرة، و`npm run check` بعد كل كتلة.
-- كل تغيير في المخطط = ترحيل جديد + اختبار في `tests/db`. لا تعدّل ترحيلًا مطبَّقًا.
-- أي نقطة غير محسومة: اسألني ولا تستنتج، وأضفها إلى `docs/decisions/open-decisions.md`.
-- عند الانتهاء: حدّث «Current state» و«Architecture map» في `CLAUDE.md`، وقسم S2 في `docs/mvp-roadmap.md`، و`resolved-decisions.md` إن ظهر قرار جديد، وADR جديد إن اخترت بديلًا تقنيًا مهمًا (مكتبة الـzip أو مدقّق JSON Schema مثلًا). ثم `npm run db:push` و`db:types` و`db:verify`، ونسخة احتياطية مضغوطة دون `node_modules` و`.next` في `%USERPROFILE%\Documents\LisanHub-backups\` باسم يتضمّن التاريخ والمرحلة.
-- ثم لخّص لي بالعربية: ما أُنجز، وقائمة مرقّمة قصيرة أجرّبها بنفسي خطوة بخطوة.
+### 7. Courses and curricula
 
-## تحسين صغير (نفّذه في آخر S2 إن بقي وقت)
+- Creating a course, adding packages to it and ordering them through `course_lessons.position`, and removing a package from the course without deleting it.
+- Every package belongs to one plugin; a course may gather packages from different plugins.
 
-الخط `IBM_Plex_Sans_Arabic` يُجلب من Google Fonts وقت البناء، فيفشل `npm run build` في أي بيئة دون إنترنت. حوّله إلى `next/font/local` بملفات woff2 محفوظة في المشروع (الأوزان المستعملة فقط)، ليصبح البناء مستقلًا عن الشبكة.
+## Out of scope
+
+- Derivation, "create your copy", "translate this lesson" and the attribution chain (S4) — but write nothing that prevents them: the manifest carries a `provenance` field from now on.
+- The learner experience, progress tracking and the search page (S3).
+- **Importing packages from outside the platform** (Q17): authoring inside the platform only in S2.
+- **Code inside plugins, and plugins authored by the community**: deferred until after verification and review (R7). The plugin is declarative for now.
+- Search inside item text (Q19), audio, video and AI, ratings and reports as new interfaces (S4/S5), and chat (S5).
+- Any subscription, payment or entitlement (phase C only, R2), and creating a Git repository.
+
+## Definition of done
+
+- **Create a complete new plugin from the studio without writing a line of code** (for example a "complete the dialogue" activity), with a template for it, publish its version, then create a package on it from the editor. This is the real test of the architecture.
+- **Try the path from a Contributor account, not the owner's**: become a Contributor, build a plugin in `/studio`, request its publication, then accept it from `/admin` with an administrative account — then disable it and make sure existing packages were not damaged.
+- Export a plugin definition and import it in the same project: the same hash and the same result.
+- A content creator creates a package on the `classic-exercises` plugin with the four types and a picture with an alternative text, previews it as a learner inside the sandboxed frame, publishes it, edits it, then rolls back to the previous version.
+- Creates a cards package on `vocab-cards`, then a course holding three packages and reorders them.
+- The published package is **a downloadable file** carrying its manifest and its hash, and the platform accepts reading and running it again. (Cancelled by R14 the same day: no download, no export.)
+- The student does not publish, not even by calling the database directly; a content creator does not edit another's package; and a draft is seen by nobody but its owner and oversight (tests).
+- A non-owner does not publish a plugin (a test), and a package that breaks any limit or any validation rule is rejected with a clear message (a test per case).
+- No user data field in any message to the player (a test), and the player works without a network.
+- No import of plugin files in `src/`, no storage of a result coming from the frame, and the plugin definition hash is verified (tests).
+- Disabling a plugin from the settings stops creation and running immediately with a translated message without damaging packages.
+- **No content in any migration or in `seed.sql`** (a test fails on a content insert), and every empty screen explains the emptiness and invites creation in three languages.
+- `npm run check`, `npm run build` and `npm run db:verify` pass, and the pages work in Arabic, French and English on desktop and phone.
+
+## Way of working
+
+- Small steps, and `npm run check` after every block.
+- Every schema change = a new migration + a test in `tests/db`. Never edit an applied migration.
+- Any undecided point: ask me rather than infer, and add it to `docs/decisions/open-decisions.md`.
+- When done: update "Current state" and "Architecture map" in `CLAUDE.md`, the S2 section in `docs/mvp-roadmap.md`, `resolved-decisions.md` if a new decision appeared, and a new ADR if you chose an important technical alternative (the zip library or the JSON Schema validator, for example). Then `npm run db:push`, `db:types` and `db:verify`, and a compressed backup without `node_modules` and `.next` in `%USERPROFILE%\Documents\LisanHub-backups\` with a name that includes the date and the stage.
+- Then summarise for me in Arabic: what was done, and a short numbered list I can try myself step by step.
+
+## A small improvement (do it at the end of S2 if time remains)
+
+The `IBM_Plex_Sans_Arabic` font is fetched from Google Fonts at build time, so `npm run build` fails in any environment without internet. Convert it to `next/font/local` with woff2 files kept in the project (the weights in use only), so the build becomes independent of the network.

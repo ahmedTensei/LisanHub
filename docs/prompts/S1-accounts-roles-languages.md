@@ -1,47 +1,47 @@
-# أمر البدء — المرحلة S1: الحسابات والأدوار واللغات
+# Start prompt — stage S1: accounts, roles and languages
 
-> طريقة الاستخدام: في Claude Code، فعّل وضع التخطيط (Shift+Tab حتى يظهر «plan mode on») ثم اكتب:
-> «نفّذ التعليمات في docs/prompts/S1-accounts-roles-languages.md»
+> How to use: in Claude Code, enable plan mode (Shift+Tab until "plan mode on" appears) then write:
+> "Execute the instructions in docs/prompts/S1-accounts-roles-languages.md"
 
-## السياق
+## Context
 
-اقرأ أولًا: `CLAUDE.md`، `docs/mvp-roadmap.md`، `docs/decisions/resolved-decisions.md`، `docs/decisions/open-decisions.md`.
-ثم المهارات: `project-governance`، `mvp-scope`، `roles-permissions`، `i18n-rtl`، `api-data-architecture`، `platform-security`، `testing-quality`.
+Read first: `CLAUDE.md`, `docs/mvp-roadmap.md`, `docs/decisions/resolved-decisions.md`, `docs/decisions/open-decisions.md`.
+Then the skills: `project-governance`, `mvp-scope`, `roles-permissions`, `i18n-rtl`, `api-data-architecture`, `platform-security`, `testing-quality`.
 
-نحن في **المرحلة أ (منصّة مجانية متكاملة)**، والمهمة هي **S1 فقط**.
+We are in **phase A (a complete free platform)**, and the task is **S1 only**.
 
-## قبل كتابة أي كود
+## Before writing any code
 
-1. شغّل `npm run check` وتأكّد أنه ينجح. إن فشل، أصلحه أولًا وأخبرني بالسبب.
-2. اسألني سؤالًا واحدًا: قاعدة بيانات Supabase **مستضافة** (أنشئ أنا الحساب والمشروع من المتصفح) أم **محلية** عبر Docker Desktop؟
-   - إن اخترت المستضافة: أرشدني خطوة بخطوة لما لا يمكنك فعله نيابةً عني فقط (إنشاء الحساب، إنشاء المشروع، نسخ Project URL والمفتاح العام publishable). بعدها اكتب أنت `.env.local`، واربط المشروع وطبّق الترحيلات بـ `npx supabase` (سأوافق على تسجيل الدخول في المتصفح). لا تطلب مني مفتاح `service_role` ولا تكتبه في أي ملف.
-   - إن اخترت المحلية: تحقّق من Docker، ثم `npm run db:start` و`npm run db:reset`.
-3. اكتب خطة مفصّلة لـ S1 (الملفات، الترحيلات الجديدة، الاختبارات، ترتيب التنفيذ) وانتظر موافقتي.
+1. Run `npm run check` and make sure it passes. If it fails, fix it first and tell me why.
+2. Ask me one question: a **hosted** Supabase database (I create the account and the project from the browser) or a **local** one through Docker Desktop?
+   - If I choose hosted: guide me step by step only through what you cannot do on my behalf (creating the account, creating the project, copying the Project URL and the public publishable key). Then you write `.env.local`, link the project and apply the migrations with `npx supabase` (I will approve the sign-in in the browser). Do not ask me for the `service_role` key and do not write it in any file.
+   - If I choose local: check Docker, then `npm run db:start` and `npm run db:reset`.
+3. Write a detailed plan for S1 (files, new migrations, tests, order of execution) and wait for my approval.
 
-## نطاق S1
+## Scope of S1
 
-- **الحساب:** تسجيل بالبريد وكلمة المرور، تأكيد البريد، الدخول والخروج، استعادة كلمة المرور. تسجيل الدخول بـ Google مؤجَّل.
-- **الضيف:** يتصفّح الصفحات العامة دون حساب.
-- **الأزواج اللغوية:** صفحة لإضافة زوج أو أكثر: لغة أم ولغة هدف من جدول `languages` (بحث بالاسم الإنجليزي والرمز)، لهجة اختيارية كوسم، هدف اختياري. لا خطوات إلزامية قبل الوصول إلى المحتوى.
-- **الأدوار:** زر «أصبح صانع محتوى» يستدعي `become_content_creator()`، مع شرح واضح أن الطالب لا ينشر للمجتمع. لا دور «مساهم» في هذه المرحلة.
-- **الملف الشخصي:** الاسم، لغة الواجهة، وإعداد ظهور الملف (عام أو مقيَّد) عبر **ترحيل جديد** مع اختبار في `tests/db`.
-- **الصلاحيات في الخادم:** دالة تحوّل جلسة Supabase إلى `Actor` (الدور الأساسي والرتبة الإدارية)، واستخدام `can()` والسياسات في كل إجراء خادم. لا فحوص بأسماء الأدوار داخل الواجهة.
-- **الواجهة:** كل النصوص في `messages/ar.json` و`fr.json` و`en.json`، والعربية RTL افتراضيًا، وخصائص CSS منطقية.
+- **The account:** sign-up with e-mail and password, e-mail confirmation, sign-in and sign-out, password recovery. Google sign-in is deferred.
+- **The guest:** browses the public pages without an account.
+- **Language pairs:** a page to add one or more pairs: a native language and a target language from the `languages` table (search by English name and code), an optional dialect as a tag, an optional goal. No mandatory steps before reaching the content.
+- **Roles:** a "become a content creator" button that calls `become_content_creator()`, with a clear explanation that a student does not publish to the community. No "Contributor" role at this stage.
+- **The profile:** the name, the interface language, and the profile visibility setting (public or restricted) through **a new migration** with a test in `tests/db`.
+- **Authorization on the server:** a function that turns the Supabase session into an `Actor` (primary role and administrative rank), and the use of `can()` and the policies in every server action. No checks by role name inside the interface.
+- **The interface:** every text in `messages/ar.json`, `fr.json` and `en.json`, Arabic RTL by default, and logical CSS properties.
 
-## خارج النطاق
+## Out of scope
 
-إنشاء المحتوى (S2)، تسجيل Google، أي اشتراك أو دفع أو استحقاق (المرحلة ج فقط، قرار ح2)، إنشاء مستودع Git.
+Content creation (S2), Google sign-in, any subscription, payment or entitlement (phase C only, decision R2), creating a Git repository.
 
-## تعريف الانتهاء
+## Definition of done
 
-- مستخدم جديد يسجّل بالبريد، يؤكّد حسابه، يضيف زوجين لغويين، يغيّر لغة الواجهة، ويصبح صانع محتوى.
-- لا يستطيع مستخدم تعديل ملف أو زوج لغوي لمستخدم آخر، حتى باستدعاء مباشر لقاعدة البيانات (اختبار).
-- الضيف يرى الصفحات العامة ويُطلب منه الدخول عند محاولة إجراء يحتاج حسابًا.
-- `npm run check` و`npm run build` ينجحان، مع اختبارات جديدة للمنطق والصلاحيات.
-- الصفحات تعمل بالعربية والفرنسية والإنجليزية على الحاسوب والهاتف.
+- A new user signs up by e-mail, confirms the account, adds two language pairs, changes the interface language, and becomes a content creator.
+- No user can edit another user's profile or language pair, even by calling the database directly (a test).
+- The guest sees the public pages and is asked to sign in when attempting an action that needs an account.
+- `npm run check` and `npm run build` pass, with new tests for the logic and the authorization.
+- The pages work in Arabic, French and English on desktop and phone.
 
-## طريقة العمل
+## Way of working
 
-- خطوات صغيرة، و`npm run check` بعد كل خطوة مهمة.
-- أي نقطة غير محسومة: اسألني ولا تستنتج، وأضفها إلى `docs/decisions/open-decisions.md`.
-- عند الانتهاء: حدّث «Current state» في `CLAUDE.md` وقسم S1 في `docs/mvp-roadmap.md`، وأنشئ نسخة احتياطية مضغوطة للمشروع دون `node_modules` و`.next` في `%USERPROFILE%\Documents\LisanHub-backups\` باسم يتضمّن التاريخ والمرحلة، ثم لخّص لي بالعربية ما أُنجز وما يلزمني فعله.
+- Small steps, and `npm run check` after every important step.
+- Any undecided point: ask me rather than infer, and add it to `docs/decisions/open-decisions.md`.
+- When done: update "Current state" in `CLAUDE.md` and the S1 section in `docs/mvp-roadmap.md`, create a compressed backup of the project without `node_modules` and `.next` in `%USERPROFILE%\Documents\LisanHub-backups\` with a name that includes the date and the stage, then summarise for me in Arabic what was done and what I need to do.

@@ -1,80 +1,157 @@
-# إضافات Claude Code في هذا المشروع
+# Claude Code plugins in this project
 
-هذه الإضافات (plugins) أدوات لطريقة عملنا داخل Claude Code، وليست جزءًا من منصّة LisanHub ولا لها علاقة بإضافات المنصّة (ح7). تُثبَّت على حاسوب أحمد، ولا تُرفع إلى المستودع.
+These plugins are tools for the way we work inside Claude Code; they are not part of the LisanHub platform and have nothing to do with the platform's own plugins (R7). They are installed on Ahmed's machine and are never pushed to the repository.
 
-المصدر: دليل «٦ إضافات تحوّل Claude Code لفريق تطوير كامل» (AI Automation Academy). تحقّقت من كل أمر تنصيب مقابل وثائق Claude Code الرسمية ومستودعات المشاريع قبل إدراجه هنا، وما لم أستطع تأكيده مذكور صراحةً.
+Source: the guide "6 plugins that turn Claude Code into a full development team" (AI Automation Academy). Every installation command was checked against the official Claude Code documentation and the projects' repositories before being listed here, and whatever could not be confirmed is said explicitly.
 
-## قاعدة الأولوية
+## The precedence rule
 
-**قرارات أحمد ← المواصفات ← مهارات المشروع الـ17 ← أي إضافة خارجية.** الإضافة تقترح طريقة عمل؛ وإذا تعارضت مع قرار أو مهارة مشروع، يفوز قرار المشروع. لا تُغيّر إضافة خارجية نطاق مرحلة، ولا قاعدة عمل في `CLAUDE.md`.
+**Ahmed's decisions ← the specification ← the project skills ← any external plugin.** A plugin proposes a way of working; when it conflicts with a decision or a project skill, the project's decision wins. No external plugin changes the scope of a stage or a working rule in `CLAUDE.md`.
 
-## حقائق مؤكَّدة من وثائق Claude Code
+## Facts confirmed from the Claude Code documentation
 
-- إضافة سوق: `/plugin marketplace add <owner>/<repo>`، وتنصيب: `/plugin install <name>@<marketplace>`.
-- السوق الرسمي اسمه `claude-plugins-official` ويُضاف تلقائيًا عند أول تشغيل تفاعلي.
-- **الإضافة تنفّذ كودًا خارجيًا على جهازك بصلاحيات المستخدم** — لا تُنصِّب إلا ما تعرف مصدره.
-- للتنصيب ثلاثة نطاقات: مستخدم (كل مشاريعك)، مشروع (مشترك في المستودع)، محلي (شخصي). إضافة في مشروع لا تنتقل تلقائيًا إلى غيره.
-- `/plugin` ثم تبويب **Discover** يعرض ما هو متاح فعلًا — استعمله للتأكّد قبل أي تنصيب.
+- Adding a marketplace: `/plugin marketplace add <owner>/<repo>`; installing: `/plugin install <name>@<marketplace>`.
+- The official marketplace is called `claude-plugins-official` and is added automatically at the first interactive run.
+- **A plugin runs external code on your machine with your user's permissions** — install only what you know the source of.
+- Installation has three scopes: user (all your projects), project (shared in the repository), local (personal). A plugin in one project does not carry over to another automatically.
+- `/plugin` then the **Discover** tab shows what is actually available — use it to confirm before any installation.
 
-## ١. Superpowers — موصى بها (الأعلى أثرًا)
+## 1. Superpowers — recommended (the highest impact)
 
 ```
 /plugin marketplace add obra/superpowers-marketplace
 /plugin install superpowers@superpowers-marketplace
 ```
 
-تفرض ترتيبًا قبل الكود: `/superpowers:brainstorm` لتنقيح المطلوب، ثم `write-plan`، ثم `execute-plan` بأسلوب TDD (اختبار يفشل أولًا)، مع `systematic-debugging` و`verification-before-completion`.
+It imposes an order before the code: `/superpowers:brainstorm` to refine what is wanted, then `write-plan`, then `execute-plan` in TDD style (a failing test first), with `systematic-debugging` and `verification-before-completion`.
 
-**كيف تتقاطع مع مشروعنا:** أوامر المراحل عندنا (`docs/prompts/S*.md`) تبقى هي مصدر النطاق؛ استعمل brainstorm وwrite-plan **داخل** نطاق المرحلة لا لتوسيعه. وTDD يخدم `testing-quality` مباشرة: كل تغيير في المخطّط = ترحيل + اختبار.
+**How it meets our project:** our stage prompts (`docs/prompts/S*.md`) remain the source of scope; use brainstorm and write-plan **inside** the stage's scope, not to widen it. TDD serves `testing-quality` directly: every schema change = a migration + a test.
 
-## ٢. `/security-review` — جاهز، بلا تنصيب
+## 2. `/security-review` — ready, no installation
 
-أمر **مدمج** في Claude Code يفحص تغييرات الفرع الحالي أمنيًا (حقن SQL، XSS، ثغرات مصادقة، مفاتيح مكتوبة في الكود، تسريب بيانات في السجلّات).
+A **built-in** Claude Code command that reviews the current branch's changes for security (SQL injection, XSS, authentication flaws, keys written in the code, data leaking into logs).
 
-> **تغيير مهم:** كانت مهارة المشروع الأمنية اسمها `security-review` فتحجب هذا الأمر المدمج. أصبح اسمها **`platform-security`**، فصار الاثنان متاحين: `/security-review` يفحص التغييرات، و`platform-security` تحمل قواعد أمان LisanHub (العزل، الحزم غير الموثوقة، الصلاحيات).
+> **Important change:** the project's own security skill used to be named `security-review`, which shadowed this built-in command. It is now named **`platform-security`**, so both are available: `/security-review` reviews the changes, and `platform-security` carries LisanHub's security rules (isolation, untrusted packages, permissions).
 
-شغّله قبل كل رفع يمسّ المصادقة أو البيانات أو أي مدخل خارجي (وهذا يشمل كل مدقّق الحزم في S2).
+Run it before every push that touches authentication, data or any external input (which includes the whole package validator of S2).
 
-**اختياري لاحقًا:** إجراء GitHub من `anthropics/claude-code-security-review` يفحص كل PR تلقائيًا، لكنه يتطلّب مفتاح API في أسرار المستودع — أجّله إلى ما بعد استقرار المستودع العام.
+**Optional, later:** the GitHub Action from `anthropics/claude-code-security-review` reviews every PR automatically, but it needs an API key in the repository secrets — defer it until the public repository has settled.
 
-## ٣. Frontend Design — اختيارية
+## 3. Frontend Design — optional
 
 ```
 /plugin install frontend-design@claude-plugins-official
 ```
 
-**لم أستطع تأكيد وجودها في السوق الرسمي** من الوثائق (تظهر في سوق العرض التوضيحي داخل مستودع claude-code). تحقّق من تبويب Discover قبل التنصيب.
+**Its presence in the official marketplace could not be confirmed** from the documentation (it appears in the demo marketplace inside the claude-code repository). Check the Discover tab before installing.
 
-**إن نصّبتها:** قرارات واجهتنا تسبقها — اللوحة الخضراء الفاتحة (ح6)، العربية أولًا وRTL بخصائص منطقية (`i18n-rtl`)، والنصوص كلها في `messages/`. اعتبرها مصدر أفكار بصرية لا مصدر قرارات.
+**If you install it:** our interface decisions come first — the light green palette (R6), Arabic first and RTL with logical properties (`i18n-rtl`), and every text in `messages/`. Treat it as a source of visual ideas, not of decisions.
 
-## ٤. gstack — اختيارية، بشرط
+## 4. gstack — optional, with a condition
 
 ```
 git clone --single-branch --depth 1 https://github.com/garrytan/gstack.git ~/.claude/skills/gstack
 cd ~/.claude/skills/gstack && ./setup
 ```
 
-تفيدك منها: `/office-hours` (أسئلة ما قبل البناء)، `/plan-eng-review` (مراجعة نطاق وحالات حدّية)، `/qa`، `/retro`.
+Useful parts: `/office-hours` (questions before building), `/plan-eng-review` (scope and edge-case review), `/qa`, `/retro`.
 
-- **ممنوع في هذا المشروع: `/ship` و`/land-and-deploy`.** الأوّل يرفع فرعًا ويفتح PR، والثاني يدمج وينشر — وكلاهما يخالف قاعدتك: لا إيداع ولا رفع إلا بطلب صريح منك.
-- تُنصَّب على مستوى المستخدم (`~/.claude/skills`) فتؤثّر في كل مشاريعك، وتحتاج Bun، والتنصيب سكربت `./setup` (قد يحتاج Git Bash على ويندوز).
+- **Forbidden in this project: `/ship` and `/land-and-deploy`.** The first pushes a branch and opens a PR, the second merges and deploys — both break your rule: no commit and no push without an explicit request from you.
+- It installs at the user level (`~/.claude/skills`), so it affects all your projects, needs Bun, and the installation is a `./setup` script (which may need Git Bash on Windows).
 
-## ٥. Claude-Mem — لا أنصح بها الآن
+## 5. Claude-Mem — not recommended for now
 
-الدليل يصفها بأنها محلّية بالكامل، لكن صفحة المستودع اليوم تقول إن **الوضع الافتراضي خدمة ذاكرة مستضافة (cmem.ai) مع تسجيل دخول**، والتشغيل المحلي البحت يحتاج خيارًا صريحًا للمزوّد. وهي تلتقط كل ما يجري في جلساتك، وجلساتك هنا تمرّ فيها مفاتيح `.env.local` ووثيقة نموذج العمل غير المنشورة.
+The guide describes it as fully local, but the repository page today says the **default mode is a hosted memory service (cmem.ai) with a sign-in**, and purely local operation needs an explicit provider option. It captures everything that happens in your sessions, and your sessions here carry the `.env.local` keys and the unpublished business-model document.
 
-سياق مشروعك محفوظ أصلًا في `CLAUDE.md` و`docs/` وفي مشروع Claude، وهي تُقرأ في كل جلسة جديدة. إن قرّرت تجربتها لاحقًا: مزوّد محلي فقط، واستثنِ `.env*` و`docs/specification/` صراحةً.
+Your project's context is already kept in `CLAUDE.md`, `docs/` and the Claude project, which are read in every new session. If you decide to try it later: a local provider only, and exclude `.env*` and `docs/specification/` explicitly.
 
-## ما لا تغيّره أي إضافة
+## What no plugin changes
 
-| القاعدة | المرجع |
+| Rule | Reference |
 | --- | --- |
-| لا إيداع ولا رفع ولا فرع ولا وسم إلا بطلب صريح من أحمد | `CLAUDE.md` |
-| لا يُنشر `docs/specification/` ولا أي `.env*` (عدا `.env.example`) | `.gitignore`، قرار أحمد |
-| لا محتوى وهمي في أي مكان | ح8 |
-| لا نوع تعلّم داخل كود المنصّة، ولا تنفيذ لمنطق إضافة المنصّة في عمليتها | ح7 |
-| لا ميزة تجارية قبل المرحلة ج | ح2 |
+| No commit, push, branch or tag without an explicit request from Ahmed | `CLAUDE.md` |
+| `docs/specification/` and any `.env*` (except `.env.example`) are never published | `.gitignore`, Ahmed's decision |
+| No fake content anywhere | R8 |
+| No kind of learning inside platform code, and no execution of a platform plugin's logic in its process | R7 |
+| No commercial feature before phase C | R2 |
 
-## ملاحظة تخزين
+## A note on storage
 
-`/.claude/` مستثنى في `.gitignore`، فإعدادات الإضافات ومهاراتها المولَّدة تبقى شخصية على جهازك ولا تدخل المستودع العام. مصدر مهارات المشروع يبقى `claude-skills/`، ويُثبَّت بأمر `npm run setup`.
+`/.claude/` is excluded in `.gitignore`, so plugin settings and their generated skills stay personal on your machine and never enter the public repository. The source of the project skills remains `claude-skills/`, installed by `npm run setup`.
+
+---
+
+# Second batch (18 September 2026): four skills and three plugins
+
+Every repository was checked before being listed here. **A note of honesty:** my fetch tool returns implausible star counts for some of these repositories, so popularity was not relied on at all — the judgement below rests on the licence, on what the documentation says the tool does, and on which of your files it touches. All of them **run external code on your machine with your permissions**.
+
+## Skills
+
+### 1. Find Skills — `vercel-labs/skills` ✅ recommended
+
+A skills manager that works with more than one agent (not only Claude Code): search, install and update skills from GitHub or a local path. MIT licence. The skill itself is text (`SKILL.md`), not code.
+
+```
+npx skills find
+npx skills add <owner>/<repo>
+```
+
+**Its limit here:** install skills at the user level, not inside the project, because the 19 LisanHub skills come from `claude-skills/` and `npm run setup` alone, and nothing is written into `.claude/` by hand.
+
+### 2. Superpowers — `obra/superpowers` ✅ already installed on your machine
+
+This is the same one you installed from `obra/superpowers-marketplace`. **Do not install it a second time.** MIT licence. Later it can be installed from the official marketplace as `superpowers@claude-plugins-official` if you wish.
+
+### 3. Impeccable — `pbakaus/impeccable` ⚠️ useful in S3, with a condition
+
+Design guidance for interfaces: one skill and 24 commands (`/impeccable audit`, `/impeccable polish`) with deterministic detection rules. Apache-2.0 licence. It runs an executable and may call check scripts from your project's `package.json`.
+
+```
+npx impeccable install
+```
+
+**Its limit here:** its rules are written for Latin left-to-right interfaces. **Our interface decisions come first**: Arabic first and RTL with logical properties (`i18n-rtl`), the adopted colour palette (R6), and every text in `messages/`. Use it for visual critique, not for decisions, and never let it change a file without your review. Defer it to S3 when the learner interface begins.
+
+### 4. Task Observer — `rebelytics/one-skill-to-rule-them-all` ⚠️ with care
+
+A meta-skill that watches your sessions, captures repeated corrections and proposes improvements to your skills. CC BY 4.0 licence; it writes observation logs **locally** on your disk and needs file-system access.
+
+**Its limit here:** its logs contain your project's details and the text of your sessions. Make sure its log path is **outside the repository or excluded in `.gitignore`** before the first commit after it, and never let it edit the 19 project skills automatically: every proposal goes through you, then is written into `claude-skills/`, then `npm run setup`.
+
+## Plugins
+
+### 5. CodeBurn — `getagentseal/codeburn` ✅ recommended
+
+Tracks token consumption and cost across AI tools by reading the session files present on your machine. MIT licence, local and read-only, no API keys.
+
+```
+claude mcp add codeburn -- npx -y codeburn mcp
+```
+
+**Its limit here:** it reads the text of your sessions (which contains your code and whatever values you pasted). Local, but do not run it on a shared machine, and if you install the desktop app **decline the anonymous usage reports** as long as you prefer that nothing leaves.
+
+### 6. Graphify — `Graphify-Labs/graphify` ⚠️ risk of leaking the specification
+
+Turns code into a queryable graph (local analysis with tree-sitter). Dual Apache-2.0/MIT licence; needs the `uv` tool (Python).
+
+```
+uv tool install graphifyy
+graphify install
+```
+
+**Important warning:** analysing **documents, PDF files and images** sends their content to a model provider with your key. Your `docs/specification/` folder holds the full specification and the business model, and your decision (R9) is that it is never published. **If you install it, restrict it to the code only** and exclude `docs/` explicitly, or skip it — searching a project of this size is still easy with the ordinary Claude Code tools.
+
+### 7. Ponytail — `DietrichGebert/ponytail` ⚠️ useful but a cultural clash
+
+A skills system that pushes the agent to **write less code**: it reuses and refuses complexity. MIT licence; needs Node for the Claude Code lifecycle hooks.
+
+```
+/plugin marketplace add DietrichGebert/ponytail
+/plugin install ponytail@ponytail
+```
+
+**Its limit here:** its "less code" philosophy is useful against over-engineering, but it **does not cancel our rules**: every schema change is a new migration and a test, every text is in `messages/`, and there is no shortcut in isolation or validation. When its proposal conflicts with a project skill, **the project skill wins** (the precedence rule at the top of this file).
+
+## What does not change whatever you add
+
+No commit and no push without your request; no fake content (R8); full isolation of plugins and content (R7); `docs/specification/` and `.env*` are never published (R9); and any tool that proposes otherwise is refused.

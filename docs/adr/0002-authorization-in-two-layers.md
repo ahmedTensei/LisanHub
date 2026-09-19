@@ -1,16 +1,16 @@
-# ADR 0002 — الصلاحيات في طبقتين: القدرات في الكود، وRLS في قاعدة البيانات
+# ADR 0002 — Authorization in two layers: capabilities in the code, RLS in the database
 
-- **الحالة:** معتمد.
-- **السياق:** المهارتان `roles-permissions` و`platform-security` تشترطان صلاحيات مبنية على القدرات لا على أسماء الأدوار، وفرضها على الخادم.
+- **Status:** adopted.
+- **Context:** the skills `roles-permissions` and `platform-security` require capability-based authorization rather than role names, enforced on the server.
 
-## القرار
+## Decision
 
-1. **طبقة التطبيق:** `src/modules/authorization` تحوّل الدور والرتبة الإدارية إلى مجموعة قدرات، وتوفّر سياسات (`canEdit`، `canCopy`، `canHide`...). كود الميزات يسأل عن القدرة فقط.
-2. **طبقة قاعدة البيانات:** سياسات RLS والمحفّز `content_items_guard` تفرض القواعد نفسها حتى لو تجاوز أحدٌ الواجهة.
-3. الدور الأساسي عمود واحد في `profiles`، فالجمع بين «صانع محتوى» و«مساهم» مستحيل بنيويًا. تغييره يمرّ فقط عبر `become_content_creator()`.
-4. الرتب الإدارية الأربع في جدول `admin_ranks` لا تكتب فيه إلا المنصّة.
+1. **The application layer:** `src/modules/authorization` turns the role and the administrative rank into a set of capabilities, and provides policies (`canEdit`, `canCopy`, `canHide`...). Feature code asks about the capability only.
+2. **The database layer:** the RLS policies and the trigger `content_items_guard` enforce the same rules even if someone bypasses the interface.
+3. The primary role is a single column in `profiles`, so combining "Content Creator" and "Contributor" is structurally impossible. Changing it goes only through `become_content_creator()`.
+4. The four administrative ranks live in the `admin_ranks` table, which only the platform writes to.
 
-## العواقب
+## Consequences
 
-- كل قاعدة ملكية جديدة تحتاج تحديثًا في الطبقتين واختبارًا في كلتيهما.
-- السمعة والتوثيق والشارات لا تدخل أبدًا في حساب القدرات.
+- Every new ownership rule needs an update in both layers and a test in both.
+- Reputation, verification and badges never enter the computation of capabilities.

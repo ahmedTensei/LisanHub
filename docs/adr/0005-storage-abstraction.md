@@ -1,22 +1,22 @@
-# ADR 0005 — عزل خدمة التخزين ومفاتيح الملفات النسبية
+# ADR 0005 — Isolating the storage service and relative file keys
 
-- **الحالة:** معتمد بطلب أحمد (17 سبتمبر 2026).
-- **السياق:** المنصّة سترفع وتنزّل ملفات (صور الدروس والصور الرمزية في S2، الصوت لاحقًا، تصدير البيانات الشخصية). المزوّد الحالي Supabase Storage، لكن الفريق قد ينتقل إلى Cloudflare R2 أو S3 مستقبلًا لأسباب التكلفة أو الاستضافة (ق12). المهارة `api-data-architecture` تعدّ التخزين حدًّا يجب أن يكون قابلًا للاستبدال.
+- **Status:** adopted at Ahmed's request (17 September 2026). **Updated on 18 September 2026:** the actual provider became Cloudflare R2 (R13, ADR 0008), and Supabase Storage is retired; what follows remains true for the interface and the keys, and what concerns the `storage.objects` policies no longer applies.
+- **Context:** the platform will upload and serve files (lesson pictures and avatars in S2, audio later, personal data export). The provider at the time was Supabase Storage, but the team might move to Cloudflare R2 or S3 in the future for cost or hosting reasons (Q12). The `api-data-architecture` skill treats storage as a boundary that must be replaceable.
 
-## القرار
+## Decision
 
-1. **واجهة واحدة للتخزين:** كود الميزات يتعامل فقط مع `StorageProvider` (`src/modules/storage/provider.ts`): `upload`، `remove`، `publicUrl`، `signedUrl`. لا يستورد أي ميزة SDK مزوّد مباشرة.
-2. **المزوّد يُختار بالإعداد:** `src/server/storage/index.ts` يقرأ `STORAGE_PROVIDER` (`supabase` الافتراضي، `memory` للاختبارات، `s3` محجوز لـ R2/S3/MinIO) وأسماء الدلاء `STORAGE_BUCKET_PUBLIC` و`STORAGE_BUCKET_PRIVATE`. الانتقال إلى مزوّد جديد = إضافة ملف مزوّد واحد وتغيير متغيّرات البيئة.
-3. **مخزنان منطقيان:** `public` (أصول عامة ذات رابط ثابت، مثل صور الدروس) و`private` (لا يُقرأ إلا برابط موقَّع قصير العمر، مثل ملفات التصدير). كل مخزن يقابل دلوًا واحدًا عند المزوّد.
-4. **قاعدة البيانات تحفظ مفتاحًا نسبيًا فقط، لا رابطًا:** العمود يُسمّى `*_key` (أو مرجع `{ store, key }` داخل JSON) بالشكل `avatars/<owner_id>/<uuid>.webp` — بلا شرطة مائلة في البداية، حروف صغيرة، بلا `..`. الرابط يُشتقّ عند القراءة عبر المزوّد. لذلك لا يحتاج نقل الملفات إلى تحديث أي صف.
-   - اختبار في `tests/db/rls.test.ts` يفشل إذا ظهر عمود اسمه `url` أو ينتهي بـ `_url` في المخطط العام.
-   - `src/modules/storage/keys.ts` هو المصدر الوحيد لبناء المفاتيح والتحقّق منها؛ يحمل كل مفتاح معرّف مالكه في المسار لتكتبه سياسات الملكية على `storage.objects` لاحقًا.
-5. **الدلاء وسياساتها موجودة منذ S1** (الترحيل `20260917000500_storage_buckets.sql`): `media-public` (عام، 10 MB، صور وصوت) و`media-private` (خاص، 50 MB، + JSON). سياسات `storage.objects` تقرأ معرّف المالك من المقطع الثاني في المفتاح: الكتابة داخل مجلد المستخدم فقط، القراءة العامة للدلو العام، والخاص لصاحبه والإشراف. مختبَرة في `tests/db/storage.test.ts` عبر محاكاة مخطط `storage` في `tests/db/supabase-stub.sql`.
+1. **One storage interface:** feature code deals only with `StorageProvider` (`src/modules/storage/provider.ts`): `upload`, `remove`, `publicUrl`, `signedUrl`. No feature imports a provider SDK directly.
+2. **The provider is chosen by configuration:** `src/server/storage/index.ts` reads `STORAGE_PROVIDER` (`supabase` was the default, `memory` for the tests, `s3` reserved for R2/S3/MinIO) and the bucket names `STORAGE_BUCKET_PUBLIC` and `STORAGE_BUCKET_PRIVATE`. Moving to a new provider = adding one provider file and changing environment variables.
+3. **Two logical stores:** `public` (public assets with a stable link, such as lesson pictures) and `private` (readable only through a short-lived signed link, such as export files). Each store maps to one bucket at the provider.
+4. **The database keeps a relative key only, never a link:** the column is named `*_key` (or a `{ store, key }` reference inside JSON) in the form `avatars/<owner_id>/<uuid>.webp` — no leading slash, lowercase, no `..`. The link is derived at read time through the provider. Moving the files therefore needs no row update.
+   - A test in `tests/db/rls.test.ts` fails if a column named `url` or ending in `_url` appears in the public schema.
+   - `src/modules/storage/keys.ts` is the only source for building and checking keys; every key carries its owner's identifier in the path so that ownership policies can be written on `storage.objects` later.
+5. **The buckets and their policies existed since S1** (migration `20260917000500_storage_buckets.sql`): `media-public` (public, 10 MB, pictures and audio) and `media-private` (private, 50 MB, + JSON). The `storage.objects` policies read the owner identifier from the second segment of the key: writing inside the user's folder only, public reading for the public bucket, and the private one for its owner and oversight. Tested in `tests/db/storage.test.ts` through a simulation of the `storage` schema in `tests/db/supabase-stub.sql`.
 
-## العواقب
+## Consequences
 
-- إضافة نوع ملف جديد = إضافته إلى `EXTENSION_BY_CONTENT_TYPE` ومنطقة إلى `STORAGE_AREAS`.
-- الاختبارات تستخدم `MemoryStorageProvider` دون شبكة.
-- تحويلات الصور الخاصة بمزوّد (مثل تحويلات Supabase) تُعامَل كتحسين اختياري خلف الواجهة نفسها، لا كاعتماد.
-- ما لم يُقرَّر بعد: حدود الحجم لكل منطقة (ستكون إعدادات في `platform_settings` مع S2؛ حدود الدلاء سقف بنيوي فقط)، وسياسة CDN، وسجلّ تطبيقي للملفات (جدول يفهرس المفاتيح والمالك والحجم) يُضاف مع أول ميزة رفع.
-- اختبارات جاهزية المخطط في `tests/db/rls.test.ts`: كل جدول عام عليه RLS ومفتاح أساسي، معرّفات المستخدمين `uuid`، ولا أعمدة روابط.
+- Adding a new file type = adding it to `EXTENSION_BY_CONTENT_TYPE` and an area to `STORAGE_AREAS`.
+- The tests use `MemoryStorageProvider` without a network.
+- Provider-specific image transformations (such as Supabase's) are treated as an optional improvement behind the same interface, not as a dependency.
+- Not decided yet: size limits per area (they become `platform_settings` settings with S2; bucket limits are a structural ceiling only), the CDN policy, and an application-level file registry (a table indexing keys, owner and size) to be added with the first upload feature.
+- Schema-readiness tests in `tests/db/rls.test.ts`: every public table has RLS and a primary key, user identifiers are `uuid`, and there are no link columns.

@@ -1,36 +1,36 @@
-# تحليل تحديث المواصفات والمهارات إلى v2.1
+# Analysis of the specification and skills update to v2.1
 
-تاريخ التحليل: 17 سبتمبر 2026. الملفات: `Full_Project_With_Business_Model_AR.docx` (المحدَّثة) و`lisanhub-claude-skills-v2.1.zip`.
+Date of the analysis: 17 September 2026. Files: `Full_Project_With_Business_Model_AR.docx` (updated) and `lisanhub-claude-skills-v2.1.zip`.
 
-## ما تغيّر في المواصفات
+## What changed in the specification
 
-المقارنة سطرًا بسطر مع النسخة السابقة تُظهر أن التغيير محصور في موضوع واحد، في موضعين:
+A line-by-line comparison with the previous version shows that the change is confined to one topic, in two places:
 
-1. **الفصل 4:** عنوان «استمرارية المحتوى الشخصي حسب الجهاز والاشتراك» صار «استمرارية التقدّم والمحتوى الشخصي»، مع فقرة جديدة: بيانات الحساب والتقدّم تُحفظ على الخادم لكل مستخدم مجانًا ودائمًا. قواعد «المحلي فقط» صارت تخصّ المحتوى الثقيل وحده، وحُذفت عبارة «حتى لو اشترك لاحقًا لمدّة شهر كامل».
-2. **الفصل 10:** قسم «الوصول دون اتصال ومزامنة البيانات (خدمة مدفوعة)» صار «حفظ التقدّم والوصول دون اتصال» بقسمين: التقدّم مجاني دائمًا، والوصول دون اتصال ومزامنة المحتوى الثقيل مدفوعان. ومبدأ العدالة يضيف أن المدفوع ليس «حفظ رحلته التعليمية».
+1. **Chapter 4:** the heading "Continuity of personal content by device and subscription" became "Continuity of progress and personal content", with a new paragraph: account and progress data is saved on the server for every user, free and always. The "local only" rules now concern heavy content alone, and the phrase "even if they subscribe later for a whole month" was removed.
+2. **Chapter 10:** the section "Offline access and data sync (a paid service)" became "Saving progress and offline access" in two parts: progress is always free, and offline access and heavy-content sync are paid. The fairness principle adds that what is paid is not "saving their learning journey".
 
-لا تغييرات أخرى في الفصول الـ16.
+No other changes in the 16 chapters.
 
-## ما تغيّر في المهارات
+## What changed in the skills
 
-- `monetization-marketplace`: قسم جديد «Progress versus heavy personal content» يطابق المواصفات، ويمنع صراحةً ربط حفظ التقدّم باشتراك.
-- `mvp-scope`: بند جديد في «Commercial»: حفظ الحساب والتقدّم مجانًا منذ اليوم الأول.
-- `README.md`: قسم «Changes in v2.1».
-- ملف جديد `CLAUDE.md` يوثّق القرار كمحسوم ويمنع إعادة فتحه (محفوظ في `docs/claude-skills-CLAUDE.v2.1.md` ومدمج في `CLAUDE.md` الرئيسي).
-- المهارات الـ14 الأخرى مطابقة حرفيًا لـ v2.
+- `monetization-marketplace`: a new section "Progress versus heavy personal content" that matches the specification and explicitly forbids tying progress saving to a subscription.
+- `mvp-scope`: a new item under "Commercial": saving the account and the progress free from day one.
+- `README.md`: a "Changes in v2.1" section.
+- A new `CLAUDE.md` file that records the decision as settled and forbids reopening it (kept in `docs/claude-skills-CLAUDE.v2.1.md` and merged into the main `CLAUDE.md`).
+- The other 14 skills are identical to v2.
 
-## الأثر على الخطة
+## Effect on the plan
 
-- **ق3 محسوم** بما يطابق النموذج الهجين الذي أوصت به خارطة الطريق. نُقل إلى `docs/decisions/resolved-decisions.md` كـ ح1، وطُبّق في مخطط قاعدة البيانات والاختبارات.
-- لا يتغيّر ترتيب المراحل.
+- **Q3 is settled** in line with the hybrid model the roadmap recommended. Moved to `docs/decisions/resolved-decisions.md` as R1, and applied in the database schema and the tests.
+- The order of the stages does not change.
 
-## تعارضات متبقّية في الوثيقة
+## Remaining conflicts in the document
 
-- **الفصل 4، «تتبّع التقدّم والتحفيز»:** ما زال يقول إن «أكمل من حيث توقّفت عبر الأجهزة» تعتمد على المزامنة «لمن يفعّلها». بعد v2.1 هذه بيانات تقدّم مجانية. سُجّل كـ ق9.
-- **الفصل 14:** «مزامنة البيانات على السحابة» في مزايا المؤسّسين ونطاق التخزين صياغة عامة قد تُفهم كأن كل البيانات مدفوعة. سُجّل كـ ق10.
-- **مصير المحتوى الثقيل على الخادم بعد انتهاء الاشتراك** غير محدَّد بعد حذف عبارة «حتى لو اشترك لاحقًا». سُجّل كـ ق8.
-- **CLAUDE.md في المهارات** يشير إلى ثلاث وثائق مواصفات، والمتوفّر هو الكاملة فقط. سُجّل كـ ق11.
+- **Chapter 4, "Progress tracking and motivation":** still says that "continue where you left off across devices" depends on sync "for those who enable it". After v2.1 this is free progress data. Recorded as Q9.
+- **Chapter 14:** "data sync on the cloud" among the founders' benefits and the storage scope is a general wording that could be read as if all data were paid. Recorded as Q10.
+- **The fate of heavy content on the server after a subscription ends** is undefined after the removal of the phrase "even if they subscribe later". Recorded as Q8.
+- **The CLAUDE.md in the skills** refers to three specification documents, and only the full one is available. Recorded as Q11.
 
-## ما بقي مفتوحًا من التحليل الأول
+## What remains open from the first analysis
 
-ق1، ق2، ق4، ق5، ق6، ق7 — التفاصيل في `docs/decisions/open-decisions.md`.
+Q1, Q2, Q4, Q5, Q6, Q7 — details in `docs/decisions/open-decisions.md`.

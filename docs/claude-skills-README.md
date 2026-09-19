@@ -29,7 +29,7 @@ This archive already contains the correct folder structure. Copy the `.claude` f
 
 Claude Code discovers project skills automatically from `.claude/skills/<name>/SKILL.md`.
 
-## The 17 skills
+## The 19 skills
 
 **Governance and scope**
 - `project-governance` — classifies every request against the specification; prevents scope drift.
@@ -55,11 +55,13 @@ Claude Code discovers project skills automatically from `.claude/skills/<name>/S
 **Engineering quality**
 - `platform-security` — authorization, hostile UGC, executable-content sandboxing.
 - `testing-quality` — invariant-focused testing discipline.
+- `deliberate-choices` — no value written by pattern-copying: every option list, default, limit, label and message is chosen for its own case (Ahmed, 2026-09-18).
+- `no-raw-keys` — no raw translation key, code or placeholder ever reaches the screen; dynamic keys are proven by tests and missing messages fail loudly (Ahmed, 2026-09-18).
 
 ## First checks after installing
 
 1. Start Claude Code from the project root.
-2. Run `/skills` and confirm all 17 appear.
+2. Run `/skills` and confirm all 19 appear.
 3. Ask Claude to read the project specification and summarise which skills apply before any major change.
 
 ## Important

@@ -1,14 +1,14 @@
-# ADR 0003 — فصل بيانات التقدّم عن المحتوى الشخصي الثقيل
+# ADR 0003 — Separating progress data from heavy personal content
 
-- **الحالة:** معتمد، تطبيقًا للقرار ح1. **الجزء المدفوع مؤجَّل إلى المرحلة ج بقرار ح2.**
+- **Status:** adopted, applying decision R1. **The paid part is deferred to phase C by decision R2.**
 
-## القرار
+## Decision
 
-- بيانات التقدّم في جداول خاصة بالمستخدم (`progress`، `review_states`، `activity_days`) مع RLS «المالك فقط» ودون أي شرط اشتراك. هذا مطبَّق الآن.
-- النسخ الشخصية المحلية للطالب تبقى على جهازه، ولا تُرسل إلى الخادم ولا تُفهرس.
-- في المرحلة ج فقط: جدول للمحتوى الثقيل على الخادم مشروط باشتراك نشط، وجدول استحقاقات لا يمنحها العميل (مصادرها: عضو مؤسّس، تجربة، دعوة صديق، دفع، منح إداري). التصميم محفوظ في ADR 0004.
+- Progress data lives in per-user tables (`progress`, `review_states`, `activity_days`) with "owner only" RLS and without any subscription condition. This is applied now.
+- A student's local personal copies stay on their device, and are neither sent to the server nor indexed.
+- In phase C only: a table for heavy content on the server conditioned on an active subscription, and an entitlements table the client cannot grant (its sources: founding member, trial, friend invitation, payment, administrative grant). The design is kept in ADR 0004.
 
-## العواقب
+## Consequences
 
-- لا توجد جداول تجارية في قاعدة البيانات قبل المرحلة ج، واختبار آلي يمنع إضافتها خطأً.
-- مصير البيانات بعد انتهاء الاشتراك قرار مفتوح (ق8).
+- There are no commercial tables in the database before phase C, and an automated test prevents them from being added by mistake.
+- The fate of the data after a subscription ends is an open decision (Q8).
