@@ -4,15 +4,12 @@ Thank you for looking. Anyone may send changes to this project. Please read this
 
 ## Contribution terms
 
-**Please read this before opening a pull request.** LisanHub is a single-owner project licensed under the [PolyForm Noncommercial License 1.0.0](LICENSE), and its owner intends to run a commercial service on it in the future. So that this stays possible while the code is shared, every contribution is accepted on the following terms. **By opening a pull request, or by otherwise submitting code, documentation, translations or other material to this repository, you agree to them.**
+**Please read this before opening a pull request.** LisanHub is licensed under the [MIT License](LICENSE). Contributions to the code, documentation, translations and other repository material are accepted under the MIT License. **By opening a pull request, or by otherwise submitting material to this repository, you confirm that you have the right to submit it and agree that it may be distributed under the MIT License.**
 
-1. **A contribution is voluntary and unpaid.** You offer it freely; nobody asked you to make it, and no payment, credit, position or other consideration is owed in return.
-2. **A contribution gives you no ownership of the project.** It creates no share, equity, partnership, joint authorship of the project as a whole, revenue right, employment relationship, or right to a say in the project's direction — now or in the future, whatever the size or importance of the change.
-3. **You keep the copyright of your own work, and you license it to the project owner.** You grant Ahmed Hayani (the copyright holder named in [`NOTICE`](NOTICE)) and his successors a perpetual, worldwide, non-exclusive, irrevocable, royalty-free licence to use, reproduce, modify, adapt, publish, distribute, sublicense and relicense your contribution, in whole or in part, under any terms — including the current noncommercial licence and any future commercial licence — and to do so as part of this project or of any other work. You also grant a patent licence covering any patent claims of yours that your contribution necessarily infringes, on the same terms.
-4. **The owner decides.** Whether a contribution is merged, changed, rewritten, delayed or declined is the owner's decision, and a merged contribution may later be modified or removed. A declined contribution does not need a justification.
-5. **You confirm that you have the right to contribute it.** The contribution is your own original work, or you have the necessary rights to it; it is not copied from a source whose licence is incompatible with this project (GPL, AGPL, SSPL and similar are incompatible); and no employer, client or other party holds rights over it that conflict with these terms.
-6. **Attribution** is the Git history: your name and e-mail as recorded in your commits. Nothing else is promised.
-7. **No warranty, no liability** in either direction beyond what the licence already states.
+1. **A contribution is voluntary and unpaid.** No payment, credit, position or other consideration is owed in return.
+2. **You confirm that you have the right to contribute it.** The contribution is your own original work, or you have the necessary rights to it; no employer, client or other party holds rights over it that conflict with its distribution under the MIT License.
+3. **The owner decides.** Whether a contribution is merged, changed, rewritten, delayed or declined is the owner's decision, and a merged contribution may later be modified or removed.
+4. **No warranty or liability** is provided beyond what the MIT License states.
 
 These terms are a practical arrangement between individuals, not legal advice; if they do not suit you, please do not contribute code — an issue with your idea is still welcome. The wording may be refined with a professional later; a change to these terms never applies retroactively to contributions already accepted.
 

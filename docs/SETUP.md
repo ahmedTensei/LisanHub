@@ -7,7 +7,7 @@ Claude Code runs these steps automatically in the first session (see `CLAUDE.md`
 - [x] `npm run setup` (the 19 skills in `.claude/skills`, CI in `.github`, and the `.vscode` settings)
   - Note: the `/skills` panel of the Claude desktop app shows the claude.ai account skills only (docs, pdf, xlsx…). The 19 project skills do not appear there, but they are loaded: type `/` then the skill name (such as `/mvp-scope` or `/roles-permissions`), or let Claude invoke them by itself according to the task.
 - [x] `npm run check` (the full check and the tests)
-- [x] Git repository: https://github.com/ahmedTensei/LisanHub — initial import on 18 September 2026 (201 files, PolyForm Noncommercial License 1.0.0); public since 19 September 2026 (R18) with secret scanning, push protection, private vulnerability reporting, a protected `main` and a project site on GitHub Pages. After that: no commit and no push without an explicit request from Ahmed.
+- [x] Git repository: https://github.com/ahmedTensei/LisanHub — initial import on 18 September 2026 (201 files, MIT License); public since 19 September 2026 (R18) with secret scanning, push protection, private vulnerability reporting, a protected `main` and a project site on GitHub Pages. After that: no commit and no push without an explicit request from Ahmed.
 - [x] Run `npm run dev` and open http://localhost:3000
 - [x] (S1) `npm run db:verify` — 67 checks that prove the app is wired to the hosted project (run it after every `db:push`)
 - [x] (S1) Hosted Supabase project: `.env.local` written, `npx supabase login` and `link` run by Ahmed, migrations and settings pushed, types generated

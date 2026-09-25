@@ -9,7 +9,7 @@ The repository: **https://github.com/ahmedTensei/LisanHub** (public). It current
 
 ## The decisions this task implements
 
-1. **Licence: PolyForm Noncommercial 1.0.0** — noncommercial use is allowed, commercial use is forbidden without written permission. The `LICENSE` and `NOTICE` files are ready in the project. **Do not replace them and do not add another licence.** The previous Apache-2.0 disappears.
+1. **Licence: MIT License** — commercial and noncommercial use are permitted under its terms. The `LICENSE` and `NOTICE` files are ready in the project. The previous Apache-2.0 disappears.
 2. **A clean history**: the content of the `main` branch is replaced entirely by a new history. This is **the only time** `--force` is allowed, by Ahmed's explicit decision.
 3. **Outside contributions are closed for now**: `CONTRIBUTING.md` and `SECURITY.md` say so. (Opened later by decision R18.)
 4. **Never published**: `docs/specification/` (the specification and the business model), any `.env*` except `.env.example`, `supabase/.temp`, and `.claude/`.
@@ -67,15 +67,15 @@ gh api "repos/ahmedTensei/LisanHub/git/trees/main?recursive=1" --jq ".tree[].pat
 
 Make sure the list **does not contain**: any `.env` file (except `.env.example`), `docs/specification/`, `supabase/.temp/`, or `.claude/`. Make sure the new `LICENSE` is present and that the old repository's files (`map/` and what used to be in `docs/`) are gone.
 
-> Expected note: GitHub may not recognise PolyForm and show "License not recognized" instead of the licence name. That is normal and not a defect.
+> Expected note: GitHub should recognise the MIT License from the standard `LICENSE` file.
 
 ## 7. Repository settings (with `gh`)
 
 Run them one by one, and skip whatever fails while mentioning it in the final report:
 
 ```
-gh repo edit ahmedTensei/LisanHub --description "Community-driven language-learning platform. Source-available, noncommercial licence. Early development." --enable-wiki=false --enable-projects=false --enable-issues=true --enable-discussions=false
-gh repo edit ahmedTensei/LisanHub --add-topic language-learning --add-topic nextjs --add-topic supabase --add-topic typescript --add-topic rtl --add-topic arabic --add-topic plugins --add-topic source-available
+gh repo edit ahmedTensei/LisanHub --description "Community-driven language-learning platform. Open source under the MIT License. Early development." --enable-wiki=false --enable-projects=false --enable-issues=true --enable-discussions=false
+gh repo edit ahmedTensei/LisanHub --add-topic language-learning --add-topic nextjs --add-topic supabase --add-topic typescript --add-topic rtl --add-topic arabic --add-topic plugins --add-topic open-source
 gh api -X PATCH repos/ahmedTensei/LisanHub -f "security_and_analysis[secret_scanning][status]=enabled" -f "security_and_analysis[secret_scanning_push_protection][status]=enabled"
 gh api -X PUT repos/ahmedTensei/LisanHub/vulnerability-alerts
 gh api -X PUT repos/ahmedTensei/LisanHub/automated-security-fixes

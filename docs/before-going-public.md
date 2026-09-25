@@ -6,7 +6,7 @@ Last review: 19 September 2026 (decision R18: the repository is **public** since
 
 | # | Where | What | What is done | State |
 | --- | --- | --- | --- | --- |
-| 1.1 | `LICENSE` line 1, `NOTICE`, `CONTRIBUTING.md`, `site/index.html` | The copyright holder's name **Ahmed Hayani** and the repository link | Required by the PolyForm notice, and the contribution terms need a named licensee. Confirmed by Ahmed with the switch to public (R18). When a company is registered the name is replaced in all four places together | done |
+| 1.1 | `LICENSE` line 1, `NOTICE`, `CONTRIBUTING.md`, `site/index.html` | The copyright holder's name **Ahmed Hayani** and the repository link | Required by the MIT notice and the contribution documentation. Confirmed by Ahmed with the switch to public (R18). When a company is registered the name is replaced in all four places together | done |
 | 1.2 | Git history | The commit author name **Ahmed Hayani** (from `git config user.name`); the `noreply` e-mail reveals nothing | Kept: it matches the licence notice. To show the handle only: `git config user.name ahmedTensei` before the next commits | Ahmed's choice |
 | 1.3 | `docs/decisions/*`, `docs/mvp-roadmap.md`, `docs/prompts/*`, `CLAUDE.md` | The first name "Ahmed" as the decision maker | Acceptable publicly for a single-developer project; it reveals no more than the name | done |
 | 1.4 | `docs/mvp-roadmap.md`, `docs/prompts/*.md` | Local paths that carried a Windows user name (in the working tree **and** in the two earlier commits) | **Fixed everywhere:** the paths became `%USERPROFILE%\Documents\...`, and the two earlier commits were rewritten with the same replacement before the repository went public, so no commit carries the machine's user name | done |

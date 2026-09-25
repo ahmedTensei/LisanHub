@@ -27,9 +27,9 @@ The platform contains **no built-in kind of learning**. Each kind of activity is
 
 Stack: Next.js 16 (App Router), React 19, TypeScript, Tailwind CSS 4, next-intl, Supabase (Postgres + RLS + Auth + Storage), Zod, ts-fsrs, Vitest with PGlite.
 
-## Licence — source-available, noncommercial
+## Licence — MIT
 
-This project is **not open source**. It is licensed under the [PolyForm Noncommercial License 1.0.0](LICENSE): you may read, run, modify and share it for any **noncommercial** purpose, including personal study, research and use by nonprofits, schools and public institutions. **Any commercial use requires a separate written licence from the copyright holder.**
+This project is open source and licensed under the [MIT License](LICENSE). Commercial and noncommercial use are permitted under its terms.
 
 Learning content created by members inside the platform is a separate question and is licensed separately; that decision is not final yet.
 

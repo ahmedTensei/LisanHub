@@ -1,7 +1,7 @@
 # ADR 0007 — The plugin architecture toolchain: zip, a JSON Schema validator, sha256, and a small sandboxed player bundle
 
 - **Status:** adopted (18 September 2026), implementing decisions R7 and R10 (ADR 0006) in S2.
-- **Context:** ADR 0006 requires a `.lisanpkg` package (zip), a JSON Schema 2020-12 content schema per plugin, a sha256 hash that pins definitions and packages, and a player document that runs on an opaque origin under `default-src 'none'` and `connect-src 'none'`. These technical choices were not settled, and some of them are constrained by the licence (PolyForm Noncommercial does not accept GPL/AGPL/SSPL dependencies).
+- **Context:** ADR 0006 requires a `.lisanpkg` package (zip), a JSON Schema 2020-12 content schema per plugin, a sha256 hash that pins definitions and packages, and a player document that runs on an opaque origin under `default-src 'none'` and `connect-src 'none'`. These technical choices were not settled, and dependencies must remain compatible with the project's MIT License and the licences of third-party assets.
 
 ## Decisions
 

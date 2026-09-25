@@ -1,7 +1,7 @@
 # LisanHub — build roadmap
 
 Source: Full_Project_With_Business_Model_AR.docx (16 chapters, version v2.1), amended by Ahmed's decisions R2 and R7. Last update: 2026-09-19 (S1 and S2 done in code; decisions R12–R17 on 2026-09-18: the long-term goal, files in R2, no import/export, language-pair confinement, English names, professional administration; R18 on 2026-09-19: public repository, open contributions, English-only repository, project site).
-Reference country: Algeria. Repository: https://github.com/ahmedTensei/LisanHub (public, PolyForm Noncommercial licence — R9, R18); no commit and no push without an explicit request from Ahmed.
+Reference country: Algeria. Repository: https://github.com/ahmedTensei/LisanHub (public, MIT License — R19); no commit and no push without an explicit request from Ahmed.
 Assumptions: one developer (Ahmed), web first (PWA), the technical stack in docs/adr/0001-tech-stack.md.
 
 ## The governing principle of the order (R2)

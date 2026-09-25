@@ -1,5 +1,11 @@
 # Resolved decisions
 
+## R19 — MIT License for the repository
+
+- **Status:** decided by Ahmed (25 September 2026). This supersedes the licence terms in R9.
+- **Decision:** the repository is licensed under the **MIT License** (`LICENSE` and `NOTICE`). Commercial and noncommercial use, modification, distribution and sublicensing are permitted under its terms. Contributions are accepted under the MIT terms in `CONTRIBUTING.md`. Learning content created by members inside the platform remains a separate licensing question.
+- **Where it applies:** `LICENSE`, `NOTICE`, `README.md`, `CONTRIBUTING.md`, `CLAUDE.md`, `site/`, and the repository documentation that describes the current licence.
+
 The decisions here come from the project owner (Ahmed) or from the text of the specification, and they take precedence over any skill or plan. Where a decision explicitly states that it supersedes part of the specification, the decision is the reference until the document is updated.
 
 ## R18 — Public repository, voluntary contributions without ownership, English only, a project site on GitHub Pages
